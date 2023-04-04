@@ -34,6 +34,8 @@
 - `新浪财经`
 - `雪球`
 - `深交所`
+## 截图
+![](https://raw.githubusercontent.com/kingschan1204/easycrawl/main/images/xueqiu-test.png "雪球测试")
 
 ## 依赖
 - lombok
@@ -45,6 +47,10 @@
 - junit
 - commons-io
 - okhttp
+
+## 运行
+> 下面是单元测试类,本工程所有测试用例全在这里
+https://github.com/kingschan1204/easycrawl/tree/main/src/test/java/com/github/kingschan1204/easycrawl
 
 
 
