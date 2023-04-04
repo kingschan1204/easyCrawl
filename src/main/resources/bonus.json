@@ -1,0 +1,235 @@
+{
+  "data": {
+    "addtions": [],
+    "allots": [],
+    "items": [
+      {
+        "dividend_year": "2022年报",
+        "ashare_ex_dividend_date": null,
+        "ex_dividend_date": null,
+        "equity_date": null,
+        "plan_explain": "10派259.11元(董事会预案)",
+        "cancle_dividend_date": null,
+        "dividend_date": null
+      },
+      {
+        "dividend_year": "2022-11-29",
+        "ashare_ex_dividend_date": 1672070400000,
+        "ex_dividend_date": 1672070400000,
+        "equity_date": 1671984000000,
+        "plan_explain": "10派219.1元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1672070400000
+      },
+      {
+        "dividend_year": "2021年报",
+        "ashare_ex_dividend_date": 1656518400000,
+        "ex_dividend_date": 1656518400000,
+        "equity_date": 1656432000000,
+        "plan_explain": "10派216.75元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1656518400000
+      },
+      {
+        "dividend_year": "2020年报",
+        "ashare_ex_dividend_date": 1624550400000,
+        "ex_dividend_date": 1624550400000,
+        "equity_date": 1624464000000,
+        "plan_explain": "10派192.93元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1624550400000
+      },
+      {
+        "dividend_year": "2019年报",
+        "ashare_ex_dividend_date": 1592928000000,
+        "ex_dividend_date": 1592928000000,
+        "equity_date": 1592841600000,
+        "plan_explain": "10派170.25元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1592928000000
+      },
+      {
+        "dividend_year": "2018年报",
+        "ashare_ex_dividend_date": 1561651200000,
+        "ex_dividend_date": 1561651200000,
+        "equity_date": 1561564800000,
+        "plan_explain": "10派145.39元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1561651200000
+      },
+      {
+        "dividend_year": "2017年报",
+        "ashare_ex_dividend_date": 1528992000000,
+        "ex_dividend_date": 1528992000000,
+        "equity_date": 1528905600000,
+        "plan_explain": "10派109.99元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1528992000000
+      },
+      {
+        "dividend_year": "2016年报",
+        "ashare_ex_dividend_date": 1499356800000,
+        "ex_dividend_date": 1499356800000,
+        "equity_date": 1499270400000,
+        "plan_explain": "10派67.87元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1499356800000
+      },
+      {
+        "dividend_year": "2015年报",
+        "ashare_ex_dividend_date": 1467302400000,
+        "ex_dividend_date": 1467302400000,
+        "equity_date": 1467216000000,
+        "plan_explain": "10派61.71元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1467302400000
+      },
+      {
+        "dividend_year": "2014年报",
+        "ashare_ex_dividend_date": 1437062400000,
+        "ex_dividend_date": 1437062400000,
+        "equity_date": 1436976000000,
+        "plan_explain": "10送1股派43.74元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1437062400000
+      },
+      {
+        "dividend_year": "2013年报",
+        "ashare_ex_dividend_date": 1403625600000,
+        "ex_dividend_date": 1403625600000,
+        "equity_date": 1403539200000,
+        "plan_explain": "10送1股派43.74元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1403625600000
+      },
+      {
+        "dividend_year": "2012年报",
+        "ashare_ex_dividend_date": 1370534400000,
+        "ex_dividend_date": 1370534400000,
+        "equity_date": 1370448000000,
+        "plan_explain": "10派64.19元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1371398400000
+      },
+      {
+        "dividend_year": "2011年报",
+        "ashare_ex_dividend_date": 1341417600000,
+        "ex_dividend_date": 1341417600000,
+        "equity_date": 1341331200000,
+        "plan_explain": "10派39.97元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1342108800000
+      },
+      {
+        "dividend_year": "2010年报",
+        "ashare_ex_dividend_date": 1309449600000,
+        "ex_dividend_date": 1309449600000,
+        "equity_date": 1309363200000,
+        "plan_explain": "10送1股派23元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1309968000000
+      },
+      {
+        "dividend_year": "2009年报",
+        "ashare_ex_dividend_date": 1278259200000,
+        "ex_dividend_date": 1278259200000,
+        "equity_date": 1278000000000,
+        "plan_explain": "10派11.85元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1278604800000
+      },
+      {
+        "dividend_year": "2008年报",
+        "ashare_ex_dividend_date": 1246377600000,
+        "ex_dividend_date": 1246377600000,
+        "equity_date": 1246291200000,
+        "plan_explain": "10派11.56元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1246896000000
+      },
+      {
+        "dividend_year": "2007年报",
+        "ashare_ex_dividend_date": 1213545600000,
+        "ex_dividend_date": 1213545600000,
+        "equity_date": 1213286400000,
+        "plan_explain": "10派8.36元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1213891200000
+      },
+      {
+        "dividend_year": "2006年报",
+        "ashare_ex_dividend_date": 1184256000000,
+        "ex_dividend_date": 1184256000000,
+        "equity_date": 1184169600000,
+        "plan_explain": "10派7元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1184774400000
+      },
+      {
+        "dividend_year": "2006-04-06",
+        "ashare_ex_dividend_date": 1147968000000,
+        "ex_dividend_date": 1147968000000,
+        "equity_date": 1147881600000,
+        "plan_explain": "10转10股(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": null
+      },
+      {
+        "dividend_year": "2006-04-05",
+        "ashare_ex_dividend_date": 1148400000000,
+        "ex_dividend_date": 1148400000000,
+        "equity_date": 1148313600000,
+        "plan_explain": "10派5.91元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1148832000000
+      },
+      {
+        "dividend_year": "2005年报",
+        "ashare_ex_dividend_date": 1147968000000,
+        "ex_dividend_date": 1147968000000,
+        "equity_date": 1147881600000,
+        "plan_explain": "10派3元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1148313600000
+      },
+      {
+        "dividend_year": "2004年报",
+        "ashare_ex_dividend_date": 1123171200000,
+        "ex_dividend_date": 1123171200000,
+        "equity_date": 1123084800000,
+        "plan_explain": "10转2股派5元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1123689600000
+      },
+      {
+        "dividend_year": "2003年报",
+        "ashare_ex_dividend_date": 1088611200000,
+        "ex_dividend_date": 1088611200000,
+        "equity_date": 1088524800000,
+        "plan_explain": "10转3股派3元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1089129600000
+      },
+      {
+        "dividend_year": "2002年报",
+        "ashare_ex_dividend_date": 1058112000000,
+        "ex_dividend_date": 1058112000000,
+        "equity_date": 1057852800000,
+        "plan_explain": "10送1股派2元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1058457600000
+      },
+      {
+        "dividend_year": "2001年报",
+        "ashare_ex_dividend_date": 1027526400000,
+        "ex_dividend_date": 1027526400000,
+        "equity_date": 1027440000000,
+        "plan_explain": "10转1股派6元(实施方案)",
+        "cancle_dividend_date": null,
+        "dividend_date": 1027958400000
+      }
+    ]
+  },
+  "error_code": 0,
+  "error_description": ""
+}

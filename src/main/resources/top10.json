@@ -1,0 +1,97 @@
+//https://stock.xueqiu.com/v5/stock/f10/cn/top_holders.json?symbol=SH600887&locate=1669824000000&start=1669824000000&circula=0
+{
+  "data": {
+    "times": [
+      {
+        "name": "2022-12-01",
+        "value": 1669824000000
+      },
+      {
+        "name": "2022-10-28",
+        "value": 1666886400000
+      },
+      {
+        "name": "2022三季报",
+        "value": 1664467200000
+      },
+      {
+        "name": "2022中报",
+        "value": 1656518400000
+      },
+      {
+        "name": "2022一季报",
+        "value": 1648656000000
+      }
+    ],
+    "total": {
+      "chg": 0.07,
+      "held_num": 2556400893,
+      "held_ratio": 39.94
+    },
+    "quit": [],
+    "items": [
+      {
+        "chg": 0.42,
+        "held_num": 1097168728,
+        "held_ratio": 17.15,
+        "holder_name": "香港中央结算有限公司"
+      },
+      {
+        "chg": 0.0,
+        "held_num": 538535826,
+        "held_ratio": 8.42,
+        "holder_name": "呼和浩特投资有限责任公司"
+      },
+      {
+        "chg": 0.0,
+        "held_num": 286746628,
+        "held_ratio": 4.48,
+        "holder_name": "潘刚"
+      },
+      {
+        "chg": 0.0,
+        "held_num": 182421475,
+        "held_ratio": 2.85,
+        "holder_name": "中国证券金融股份有限公司"
+      },
+      {
+        "chg": 0.0,
+        "held_num": 116000000,
+        "held_ratio": 1.81,
+        "holder_name": "中国银行股份有限公司-易方达蓝筹精选混合型证券投资基金"
+      },
+      {
+        "chg": 0.0,
+        "held_num": 92420140,
+        "held_ratio": 1.44,
+        "holder_name": "赵成霞"
+      },
+      {
+        "chg": 0.0,
+        "held_num": 91638288,
+        "held_ratio": 1.43,
+        "holder_name": "刘春海"
+      },
+      {
+        "chg": 0.0,
+        "held_num": 60273790,
+        "held_ratio": 0.94,
+        "holder_name": "交通银行股份有限公司-易方达上证50指数增强型证券投资基金"
+      },
+      {
+        "chg": -5.48,
+        "held_num": 47437928,
+        "held_ratio": 0.74,
+        "holder_name": "中国工商银行-上证50交易型开放式指数证券投资基金"
+      },
+      {
+        "chg": 0.0,
+        "held_num": 43758090,
+        "held_ratio": 0.68,
+        "holder_name": "全国社保基金一零六组合"
+      }
+    ]
+  },
+  "error_code": 0,
+  "error_description": ""
+}
