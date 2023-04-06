@@ -6,7 +6,6 @@ import com.github.kingschan1204.easycrawl.core.agent.utils.JsoupHelper;
 import com.github.kingschan1204.easycrawl.helper.regex.RegexHelper;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
 import com.github.kingschan1204.easycrawl.plugs.freemarker.FreemarkParser;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -20,12 +19,22 @@ import java.util.Arrays;
 import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
 @Slf4j
 public final class FileEngine extends HttpEngine implements WebDataAgent<File> {
 
+    //下载文件上的时候才有作用
     private String folder;
     private String fileName;
+
+    public WebDataAgent<File> folder(String folder) {
+        this.folder = folder;
+        return this;
+    }
+
+    public WebDataAgent<File> fileName(String fileName) {
+        this.fileName = fileName;
+        return this;
+    }
 
     @Override
     public WebDataAgent<File> url(String url) {
@@ -134,7 +143,7 @@ public final class FileEngine extends HttpEngine implements WebDataAgent<File> {
         //文件名优先使用指定的文件名，如果没有指定 则获取自动识别的文件名
         fileName = String.valueOf(fileName).matches(RegexHelper.REGEX_FILE_NAME) ? fileName : defaultFileName;
         Assert.notNull(fileName, "文件名不能为空！");
-        String path = String.format("%s%s", this.folder, fileName);
+        String path = String.format("%s%s", folder, fileName);
         // output here
         log.info("输出文件：{}", path);
         FileOutputStream out = null;

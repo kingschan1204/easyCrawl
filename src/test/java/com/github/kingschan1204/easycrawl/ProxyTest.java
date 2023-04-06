@@ -25,7 +25,6 @@ public class ProxyTest {
     public void restTest() throws Exception {
 
         Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(ip, port));
-        RestApiEngine engine = new RestApiEngine();
         WebPage data = new HtmlEngine().referer(apiUrl)
                 .timeOut(9000)
                 .useAgent(useAgent)
