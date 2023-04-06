@@ -6,6 +6,8 @@ import com.github.kingschan1204.easycrawl.core.agent.WebDataAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.JsoupHelper;
 import com.github.kingschan1204.easycrawl.core.agent.utils.WebPage;
 import org.jsoup.Connection;
+
+import java.io.File;
 import java.net.Proxy;
 import java.util.Map;
 
@@ -62,6 +64,12 @@ public final class HtmlEngine implements WebDataAgent<WebPage> {
     }
 
     @Override
+    public WebDataAgent<WebPage> body(String body) {
+        this.engine.setBody(body);
+        return this;
+    }
+
+    @Override
     public WebPage dataPull(Map<String, Object> data) throws Exception {
         String httpUrl = ScanVariable.parser(this.engine.url, data).trim();
         Connection.Method m;
@@ -79,7 +87,7 @@ public final class HtmlEngine implements WebDataAgent<WebPage> {
                 httpUrl, m,
                 this.engine.timeOut, this.engine.useAgent, this.engine.referer, this.engine.head,
                 this.engine.cookie, this.engine.proxy,
-                true, true);
+                true, true,this.engine.body);
     }
 
     @Override

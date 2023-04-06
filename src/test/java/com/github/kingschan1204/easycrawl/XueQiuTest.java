@@ -26,9 +26,9 @@ public class XueQiuTest {
     @Test
     public void getAllCode() throws Exception {
         String referer = "https://xueqiu.com/hq/screener";
-        String apiurl = "https://xueqiu.com/service/screener/screen?category=CN&exchange=sh_sz&areacode=&indcode=&order_by=symbol&order=desc&page=1&size=100&only_count=0&current=&pct=&mc=&volume=&_=${timestamp}";
+        String apiurl = "https://xueqiu.com/service/screener/screen?category=CN&exchange=sh_sz&areacode=&indcode=&order_by=symbol&order=desc&page=1&size=200&only_count=0&current=&pct=&mc=&volume=&_=${timestamp}";
         WebDataAgent<WebPage> engine = new HtmlEngine().url(apiurl).referer(referer);
-        List<JSONObject> list = new JsonApiPaginationTask<JSONObject, List<JSONObject>>(engine, "page", "data.count", 100)
+        List<JSONObject> list = new JsonApiPaginationTask<JSONObject, List<JSONObject>>(engine, "page", "data.count", 200)
                 .execute(r -> {
                     List<JSONObject> jsonObjects = new ArrayList<>();
                     JSONArray jsonArray = new JsonHelper(r).getObject("data.list", JSONArray.class);

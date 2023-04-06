@@ -27,6 +27,8 @@ public interface WebDataAgent<T> {
 
     WebDataAgent<T> proxy(Proxy proxy);
 
+    WebDataAgent<T> body(String body);
+
 
     /***
      * 每次运行时都指定数据

@@ -28,6 +28,7 @@ public class JsonHelper {
 
     /**
      * 统过一个字符串实例化对象
+     *
      * @param jsonStr
      */
     public JsonHelper(String jsonStr) {
@@ -53,6 +54,9 @@ public class JsonHelper {
      */
     public <T> T getObject(String expression, Class<T> clazz) {
         String depth[] = expression.split("\\.");
+        if (!this.json.containsKey(depth[0])) {
+            return null;
+        }
         Object object = this.json.get(depth[0]);
         for (int i = 1; i < depth.length; i++) {
             object = getValByExpression(object, depth[i]);

@@ -21,6 +21,42 @@ import java.util.Map;
 @Slf4j
 public class JsoupHelper {
 
+   public static Connection buildConnection(String pageUrl, Connection.Method method,
+                                      Integer timeOut, String useAgent, String referer,
+                                      Map<String, String> heads,
+                                      Map<String, String> cookie, Proxy proxy,
+                                      Boolean ignoreContentType, Boolean ignoreHttpErrors,String body) {
+        Connection connection = Jsoup.connect(pageUrl)
+                .timeout(null == timeOut ? 8000 : timeOut)
+                .method(null == method ? Connection.Method.GET : method)
+                .maxBodySize(0);//默认是1M，设置0 则为无限制
+        if (null != useAgent) {
+            connection.userAgent(useAgent);
+        }
+        if (null != ignoreContentType) {
+            connection.ignoreContentType(ignoreContentType);
+        }
+        if (null != ignoreHttpErrors) {
+            connection.ignoreHttpErrors(ignoreHttpErrors);
+        }
+        if (null != referer) {
+            connection.referrer(referer);
+        }
+        if (null != proxy) {
+            connection.proxy(proxy);
+        }
+        if (null != cookie) {
+            connection.cookies(cookie);
+        }
+        if (null != heads) {
+            connection.headers(heads);
+        }
+        if (null != body) {
+            connection.requestBody(body);
+        }
+        return connection;
+    }
+
     /**
      * jsoup 通用请求方法
      *
@@ -37,7 +73,7 @@ public class JsoupHelper {
                 pageUrl, method,
                 timeOut, useAgent, referer, null,
                 null, null,
-                true, true);
+                true, true,null);
     }
 
 
@@ -60,7 +96,7 @@ public class JsoupHelper {
                                   Integer timeOut, String useAgent, String referer,
                                   Map<String, String> heads,
                                   Map<String, String> cookie, Proxy proxy,
-                                  Boolean ignoreContentType, Boolean ignoreHttpErrors) {
+                                  Boolean ignoreContentType, Boolean ignoreHttpErrors,String body) {
         long start = System.currentTimeMillis();
         WebPage webPage = null;
         Connection.Response response = null;
@@ -70,36 +106,16 @@ public class JsoupHelper {
                 trustAllHttpsCertificates();
                 HttpsURLConnection.setDefaultHostnameVerifier(hv);
             }
-            Connection connection = Jsoup.connect(pageUrl)
-                    .timeout(null == timeOut ? 8000 : timeOut)
-                    .method(null == method ? Connection.Method.GET : method)
-                    .maxBodySize(0);//默认是1M，设置0 则为无限制
-            if (null != useAgent) {
-                connection.userAgent(useAgent);
-            }
-            if (null != ignoreContentType) {
-                connection.ignoreContentType(ignoreContentType);
-            }
-            if (null != ignoreHttpErrors) {
-                connection.ignoreHttpErrors(ignoreHttpErrors);
-            }
-            if (null != referer) {
-                connection.referrer(referer);
-            }
-            if (null != proxy) {
-                connection.proxy(proxy);
-            }
-            if (null != cookie) {
-                connection.cookies(cookie);
-            }
-            if (null != heads) {
-                connection.headers(heads);
-            }
+            Connection connection = buildConnection(pageUrl, method,
+                    timeOut, useAgent, referer,
+                    heads,
+                    cookie, proxy,
+                    ignoreContentType, ignoreHttpErrors,body);
             response = connection.execute();
             webPage = new WebPage(System.currentTimeMillis() - start, response.statusCode(), response.statusMessage(), response.charset(), response.contentType(), response.body(), response.cookies());
             return webPage;
         } catch (SocketTimeoutException ex) {
-            log.error("【网络超时】 {}\r\n超时时间：{}", pageUrl, System.currentTimeMillis() - start);
+            log.error("【网络超时】 {} 超时时间：{}", pageUrl, System.currentTimeMillis() - start);
             return new WebPage(System.currentTimeMillis() - start, 408, null, "", null, null, null);
         } catch (Exception e) {
             e.printStackTrace();

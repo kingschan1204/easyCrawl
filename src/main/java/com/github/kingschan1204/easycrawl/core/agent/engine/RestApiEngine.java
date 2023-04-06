@@ -69,6 +69,11 @@ public final class RestApiEngine implements WebDataAgent<String> {
     }
 
     @Override
+    public WebDataAgent<String> body(String body) {
+        return null;
+    }
+
+    @Override
     public String dataPull(Map<String, Object> data) throws Exception {
         FreemarkParser parser = new FreemarkParser();
         String httpUrl = parser.parse(this.engine.url, data).trim();
