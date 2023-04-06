@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class RegexHelper {
     //文件名
-    public static final String REGEX_FILE_NAME = "^[\\u4E00-\\u9FA5A-Za-z0-9_]+(\\.\\w+)?$";
+    public static final String REGEX_FILE_NAME = "^[\\u4E00-\\u9FA5A-Za-z0-9_]+\\.\\w+$";
     //表达式
     public static final String REGEX_EXPRESSION = "\\$\\{(\\w|\\s|\\=)+\\}";
 

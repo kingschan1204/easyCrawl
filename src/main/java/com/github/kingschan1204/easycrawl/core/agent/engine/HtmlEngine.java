@@ -1,79 +1,77 @@
 package com.github.kingschan1204.easycrawl.core.agent.engine;
 
-import com.github.kingschan1204.easycrawl.core.variable.ScanVariable;
 import com.github.kingschan1204.easycrawl.core.agent.HttpEngine;
 import com.github.kingschan1204.easycrawl.core.agent.WebDataAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.JsoupHelper;
 import com.github.kingschan1204.easycrawl.core.agent.utils.WebPage;
+import com.github.kingschan1204.easycrawl.core.variable.ScanVariable;
 import org.jsoup.Connection;
 
-import java.io.File;
 import java.net.Proxy;
 import java.util.Map;
 
-public final class HtmlEngine implements WebDataAgent<WebPage> {
+public final class HtmlEngine extends HttpEngine implements WebDataAgent<WebPage> {
 
-    HttpEngine engine = new HttpEngine();
 
     @Override
     public WebDataAgent<WebPage> url(String url) {
-        this.engine.setUrl(url);
+        this.setUrl(url);
         return this;
     }
 
     @Override
     public WebDataAgent<WebPage> referer(String referer) {
-        this.engine.setReferer(referer);
+        this.setReferer(referer);
         return this;
     }
 
     @Override
     public WebDataAgent<WebPage> method(HttpEngine.Method method) {
-        this.engine.setMethod(method);
+        this.setMethod(method);
         return this;
     }
 
     @Override
     public WebDataAgent<WebPage> head(Map<String, String> head) {
-        this.engine.setHead(head);
+        this.setHead(head);
         return this;
     }
 
     @Override
     public WebDataAgent<WebPage> useAgent(String useAgent) {
-        this.engine.setUseAgent(useAgent);
+        this.setUseAgent(useAgent);
         return this;
     }
 
     @Override
     public WebDataAgent<WebPage> cookie(Map<String, String> cookie) {
-        this.engine.setCookie(cookie);
+        this.setCookie(cookie);
         return this;
     }
 
     @Override
     public WebDataAgent<WebPage> timeOut(Integer timeOut) {
-        this.engine.setTimeOut(timeOut);
+        this.setTimeOut(timeOut);
         return this;
     }
 
     @Override
     public WebDataAgent<WebPage> proxy(Proxy proxy) {
-        this.engine.setProxy(proxy);
+        this.setProxy(proxy);
         return this;
     }
 
     @Override
     public WebDataAgent<WebPage> body(String body) {
-        this.engine.setBody(body);
+        this.setBody(body);
         return this;
     }
 
     @Override
     public WebPage dataPull(Map<String, Object> data) throws Exception {
-        String httpUrl = ScanVariable.parser(this.engine.url, data).trim();
+        String httpUrl = ScanVariable.parser(this.url, data).trim();
         Connection.Method m;
-        switch (this.engine.method) {
+        switch (this.method) {
             case GET:
                 m = Connection.Method.GET;
                 break;
@@ -85,13 +83,13 @@ public final class HtmlEngine implements WebDataAgent<WebPage> {
         }
         return JsoupHelper.request(
                 httpUrl, m,
-                this.engine.timeOut, this.engine.useAgent, this.engine.referer, this.engine.head,
-                this.engine.cookie, this.engine.proxy,
-                true, true,this.engine.body);
+                this.timeOut, this.useAgent, this.referer, this.head,
+                this.cookie, this.proxy,
+                true, true,this.body);
     }
 
     @Override
     public HttpEngine get() {
-        return this.engine;
+        return this;
     }
 }
