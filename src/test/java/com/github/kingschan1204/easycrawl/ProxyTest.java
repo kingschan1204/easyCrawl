@@ -2,8 +2,7 @@ package com.github.kingschan1204.easycrawl;
 
 import com.github.kingschan1204.easycrawl.core.agent.HttpEngine;
 import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlEngine;
-import com.github.kingschan1204.easycrawl.core.agent.engine.RestApiEngine;
-import com.github.kingschan1204.easycrawl.core.agent.utils.WebPage;
+import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,13 +24,13 @@ public class ProxyTest {
     public void restTest() throws Exception {
 
         Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(ip, port));
-        WebPage data = new HtmlEngine().referer(apiUrl)
+        AgentResult data = new HtmlEngine().referer(apiUrl)
                 .timeOut(9000)
                 .useAgent(useAgent)
                 .url(apiUrl)
                 .proxy(proxy)
                 .method(HttpEngine.Method.GET)
-                .dataPull(null);
+                .execute(null);
         System.out.println(data.getBody());
     }
 }

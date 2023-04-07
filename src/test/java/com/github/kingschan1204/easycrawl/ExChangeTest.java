@@ -17,7 +17,7 @@ public class ExChangeTest {
         String data = new HtmlEngine()
                 .url(apiUrl)
                 .referer(referer)
-                .dataPull(null)
+                .execute(null)
                 .getBody();
         System.out.println(data);
     }

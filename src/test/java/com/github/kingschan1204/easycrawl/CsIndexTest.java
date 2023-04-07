@@ -21,7 +21,7 @@ public class CsIndexTest {
         String cookieUrl = "https://www.csindex.com.cn/en/indices/index-detail/000300#/dataService/industryClassification";
         String reqUrl = "https://www.csindex.com.cn/csindex-home/exportExcel/security-industry-search-excel/CH";
         String referer = "https://www.csindex.com.cn/en/indices/index-detail/000300";
-        Map<String, String> cookies = new HtmlEngine().referer("https://www.csindex.com.cn").url(cookieUrl).dataPull(null).getCookies();
+        Map<String, String> cookies = new HtmlEngine().referer("https://www.csindex.com.cn").url(cookieUrl).execute(null).getCookies();
 
         File file = new FileEngine()
                 .folder("C:\\temp\\")
@@ -31,7 +31,7 @@ public class CsIndexTest {
                 .cookie(cookies)
                 .method(HttpEngine.Method.POST)
                 .body("{\"searchInput\":\"\",\"pageNum\":1,\"pageSize\":10,\"sortField\":null,\"sortOrder\":null}")
-                .dataPull(null);
+                .execute(null);
         System.out.println(file.getName());
     }
 }

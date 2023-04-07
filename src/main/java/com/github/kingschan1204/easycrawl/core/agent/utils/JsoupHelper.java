@@ -67,8 +67,8 @@ public class JsoupHelper {
      * @param referer  来源url
      * @return
      */
-    public static WebPage request(String pageUrl, Connection.Method method,
-                                  Integer timeOut, String useAgent, String referer) {
+    public static AgentResult request(String pageUrl, Connection.Method method,
+                                      Integer timeOut, String useAgent, String referer) {
         return request(
                 pageUrl, method,
                 timeOut, useAgent, referer, null,
@@ -92,13 +92,13 @@ public class JsoupHelper {
      * @param ignoreHttpErrors  是否忽略http错误
      * @return
      */
-    public static WebPage request(String pageUrl, Connection.Method method,
-                                  Integer timeOut, String useAgent, String referer,
-                                  Map<String, String> heads,
-                                  Map<String, String> cookie, Proxy proxy,
-                                  Boolean ignoreContentType, Boolean ignoreHttpErrors,String body) {
+    public static AgentResult request(String pageUrl, Connection.Method method,
+                                      Integer timeOut, String useAgent, String referer,
+                                      Map<String, String> heads,
+                                      Map<String, String> cookie, Proxy proxy,
+                                      Boolean ignoreContentType, Boolean ignoreHttpErrors, String body) {
         long start = System.currentTimeMillis();
-        WebPage webPage = null;
+        AgentResult agentResult = null;
         Connection.Response response = null;
         try {
             log.debug(pageUrl);
@@ -112,15 +112,15 @@ public class JsoupHelper {
                     cookie, proxy,
                     ignoreContentType, ignoreHttpErrors,body);
             response = connection.execute();
-            webPage = new WebPage(System.currentTimeMillis() - start, response.statusCode(), response.statusMessage(), response.charset(), response.contentType(), response.body(), response.cookies());
-            return webPage;
+            agentResult = new AgentResult(start, response);
+            return agentResult;
         } catch (SocketTimeoutException ex) {
             log.error("【网络超时】 {} 超时时间：{}", pageUrl, System.currentTimeMillis() - start);
-            return new WebPage(System.currentTimeMillis() - start, 408, null, "", null, null, null);
+            return new AgentResult(start, null);
         } catch (Exception e) {
             e.printStackTrace();
             log.error("crawlPage {} {}", pageUrl, e);
-            return new WebPage(System.currentTimeMillis() - start, null, null, null, null, null, null);
+            return new AgentResult( start, null);
         }
     }
 

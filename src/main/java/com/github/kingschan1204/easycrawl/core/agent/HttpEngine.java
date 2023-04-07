@@ -2,6 +2,7 @@ package com.github.kingschan1204.easycrawl.core.agent;
 
 
 import lombok.Data;
+import org.jsoup.Connection;
 
 import java.net.Proxy;
 import java.util.Map;
@@ -45,4 +46,19 @@ public class HttpEngine {
         ;
 
     }
+    public Connection.Method method(){
+        Connection.Method m;
+        switch (this.method) {
+            case GET:
+                m = Connection.Method.GET;
+                break;
+            case POST:
+                m = Connection.Method.POST;
+                break;
+            default:
+                throw new RuntimeException("目前只支持：get , post 方法！");
+        }
+        return m;
+    }
+
 }

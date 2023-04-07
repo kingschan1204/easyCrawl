@@ -1,7 +1,7 @@
 package com.github.kingschan1204.easycrawl.task;
 
-import com.github.kingschan1204.easycrawl.core.agent.WebDataAgent;
-import com.github.kingschan1204.easycrawl.core.agent.utils.WebPage;
+import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
+import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
 import com.github.kingschan1204.easycrawl.helper.url.UrlHelper;
 import lombok.AllArgsConstructor;
@@ -19,14 +19,14 @@ import java.util.function.Function;
 @AllArgsConstructor
 public class JsonApiPaginationTask<T, R> {
 
-    WebDataAgent<WebPage> agent;
+    WebAgent<AgentResult> agent;
     String pageIndexKey;
     String totalKey;
     Integer pageSize;
 
     public List<T> execute(Function<String, R> parserFunction) throws Exception {
         List<T> list = Collections.synchronizedList(new ArrayList<>());
-        String data = agent.dataPull(null).getBody();
+        String data = agent.execute(null).getBody();
         JsonHelper json = new JsonHelper(data);
         int totalRows = json.getObject(totalKey, Integer.class);
         int totalPage = (totalRows + pageSize - 1) / pageSize;
@@ -47,7 +47,7 @@ public class JsonApiPaginationTask<T, R> {
             String url = new UrlHelper(agent.get().getUrl()).set(pageIndexKey, String.valueOf(i)).getUrl();
             CompletableFuture<R> cf = CompletableFuture.supplyAsync(() -> {
                 try {
-                    return agent.url(url).dataPull(null).getBody();
+                    return agent.url(url).execute(null).getBody();
                 } catch (Exception e) {
                     e.printStackTrace();
                     return "";

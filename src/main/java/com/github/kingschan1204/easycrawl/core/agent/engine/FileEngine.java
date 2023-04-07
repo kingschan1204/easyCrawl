@@ -1,7 +1,8 @@
 package com.github.kingschan1204.easycrawl.core.agent.engine;
 
 import com.github.kingschan1204.easycrawl.core.agent.HttpEngine;
-import com.github.kingschan1204.easycrawl.core.agent.WebDataAgent;
+import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
+import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.core.agent.utils.JsoupHelper;
 import com.github.kingschan1204.easycrawl.helper.regex.RegexHelper;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
@@ -20,123 +21,103 @@ import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
-public final class FileEngine extends HttpEngine implements WebDataAgent<File> {
+public final class FileEngine extends HttpEngine implements WebAgent<File> {
 
     //下载文件上的时候才有作用
     private String folder;
     private String fileName;
+    private final String CONTENT_DISPOSITION ="Content-disposition";
 
-    public WebDataAgent<File> folder(String folder) {
+    public WebAgent<File> folder(String folder) {
         this.folder = folder;
         return this;
     }
 
-    public WebDataAgent<File> fileName(String fileName) {
+    public WebAgent<File> fileName(String fileName) {
         this.fileName = fileName;
         return this;
     }
 
     @Override
-    public WebDataAgent<File> url(String url) {
+    public WebAgent<File> url(String url) {
         this.setUrl(url);
         return this;
     }
 
     @Override
-    public WebDataAgent<File> referer(String referer) {
+    public WebAgent<File> referer(String referer) {
         this.setReferer(referer);
         return this;
     }
 
     @Override
-    public WebDataAgent<File> method(HttpEngine.Method method) {
+    public WebAgent<File> method(HttpEngine.Method method) {
         this.setMethod(method);
         return this;
     }
 
     @Override
-    public WebDataAgent<File> head(Map<String, String> head) {
+    public WebAgent<File> head(Map<String, String> head) {
         this.setHead(head);
         return this;
     }
 
     @Override
-    public WebDataAgent<File> useAgent(String useAgent) {
+    public WebAgent<File> useAgent(String useAgent) {
         this.setUseAgent(useAgent);
         return this;
     }
 
     @Override
-    public WebDataAgent<File> cookie(Map<String, String> cookie) {
+    public WebAgent<File> cookie(Map<String, String> cookie) {
         this.setCookie(cookie);
         return this;
     }
 
     @Override
-    public WebDataAgent<File> timeOut(Integer timeOut) {
+    public WebAgent<File> timeOut(Integer timeOut) {
         this.setTimeOut(timeOut);
         return this;
     }
 
     @Override
-    public WebDataAgent<File> proxy(Proxy proxy) {
+    public WebAgent<File> proxy(Proxy proxy) {
         this.setProxy(proxy);
         return this;
     }
 
     @Override
-    public WebDataAgent<File> body(String body) {
+    public WebAgent<File> body(String body) {
         this.setBody(body);
         return this;
     }
 
     @Override
-    public File dataPull(Map<String, Object> data) throws Exception {
+    public File execute(Map<String, Object> data) throws Exception {
         FreemarkParser parser = new FreemarkParser();
         String httpUrl = parser.parse(this.url, data).trim();
         String tempReferrer = parser.parse(this.referer, data).trim();
         String tempFileName = parser.parse(fileName, data).trim();
 
-
-        Connection.Method m;
-        switch (this.method) {
-            case GET:
-                m = Connection.Method.GET;
-                break;
-            case POST:
-                m = Connection.Method.POST;
-                break;
-            default:
-                throw new RuntimeException("目前只支持：get , post 方法！");
-        }
-//        String localPath = String.format("%s%s", folder, tempFileName);
-       /* if (String.valueOf(fileName).matches(RegexHelper.REGEX_FILE_NAME) && new File(localPath).exists()) {
-            log.info("{}文件存在直接读取：", localPath);
-            return new File(localPath);
-        }*/
-
         log.info("start download file :{}", this.url);
         if (!new File(this.folder).exists()) {
             FileUtils.forceMkdir(new File(this.folder));
         }
-        //Open a URL Stream
-        Connection.Response resultResponse = JsoupHelper.buildConnection(httpUrl, m,
-                this.timeOut, this.useAgent, this.referer, this.head,
-                this.cookie, this.proxy,
-                true, true, this.body).execute();
+
+        AgentResult result = JsoupHelper.request(httpUrl, this.method(), this.timeOut, this.useAgent, this.referer, this.head, this.cookie, this.proxy, true, true, this.body);
         String defaultFileName = null;
-        if (resultResponse.statusCode() != 200) {
+        if (result.getStatusCode() != 200) {
             log.error("文件下载失败：{}", this.url);
-            throw new Exception(String.format("文件下载失败：%s 返回码:%s", this.url, resultResponse.statusCode()));
+            throw new Exception(String.format("文件下载失败：%s 返回码:%s", this.url, result.getStatusCode()));
         }
-        if (resultResponse.contentType().contains("name")) {
-            String[] list = resultResponse.contentType().split(";");
+        if (result.getContentType().contains("name")) {
+            String[] list = result.getContentType().split(";");
             defaultFileName = Arrays.stream(list)
                     .filter(s -> s.startsWith("name")).findFirst().get().replaceAll("name=|\"", "");
         }
-        if (resultResponse.hasHeader("Content-disposition")) {
+        if (result.getHeaders().containsKey(CONTENT_DISPOSITION)) {
             //attachment;filename=%E8%A1%8C%E4%B8%9A%E5%88%86%E7%B1%BB.xlsx
-            String s = resultResponse.header("Content-disposition");
+            String s = result.getHeaders().get(CONTENT_DISPOSITION);
             String decode = URLDecoder.decode(s, "UTF-8");
             defaultFileName = decode.replaceAll(".*=", "");
         }
@@ -150,10 +131,9 @@ public final class FileEngine extends HttpEngine implements WebDataAgent<File> {
         File file = new File(path);
         try {
             out = (new FileOutputStream(file));
-            out.write(resultResponse.bodyAsBytes());
+            out.write(result.getBodyAsByes());
         } catch (Exception ex) {
-            log.error("{}", ex);
-            log.error("文件下载失败：{}", this.url);
+            log.error("文件下载失败：{} {}", this.url,ex);
             ex.printStackTrace();
         } finally {
             assert out != null;

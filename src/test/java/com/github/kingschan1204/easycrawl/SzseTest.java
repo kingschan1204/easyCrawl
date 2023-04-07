@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlEngine;
-import com.github.kingschan1204.easycrawl.core.agent.utils.WebPage;
+import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.helper.url.UrlHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +27,7 @@ public class SzseTest {
     TreeMap<String, Boolean> getDay(String month) {
         try {
             String url = new UrlHelper(apiurl).set("month", month).getUrl();
-            WebPage webPage = new HtmlEngine().url(url).useAgent(useAgent).referer(referer).timeOut(6000).dataPull(null);
+            AgentResult webPage = new HtmlEngine().url(url).useAgent(useAgent).referer(referer).timeOut(6000).execute(null);
             System.out.println(webPage.getBody());
             JSONObject json = new JSONObject(true);
             json = JSON.parseObject(webPage.getBody());

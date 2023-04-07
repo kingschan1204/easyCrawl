@@ -1,7 +1,7 @@
 package com.github.kingschan1204.easycrawl.core.agent.engine;
 
 import com.github.kingschan1204.easycrawl.core.agent.HttpEngine;
-import com.github.kingschan1204.easycrawl.core.agent.WebDataAgent;
+import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.plugs.freemarker.FreemarkParser;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -16,65 +16,65 @@ import java.time.Duration;
 import java.util.*;
 
 @Slf4j
-public final class RestApiEngine implements WebDataAgent<String> {
+public final class RestApiEngine implements WebAgent<String> {
     OkHttpClient httpClient;
     HttpEngine engine = new HttpEngine();
 
     @Override
-    public WebDataAgent<String> url(String url) {
+    public WebAgent<String> url(String url) {
         this.engine.setUrl(url);
         return this;
     }
 
     @Override
-    public WebDataAgent<String> referer(String referer) {
+    public WebAgent<String> referer(String referer) {
         this.engine.setReferer(referer);
         return this;
     }
 
     @Override
-    public WebDataAgent<String> method(HttpEngine.Method method) {
+    public WebAgent<String> method(HttpEngine.Method method) {
         this.engine.setMethod(method);
         return this;
     }
 
     @Override
-    public WebDataAgent<String> head(Map<String, String> head) {
+    public WebAgent<String> head(Map<String, String> head) {
         this.engine.setHead(head);
         return this;
     }
 
     @Override
-    public WebDataAgent<String> useAgent(String useAgent) {
+    public WebAgent<String> useAgent(String useAgent) {
         this.engine.setUseAgent(useAgent);
         return this;
     }
 
     @Override
-    public WebDataAgent<String> cookie(Map<String, String> cookie) {
+    public WebAgent<String> cookie(Map<String, String> cookie) {
         this.engine.setCookie(cookie);
         return this;
     }
 
     @Override
-    public WebDataAgent<String> timeOut(Integer timeOut) {
+    public WebAgent<String> timeOut(Integer timeOut) {
         this.engine.setTimeOut(timeOut);
         return this;
     }
 
     @Override
-    public WebDataAgent<String> proxy(Proxy proxy) {
+    public WebAgent<String> proxy(Proxy proxy) {
         this.engine.setProxy(proxy);
         return this;
     }
 
     @Override
-    public WebDataAgent<String> body(String body) {
+    public WebAgent<String> body(String body) {
         return null;
     }
 
     @Override
-    public String dataPull(Map<String, Object> data) throws Exception {
+    public String execute(Map<String, Object> data) throws Exception {
         FreemarkParser parser = new FreemarkParser();
         String httpUrl = parser.parse(this.engine.url, data).trim();
         log.info("{}", httpUrl);

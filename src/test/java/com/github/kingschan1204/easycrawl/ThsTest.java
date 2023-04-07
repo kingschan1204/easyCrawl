@@ -21,7 +21,7 @@ public class ThsTest {
                 .folder("C:\\temp\\")
                 .referer(referer)
                 .url(url)
-                .dataPull(null);
+                .execute(null);
         System.out.println(file.getName());
 
     }
