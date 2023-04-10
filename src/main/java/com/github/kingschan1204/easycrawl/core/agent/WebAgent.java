@@ -38,7 +38,7 @@ public interface WebAgent<T> {
      */
     T execute(Map<String, Object> data) throws Exception;
 
-    HttpEngine get();
+//    HttpEngine get();
 
 
 }

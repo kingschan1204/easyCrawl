@@ -1,5 +1,6 @@
 package com.github.kingschan1204.easycrawl.task;
 
+import com.github.kingschan1204.easycrawl.core.agent.HttpEngine;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
@@ -44,7 +45,7 @@ public class JsonApiPaginationTask<T, R> {
         cfList.get(0).thenAccept(consumer);
 
         for (int i = 2; i <= totalPage; i++) {
-            String url = new UrlHelper(agent.get().getUrl()).set(pageIndexKey, String.valueOf(i)).getUrl();
+            String url = new UrlHelper(((HttpEngine) agent).getUrl()).set(pageIndexKey, String.valueOf(i)).getUrl();
             CompletableFuture<R> cf = CompletableFuture.supplyAsync(() -> {
                 try {
                     return agent.url(url).execute(null).getBody();

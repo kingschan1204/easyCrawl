@@ -1,6 +1,6 @@
 package com.github.kingschan1204.easycrawl;
 
-import com.github.kingschan1204.easycrawl.core.agent.engine.FileEngine;
+import com.github.kingschan1204.easycrawl.core.agent.engine.FileAgent;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ public class ThsTest {
     @DisplayName("年报下载")
     @Test
     public void getYearReport() throws Exception {
-        File file = new FileEngine()
+        File file = new FileAgent()
                 .folder("C:\\temp\\")
                 .referer(referer)
                 .url(url)

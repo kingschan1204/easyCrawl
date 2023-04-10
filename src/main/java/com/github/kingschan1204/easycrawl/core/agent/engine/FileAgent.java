@@ -1,5 +1,6 @@
 package com.github.kingschan1204.easycrawl.core.agent.engine;
 
+import com.github.kingschan1204.easycrawl.core.agent.FileEngine;
 import com.github.kingschan1204.easycrawl.core.agent.HttpEngine;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
@@ -10,7 +11,6 @@ import com.github.kingschan1204.easycrawl.plugs.freemarker.FreemarkParser;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.jsoup.Connection;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,20 +21,17 @@ import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
-public final class FileEngine extends HttpEngine implements WebAgent<File> {
+public class FileAgent extends FileEngine implements WebAgent<File> {
 
-    //下载文件上的时候才有作用
-    private String folder;
-    private String fileName;
-    private final String CONTENT_DISPOSITION ="Content-disposition";
+
 
     public WebAgent<File> folder(String folder) {
-        this.folder = folder;
+        this.setFolder(folder);
         return this;
     }
 
     public WebAgent<File> fileName(String fileName) {
-        this.fileName = fileName;
+        this.setFileName(fileName);
         return this;
     }
 
@@ -97,11 +94,11 @@ public final class FileEngine extends HttpEngine implements WebAgent<File> {
         FreemarkParser parser = new FreemarkParser();
         String httpUrl = parser.parse(this.url, data).trim();
         String tempReferrer = parser.parse(this.referer, data).trim();
-        String tempFileName = parser.parse(fileName, data).trim();
+        String tempFileName = parser.parse(getFileName(), data).trim();
 
         log.info("start download file :{}", this.url);
-        if (!new File(this.folder).exists()) {
-            FileUtils.forceMkdir(new File(this.folder));
+        if (!new File(getFolder()).exists()) {
+            FileUtils.forceMkdir(new File(getFolder()));
         }
 
         AgentResult result = JsoupHelper.request(httpUrl, this.method(), this.timeOut, this.useAgent, this.referer, this.head, this.cookie, this.proxy, true, true, this.body);
@@ -122,9 +119,9 @@ public final class FileEngine extends HttpEngine implements WebAgent<File> {
             defaultFileName = decode.replaceAll(".*=", "");
         }
         //文件名优先使用指定的文件名，如果没有指定 则获取自动识别的文件名
-        fileName = String.valueOf(fileName).matches(RegexHelper.REGEX_FILE_NAME) ? fileName : defaultFileName;
-        Assert.notNull(fileName, "文件名不能为空！");
-        String path = String.format("%s%s", folder, fileName);
+        this.setFileName(String.valueOf(getFileName()).matches(RegexHelper.REGEX_FILE_NAME) ? getFileName() : defaultFileName);
+        Assert.notNull(getFileName(), "文件名不能为空！");
+        String path = String.format("%s%s", getFolder(), getFileName());
         // output here
         log.info("输出文件：{}", path);
         FileOutputStream out = null;
@@ -142,10 +139,7 @@ public final class FileEngine extends HttpEngine implements WebAgent<File> {
         return file;
     }
 
-    @Override
-    public HttpEngine get() {
-        return this;
-    }
+    
 
 
 }

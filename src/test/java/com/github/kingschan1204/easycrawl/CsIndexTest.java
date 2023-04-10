@@ -1,8 +1,8 @@
 package com.github.kingschan1204.easycrawl;
 
 import com.github.kingschan1204.easycrawl.core.agent.HttpEngine;
-import com.github.kingschan1204.easycrawl.core.agent.engine.FileEngine;
-import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlEngine;
+import com.github.kingschan1204.easycrawl.core.agent.engine.FileAgent;
+import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
 import com.github.kingschan1204.easycrawl.helper.map.MapUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -21,9 +21,9 @@ public class CsIndexTest {
         String cookieUrl = "https://www.csindex.com.cn/en/indices/index-detail/000300#/dataService/industryClassification";
         String reqUrl = "https://www.csindex.com.cn/csindex-home/exportExcel/security-industry-search-excel/CH";
         String referer = "https://www.csindex.com.cn/en/indices/index-detail/000300";
-        Map<String, String> cookies = new HtmlEngine().referer("https://www.csindex.com.cn").url(cookieUrl).execute(null).getCookies();
+        Map<String, String> cookies = new HtmlAgent().referer("https://www.csindex.com.cn").url(cookieUrl).execute(null).getCookies();
 
-        File file = new FileEngine()
+        File file = new FileAgent()
                 .folder("C:\\temp\\")
                 .url(reqUrl)
                 .head(new MapUtil<String, String>().put("Content-Type", "application/json; charset=utf-8").getMap())

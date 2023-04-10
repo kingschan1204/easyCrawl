@@ -9,7 +9,7 @@ import com.github.kingschan1204.easycrawl.core.variable.ScanVariable;
 import java.net.Proxy;
 import java.util.Map;
 
-public final class HtmlEngine extends HttpEngine implements WebAgent<AgentResult> {
+public final class HtmlAgent extends HttpEngine implements WebAgent<AgentResult> {
 
 
     @Override
@@ -76,8 +76,5 @@ public final class HtmlEngine extends HttpEngine implements WebAgent<AgentResult
                 true, true,this.body);
     }
 
-    @Override
-    public HttpEngine get() {
-        return this;
-    }
+
 }

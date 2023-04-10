@@ -1,7 +1,7 @@
 package com.github.kingschan1204.easycrawl;
 
 import com.github.kingschan1204.easycrawl.core.agent.HttpEngine;
-import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlEngine;
+import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +24,7 @@ public class ProxyTest {
     public void restTest() throws Exception {
 
         Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(ip, port));
-        AgentResult data = new HtmlEngine().referer(apiUrl)
+        AgentResult data = new HtmlAgent().referer(apiUrl)
                 .timeOut(9000)
                 .useAgent(useAgent)
                 .url(apiUrl)

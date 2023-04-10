@@ -1,11 +1,6 @@
 package com.github.kingschan1204.easycrawl.core.agent.utils;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.jsoup.Connection;
-
 import java.io.Serializable;
 import java.util.Map;
 
@@ -22,17 +17,17 @@ public class AgentResult implements Serializable {
     }
 
     //请求耗时  毫秒
-    private Long timeMillis;
-    private Connection.Response response;
+    private final Long timeMillis;
+    private final Connection.Response response;
     // 对外
-    private Integer statusCode;
-    private String statusMessage;
-    private String charset;
-    private String contentType;
-    private String body;
-    private byte[] bodyAsByes;
-    private Map<String, String> cookies;
-    private Map<String, String> headers;
+//    private Integer statusCode;
+//    private String statusMessage;
+//    private String charset;
+//    private String contentType;
+//    private String body;
+//    private byte[] bodyAsByes;
+//    private Map<String, String> cookies;
+//    private Map<String, String> headers;
 
     public Long getTimeMillis() {
         return timeMillis;

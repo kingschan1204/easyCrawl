@@ -16,7 +16,7 @@ import java.time.Duration;
 import java.util.*;
 
 @Slf4j
-public final class RestApiEngine implements WebAgent<String> {
+public final class RestApiAgent implements WebAgent<String> {
     OkHttpClient httpClient;
     HttpEngine engine = new HttpEngine();
 
@@ -110,10 +110,7 @@ public final class RestApiEngine implements WebAgent<String> {
         return Objects.requireNonNull(response.body()).string();
     }
 
-    @Override
-    public HttpEngine get() {
-        return null;
-    }
+
 
     OkHttpClient getHttpClient() throws KeyStoreException, NoSuchAlgorithmException {
         if (null == httpClient) {
