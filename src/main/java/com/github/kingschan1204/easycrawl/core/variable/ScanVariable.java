@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class ScanVariable {
 
-    private static Map<String, Expression> elMap;
+    private static final Map<String, Expression> elMap;
 
     static {
         elMap = new HashMap<>();
@@ -25,22 +25,24 @@ public class ScanVariable {
      */
     public static String parser(String text, Map<String, Object> map) {
         List<String> exps = RegexHelper.find(text, "\\$\\{(\\w|\\s|\\=)+\\}");
-        for (String el : exps) {
-            String[] els = el.replaceAll("[${}]", "").split("\\s+");
-            String tag = els[0];
-            Map<String, String> argsMap = new HashMap<>();
-            if (els.length > 1) {
-                for (int i = 1; i < els.length; i++) {
-                    String[] token = els[i].split("=");
-                    argsMap.put(token[0], token[1]);
+        if(null!= exps&& exps.size()>0){
+            for (String el : exps) {
+                String[] els = el.replaceAll("[${}]", "").split("\\s+");
+                String tag = els[0];
+                Map<String, String> argsMap = new HashMap<>();
+                if (els.length > 1) {
+                    for (int i = 1; i < els.length; i++) {
+                        String[] token = els[i].split("=");
+                        argsMap.put(token[0], token[1]);
+                    }
                 }
-            }
 //            System.out.println(String.format("tag:%s 参数:%s", tag, argsMap));
-            if (elMap.containsKey(tag)) {
-                text = text.replace(el, elMap.get(tag).execute(argsMap));
-            }
-            if (null!= map && map.containsKey(tag)) {
-                text = text.replace(el, String.valueOf(map.get(tag)));
+                if (elMap.containsKey(tag)) {
+                    text = text.replace(el, elMap.get(tag).execute(argsMap));
+                }
+                if (null!= map && map.containsKey(tag)) {
+                    text = text.replace(el, String.valueOf(map.get(tag)));
+                }
             }
         }
         return text;
