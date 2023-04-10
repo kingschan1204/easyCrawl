@@ -32,6 +32,6 @@ public class CsIndexTest {
                 .method(HttpEngine.Method.POST)
                 .body("{\"searchInput\":\"\",\"pageNum\":1,\"pageSize\":10,\"sortField\":null,\"sortOrder\":null}")
                 .execute(null);
-        System.out.println(file.getName());
+        System.out.println(String.format("文件上名：%s 文件大小：%s kb",file.getName(),file.length()/1024));
     }
 }
