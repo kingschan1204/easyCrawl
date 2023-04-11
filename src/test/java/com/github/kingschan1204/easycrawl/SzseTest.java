@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.helper.url.UrlHelper;
+import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,29 +22,32 @@ public class SzseTest {
 
     String referer = "http://www.szse.cn/disclosure/index.html";
     String useAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36";
-    String apiurl = "http://www.szse.cn/api/report/exchange/onepersistenthour/monthList?month=2023-03";
+    String apiUrl = "http://www.szse.cn/api/report/exchange/onepersistenthour/monthList?month=2023-03";
 
 
     TreeMap<String, Boolean> getDay(String month) {
         try {
-            String url = new UrlHelper(apiurl).set("month", month).getUrl();
+            String url = new UrlHelper(apiUrl).set("month", month).getUrl();
             AgentResult webPage = new HtmlAgent().url(url).useAgent(useAgent).referer(referer).timeOut(6000).execute(null);
-            System.out.println(webPage.getBody());
-            JSONObject json = new JSONObject(true);
-            json = JSON.parseObject(webPage.getBody());
-            JSONArray jsonArray = json.getJSONArray("data");
-            TreeMap<String, Boolean> data = new TreeMap<>();
-            for (int i = 0; i < jsonArray.size(); i++) {
-                data.put(
-                        jsonArray.getJSONObject(i).getString("jyrq"),
-                        jsonArray.getJSONObject(i).getInteger("jybz") == 1
-                );
-            }
-            return data;
+            return parserData(webPage.getBody());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    TreeMap<String, Boolean> parserData(String text) {
+        JSONObject json = new JSONObject(true);
+        json = JSON.parseObject(text);
+        JSONArray jsonArray = json.getJSONArray("data");
+        TreeMap<String, Boolean> data = new TreeMap<>();
+        for (int i = 0; i < jsonArray.size(); i++) {
+            data.put(
+                    jsonArray.getJSONObject(i).getString("jyrq"),
+                    jsonArray.getJSONObject(i).getInteger("jybz") == 1
+            );
+        }
+        return data;
     }
 
     @DisplayName("交易日数据")
@@ -67,5 +71,16 @@ public class SzseTest {
         CompletableFuture.allOf(list.toArray(new CompletableFuture[]{})).join();
     }
 
+    @DisplayName("月份交易日数据")
+    @Test
+    public void proxyTest() throws Exception {
+        String month = "2023-03";
+        String url = new UrlHelper(apiUrl).set("month", month).getUrl();
+        TreeMap<String, Boolean> result = new EasyCrawl<AgentResult, TreeMap<String, Boolean>>()
+                .webAgent(new HtmlAgent().referer(url).useAgent(useAgent).url(apiUrl))
+                .analyze(r -> parserData(r.getBody()))
+                .run();
+        System.out.println(result);
+    }
 
 }

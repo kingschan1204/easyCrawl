@@ -3,6 +3,7 @@ package com.github.kingschan1204.easycrawl;
 import com.github.kingschan1204.easycrawl.core.agent.HttpEngine;
 import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
+import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,12 +19,12 @@ public class ProxyTest {
     String apiUrl = "https://myip.ipip.net/";
     String ip = "117.74.65.29";
     int port = 7890;
+    Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(ip, port));
 
     @DisplayName("代理ip测试")
     @Test
     public void restTest() throws Exception {
 
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(ip, port));
         AgentResult data = new HtmlAgent().referer(apiUrl)
                 .timeOut(9000)
                 .useAgent(useAgent)
@@ -32,5 +33,17 @@ public class ProxyTest {
                 .method(HttpEngine.Method.GET)
                 .execute(null);
         System.out.println(data.getBody());
+    }
+
+    @DisplayName("代理ip测试")
+    @Test
+    public void proxyTest() throws Exception {
+        String result = new EasyCrawl<AgentResult, String>().webAgent(
+                new HtmlAgent().referer(apiUrl)
+                        .useAgent(useAgent)
+                        .url(apiUrl)
+                        .proxy(proxy)
+        ).analyze(AgentResult::getBody).run();
+        System.out.println(result);
     }
 }

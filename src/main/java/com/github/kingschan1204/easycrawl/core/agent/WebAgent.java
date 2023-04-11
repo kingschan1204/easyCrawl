@@ -29,7 +29,6 @@ public interface WebAgent<T> {
 
     WebAgent<T> body(String body);
 
-
     /***
      * 每次运行时都指定数据
      * @param data
@@ -37,8 +36,5 @@ public interface WebAgent<T> {
      * @throws Exception
      */
     T execute(Map<String, Object> data) throws Exception;
-
-//    HttpEngine get();
-
 
 }

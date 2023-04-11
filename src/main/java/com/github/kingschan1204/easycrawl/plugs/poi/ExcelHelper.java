@@ -62,7 +62,7 @@ public class ExcelHelper {
         List<Object[]> list = ExcelHelper.read(file,0);
         list.stream().forEach(r -> {
             Object[] objects = r;
-            String s = Arrays.stream(objects).map(row -> String.valueOf(row)).collect(Collectors.joining(","));
+            String s = Arrays.stream(objects).map(String::valueOf).collect(Collectors.joining(","));
             System.out.println(s);
         });
     }
