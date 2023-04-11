@@ -2,11 +2,12 @@ package com.github.kingschan1204.easycrawl.task;
 
 import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
-
+@Slf4j
 public class EasyCrawl<T, R> implements CrawlTask<T, R> {
     private WebAgent<T> agent;
     private Function<T, R> parserFunction;

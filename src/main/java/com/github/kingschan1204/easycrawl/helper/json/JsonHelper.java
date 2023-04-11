@@ -53,7 +53,7 @@ public class JsonHelper {
      * @return
      */
     public <T> T getObject(String expression, Class<T> clazz) {
-        String depth[] = expression.split("\\.");
+        String[] depth = expression.split("\\.");
         if (!this.json.containsKey(depth[0])) {
             return null;
         }
