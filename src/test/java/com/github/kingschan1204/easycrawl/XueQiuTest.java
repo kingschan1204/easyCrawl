@@ -9,6 +9,7 @@ import com.github.kingschan1204.easycrawl.helper.datetime.DateHelper;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
 import com.github.kingschan1204.easycrawl.helper.map.MapUtil;
 import com.github.kingschan1204.easycrawl.helper.sql.SqlHelper;
+import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import com.github.kingschan1204.easycrawl.task.JsonApiPaginationTask;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -48,11 +49,29 @@ public class XueQiuTest {
     @Test
     public void getBonus() throws Exception {
         String page = "https://xueqiu.com";
-        String apiUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/bonus.json?symbol=SH600519&size=100&page=1&extend=true";
-        String referer = "https://xueqiu.com/snowman/S/${code}/detail";
-        Map<String, String> cookies = new HtmlAgent().url(page).execute(new MapUtil<String, Object>().put("code", "SH600519").getMap()).getCookies();
-        String data = new HtmlAgent().url(apiUrl).referer(referer).cookie(cookies).execute(null).getBody();
+        String apiUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/bonus.json?symbol=${code}&size=100&page=1&extend=true";
+        String referer = "https://xueqiu.com/snowman/S/SH600887/detail";
+        Map<String,Object> args = new MapUtil<String, Object>().put("code", "SH600887").getMap();
+        Map<String, String> cookies = new HtmlAgent().url(page).execute(args).getCookies();
+        String data = new HtmlAgent().url(apiUrl).referer(referer).cookie(cookies).execute(args).getBody();
         System.out.println(data);
+        JsonHelper jsonHelper = new JsonHelper(data);
+        JSONArray rows = jsonHelper.getObject("data.items", JSONArray.class);
+        StringBuffer sqls = new StringBuffer();
+        for (int i = 0; i < rows.size(); i++) {
+            JSONObject row = rows.getJSONObject(i);
+            //把时间戳转为可读日期
+            for(String key:row.keySet()){
+                if(row.get(key) instanceof Long){
+                    row.put(key, DateHelper.formatTimeStamp(row.getLong(key), "yyyy-MM-dd"));
+                }
+            }
+            String insert = SqlHelper.insert(row.keySet().toArray(new String[]{}), row.values().toArray(new Object[]{}), "dividend");
+            sqls.append(insert);
+
+        }
+        System.out.println(sqls);
+
     }
 
     @DisplayName("公司简介")
@@ -173,4 +192,18 @@ public class XueQiuTest {
 
     }
 
+    @DisplayName("个股详情")
+    @Test
+    public void proxyTest() throws Exception {
+        String cookieUrl = "https://xueqiu.com";
+        Map<String, String> cookies = new HtmlAgent().url(cookieUrl).execute(null).getCookies();
+        String apiUrl ="https://stock.xueqiu.com/v5/stock/quote.json?symbol=SH600887&extend=detail";
+        String referer ="https://xueqiu.com/S/SH600887";
+        String result = new EasyCrawl<AgentResult, String>().webAgent(
+                new HtmlAgent().referer(referer)
+                        .cookie(cookies)
+                        .url(apiUrl)
+        ).analyze(AgentResult::getBody).run();
+        System.out.println(result);
+    }
 }

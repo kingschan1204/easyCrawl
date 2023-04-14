@@ -1,18 +1,37 @@
 package com.github.kingschan1204.easycrawl.helper.sql;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.kingschan1204.easycrawl.helper.regex.RegexHelper;
+import com.github.kingschan1204.easycrawl.helper.validation.Assert;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.stream.Collector;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class SqlHelper {
+
+    private static final Map<String, String> fieldType;
+
+    static {
+        fieldType = new HashMap<>();
+        fieldType.put("String", "varchar(50)");
+        fieldType.put("Integer", "int");
+        fieldType.put("Long", "bigint");
+        fieldType.put("Boolean", "bit");
+        fieldType.put("BigDecimal", "decimal(22,4)");
+    }
+
+    public static String createTable(JSONObject json, String tableName) {
+        List<String> fields = new ArrayList<>();
+        for (String key : json.keySet()) {
+            String type = Optional.ofNullable(json.get(key)).map(r -> json.get(key).getClass().getSimpleName()).orElse("String");
+            fields.add(String.format(" `%s` %s", key, fieldType.get(type)));
+        }
+        return String.format("create table %s (%s)", tableName, String.join(",", fields));
+    }
 
     public static String createTable(String[] columns, String tableName) {
         String temp = "create table %s (%s)";
@@ -43,6 +62,7 @@ public class SqlHelper {
     }
 
     public static String insertBatch(String[] columns, JSONArray data, String tableName) {
+        Assert.isTrue(data.get(0) instanceof JSONArray, "数据格式不匹配！");
         String temp = "insert into %s (%s) values %s ;";
         StringBuffer values = new StringBuffer();
         for (int i = 0; i < data.size(); i++) {

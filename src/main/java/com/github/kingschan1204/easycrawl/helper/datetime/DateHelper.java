@@ -1,6 +1,7 @@
 package com.github.kingschan1204.easycrawl.helper.datetime;
 
 
+import com.github.kingschan1204.easycrawl.helper.validation.Assert;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
@@ -68,10 +69,7 @@ public class DateHelper {
      * @return
      */
     public static String formatTimeStamp(Long timestamp, String formatStr) {
-        /*if (!String.valueOf(timestamp).matches("\\d{10}|\\d{13}")) {
-            log.warn("时间戳格式不对：{}转换失败！", timestamp);
-            return String.valueOf(timestamp);
-        }*/
+        Assert.notNull(timestamp,"时间戳不能为空！");
         if (String.valueOf(timestamp).length() > 10) {
             timestamp = timestamp / 1000;
         }
