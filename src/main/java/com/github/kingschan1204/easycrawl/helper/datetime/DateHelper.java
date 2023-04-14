@@ -68,12 +68,12 @@ public class DateHelper {
      * @return
      */
     public static String formatTimeStamp(Long timestamp, String formatStr) {
-        if (!String.valueOf(timestamp).matches("\\d{10}|\\d{13}")) {
+        /*if (!String.valueOf(timestamp).matches("\\d{10}|\\d{13}")) {
             log.warn("时间戳格式不对：{}转换失败！", timestamp);
             return String.valueOf(timestamp);
-        }
-        if(String.valueOf(timestamp).length()==13){
-            timestamp = timestamp /1000;
+        }*/
+        if (String.valueOf(timestamp).length() > 10) {
+            timestamp = timestamp / 1000;
         }
         LocalDateTime time = LocalDateTime.ofEpochSecond(timestamp, 0, ZoneOffset.ofHours(8));
         String ft = Optional.ofNullable(formatStr).filter(v -> !v.isEmpty()).orElse("yyyy-MM-dd HH:mm:ss");
@@ -102,7 +102,7 @@ public class DateHelper {
     }
 
     public static void main(String[] args) {
-        System.out.println(DateHelper.formatTimeStamp(1666886400000L,"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(DateHelper.formatTimeStamp(968083200000L, "yyyy-MM-dd HH:mm:ss"));
     }
 
 }

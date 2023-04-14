@@ -10,6 +10,8 @@ public class RegexHelper {
     public static final String REGEX_FILE_NAME = "^[\\u4E00-\\u9FA5A-Za-z0-9_]+\\.\\w+$";
     //表达式
     public static final String REGEX_EXPRESSION = "\\$\\{(\\w|\\s|\\=)+\\}";
+    //科学计算
+    public static final String REGEX_SCIENTIFIC_NOTATION = "\\d+\\.\\d+E(\\+)?\\d+";
 
     /**
      * 提取文本中匹配正则的字符串
