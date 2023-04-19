@@ -3,7 +3,7 @@ package com.github.kingschan1204.easycrawl;
 import com.github.kingschan1204.easycrawl.core.agent.HttpEngine;
 import com.github.kingschan1204.easycrawl.core.agent.engine.FileAgent;
 import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
-import com.github.kingschan1204.easycrawl.helper.map.MapUtil;
+import com.github.kingschan1204.easycrawl.helper.collections.MapUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

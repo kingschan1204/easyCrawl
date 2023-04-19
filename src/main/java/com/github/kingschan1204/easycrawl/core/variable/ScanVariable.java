@@ -2,7 +2,7 @@ package com.github.kingschan1204.easycrawl.core.variable;
 
 import com.github.kingschan1204.easycrawl.core.variable.impl.TimeStampExpression;
 import com.github.kingschan1204.easycrawl.helper.regex.RegexHelper;
-import com.github.kingschan1204.easycrawl.helper.map.MapUtil;
+import com.github.kingschan1204.easycrawl.helper.collections.MapUtil;
 
 import java.util.HashMap;
 import java.util.List;

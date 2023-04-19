@@ -7,7 +7,7 @@ import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.helper.datetime.DateHelper;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
-import com.github.kingschan1204.easycrawl.helper.map.MapUtil;
+import com.github.kingschan1204.easycrawl.helper.collections.MapUtil;
 import com.github.kingschan1204.easycrawl.helper.sql.SqlHelper;
 import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import com.github.kingschan1204.easycrawl.task.JsonApiPaginationTask;

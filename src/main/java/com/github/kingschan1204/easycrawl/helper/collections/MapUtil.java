@@ -1,4 +1,4 @@
-package com.github.kingschan1204.easycrawl.helper.map;
+package com.github.kingschan1204.easycrawl.helper.collections;
 
 import java.util.HashMap;
 import java.util.Map;
