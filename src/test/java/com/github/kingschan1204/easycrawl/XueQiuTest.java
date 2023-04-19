@@ -63,7 +63,8 @@ public class XueQiuTest {
             //把时间戳转为可读日期
             for(String key:row.keySet()){
                 if(row.get(key) instanceof Long){
-                    row.put(key, DateHelper.formatTimeStamp(row.getLong(key), "yyyy-MM-dd"));
+                    row.put(key, DateHelper.of(row.getLong(key)).date());
+
                 }
             }
             String insert = SqlHelper.insert(row.keySet().toArray(new String[]{}), row.values().toArray(new Object[]{}), "dividend");
@@ -163,13 +164,13 @@ public class XueQiuTest {
             for (int i = 0; i < rows.size(); i++) {
                 JSONArray array = rows.getJSONArray(i);
                 //2000-01-01 00:00:00
-                if (DateHelper.formatTimeStamp(array.getLong(0), "yyyy").equals("2000")) {
-                    System.out.println(String.format("2000年以前的数据不要了！%s",DateHelper.formatTimeStamp(array.getLong(0), "yyyy-MM-dd")));
+                if (DateHelper.of(array.getLong(0)).year().equals("2000")) {
+                    System.out.println(String.format("2000年以前的数据不要了！%s", DateHelper.of(array.getLong(0)).date()));
                     hasNext = false;
                     break;
                 }
                 //把时间戳转为可读日期
-                array.set(0, DateHelper.formatTimeStamp(array.getLong(0), "yyyy-MM-dd"));
+                array.set(0, DateHelper.of(array.getLong(0)).date());
                 String insert = SqlHelper.insert(columns.toArray(new String[]{}), array.toArray(new Object[]{}), "kline_600887");
                 sqls.append(insert);
 
@@ -178,8 +179,8 @@ public class XueQiuTest {
             //设置下一次的参数
             System.out.println(
                     String.format("时间范围： %s ~ %s",
-                            DateHelper.formatTimeStamp(rows.getJSONArray(0).getLong(0), "yyyy-MM-dd"),
-                            DateHelper.formatTimeStamp(rows.getJSONArray(rows.size() - 1).getLong(0), "yyyy-MM-dd"))
+                            DateHelper.of(rows.getJSONArray(0).getLong(0)).date(),
+                            DateHelper.of(rows.getJSONArray(rows.size() - 1).getLong(0)).date())
             );
             map.put("begin", rows.getJSONArray(0).getLong(0));
             if (rows.size() < Math.abs(pageSize)) {

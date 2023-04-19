@@ -4,103 +4,164 @@ package com.github.kingschan1204.easycrawl.helper.datetime;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 /**
+ * java8日期工具类封装
  * @author kings.chan
  * @date 2021-9-10
  */
 @Slf4j
 public class DateHelper {
 
+    private LocalDateTime localDateTime;
+
+    public DateHelper(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
+    }
+
+    /**
+     * 初始对象
+     *
+     * @return DateHelperNew
+     */
+    public static DateHelper now() {
+        return new DateHelper(LocalDateTime.now());
+    }
+
+    /**
+     * 初始对象
+     *
+     * @param timeStamp 时间戳
+     * @return DateHelperNew
+     */
+    public static DateHelper of(Long timeStamp) {
+        Assert.notNull(timeStamp, "时间戳不能为空！");
+        if (String.valueOf(timeStamp).length() > 10) {
+            timeStamp = timeStamp / 1000;
+        }
+        LocalDateTime time = LocalDateTime.ofEpochSecond(timeStamp, 0, ZoneOffset.ofHours(8));
+        return new DateHelper(time);
+    }
+
+    /**
+     * 初始对象
+     *
+     * @param text 格式：2023-04-01,2023-4-1,2023-04-01 00:00:00,2022-2-1T12:55:00,20230401
+     * @return DateHelperNew
+     */
+    public static DateHelper of(String text) {
+        String date = text.contains(".") ? text.replaceAll("\\..*", "") : text;
+        if (date.contains("T")) {
+            date = date.replace("T", " ");
+        }
+        if (date.matches("\\d{4}-\\d{1,2}-\\d{1,2}")) {
+            String[] array = date.split("-");
+            date = String.format("%s-%02d-%02d 00:00:00", array[0], Integer.valueOf(array[1]), Integer.valueOf(array[2]));
+        } else if (date.matches("\\d{4}-\\d{1,2}-\\d{1,2} \\d{2}:\\d{2}:\\d{2}")) {
+            String[] array = date.replaceAll("\\s.*", "").split("-");
+            date = String.format("%s-%02d-%02d %s", array[0], Integer.valueOf(array[1]), Integer.valueOf(array[2]), date.split("\\s")[1]);
+        } else if (date.matches("\\d{8}")) {
+            date = String.format("%s-%s-%s 00:00:00", date.substring(0, 4), date.substring(4, 6), date.substring(6));
+        } else {
+            throw new RuntimeException("不支持的格式：" + text);
+        }
+        LocalDateTime localDate = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return new DateHelper(localDate);
+    }
+
+    /**
+     * 日期天数相加
+     * @param days 要加的天数
+     * @return DateHelperNew
+     */
+    public DateHelper plusDays(long days) {
+        this.localDateTime = localDateTime.plusDays(days);
+        return this;
+    }
+
+    /**
+     * 日期天数相减
+     * @param days 要减的天数
+     * @return DateHelperNew
+     */
+    public DateHelper minusDays(long days) {
+        this.localDateTime = localDateTime.minusDays(days);
+        return this;
+    }
 
     /**
      * 得到当前时间戳
      *
-     * @return
+     * @return 10位的时间戳
      */
-    public static Long getUnixTimeStamp() {
-        String time = String.valueOf(System.currentTimeMillis() / 1000);
-        return Long.valueOf(time);
+    public Long timeStamp() {
+        return localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() / 1000;
     }
 
     /**
-     * 当前时间加传入天数后的时间戳
+     * 返回日期的年
      *
-     * @return
+     * @return yyyy年
      */
-    public static Long getPlusDayUnixTimeStamp(int day) {
-        LocalDateTime newtime = LocalDateTime.now().plusDays(day);
-        long ts = newtime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() / 1000;
-        return Long.valueOf(String.valueOf(ts));
+    public String year() {
+        return DateTimeFormatter.ofPattern("yyyy").format(localDateTime);
     }
 
     /**
-     * 得到当前系统时间
+     * 返回日期的月
      *
-     * @return
+     * @return MM月
      */
-    public static String now() {
-        return now(null);
+    public String month() {
+        return DateTimeFormatter.ofPattern("MM").format(localDateTime);
     }
 
     /**
-     * 得到当前系统时间
+     * 返回日期的日
      *
-     * @param format 日期格式
-     * @return
+     * @return dd日
      */
-    public static String now(String format) {
-        LocalDateTime time = LocalDateTime.now();
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(null == format ? "yyyy-MM-dd HH:mm:ss" : format);
-        return dateFormat.format(time);
+    public String day() {
+        return DateTimeFormatter.ofPattern("dd").format(localDateTime);
     }
 
     /**
-     * 格式化时间戳
+     * 返回日期
      *
-     * @param timestamp
-     * @param formatStr
-     * @return
+     * @return yyyy-MM-dd
      */
-    public static String formatTimeStamp(Long timestamp, String formatStr) {
-        Assert.notNull(timestamp,"时间戳不能为空！");
-        if (String.valueOf(timestamp).length() > 10) {
-            timestamp = timestamp / 1000;
-        }
-        LocalDateTime time = LocalDateTime.ofEpochSecond(timestamp, 0, ZoneOffset.ofHours(8));
-        String ft = Optional.ofNullable(formatStr).filter(v -> !v.isEmpty()).orElse("yyyy-MM-dd HH:mm:ss");
-        DateTimeFormatter format = DateTimeFormatter.ofPattern(ft);
-        return format.format(time);
+    public String date() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd").format(localDateTime);
     }
 
     /**
-     * 字符串日期转时间戳
+     * 返回日期
      *
-     * @param dateStr
-     * @return
+     * @return yyyy-MM-dd HH:mm:ss
      */
-    public static Long toTimeStamp(String dateStr) {
-        String date = dateStr.contains(".") ? dateStr.replaceAll("\\..*", "") : dateStr;
-        if (date.matches("\\d{4}-\\d{2}-\\d{2}")) {
-            LocalDate localDate = LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            long timestamp = localDate.atStartOfDay(ZoneOffset.ofHours(8)).toInstant().toEpochMilli();
-            return Long.valueOf(String.valueOf(timestamp / 1000));
-        } else if (date.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}")) {
-            LocalDateTime localDate = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            long ts = localDate.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() / 1000;
-            return Long.valueOf(String.valueOf(ts));
-        }
-        throw new RuntimeException(String.format("不支持的日期格式:%s", dateStr));
+    public String dateTime() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(localDateTime);
     }
+
+    /**
+     * 返回时间
+     *
+     * @return HH:mm:ss
+     */
+    public String time() {
+        return DateTimeFormatter.ofPattern("HH:mm:ss").format(localDateTime);
+    }
+
 
     public static void main(String[] args) {
-        System.out.println(DateHelper.formatTimeStamp(968083200000L, "yyyy-MM-dd HH:mm:ss"));
+        String[] dates = {"2022-2-1", "2022-12-1", "2022-2-12", "2022-2-1 12:55:00", "2022-2-1T12:55:00", "2022-02-01 00:00:00", "20220201"};
+        for (String date : dates) {
+            System.out.println(DateHelper.of(date).date());
+        }
     }
 
 }
