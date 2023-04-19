@@ -207,4 +207,19 @@ public class XueQiuTest {
         ).analyze(AgentResult::getBody).run();
         System.out.println(result);
     }
+
+    @DisplayName("主要指标")
+    @Test
+    public void mainIndex() throws Exception {
+        String cookieUrl = "https://xueqiu.com";
+        Map<String, String> cookies = new HtmlAgent().url(cookieUrl).execute(null).getCookies();
+        String apiUrl ="https://stock.xueqiu.com/v5/stock/finance/cn/indicator.json?symbol=SZ002304&type=Q4&is_detail=true&count=5&timestamp=";
+        String referer ="https://xueqiu.com/snowman/S/SZ002304/detail";
+        String result = new EasyCrawl<AgentResult, String>().webAgent(
+                new HtmlAgent().referer(referer)
+                        .cookie(cookies)
+                        .url(apiUrl)
+        ).analyze(AgentResult::getBody).run();
+        System.out.println(result);
+    }
 }
