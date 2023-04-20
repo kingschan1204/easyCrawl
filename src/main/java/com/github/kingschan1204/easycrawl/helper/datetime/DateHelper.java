@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * java8日期工具类封装
+ *
  * @author kings.chan
  * @date 2021-9-10
  */
@@ -73,8 +74,20 @@ public class DateHelper {
         return new DateHelper(localDate);
     }
 
+
+    public DateHelper plusYears(long years) {
+        this.localDateTime = localDateTime.plusYears(years);
+        return this;
+    }
+
+    public DateHelper plusMonths(long months) {
+        this.localDateTime = localDateTime.plusMonths(months);
+        return this;
+    }
+
     /**
      * 日期天数相加
+     *
      * @param days 要加的天数
      * @return DateHelperNew
      */
@@ -83,8 +96,19 @@ public class DateHelper {
         return this;
     }
 
+    public DateHelper minusYears(long years) {
+        this.localDateTime = localDateTime.minusYears(years);
+        return this;
+    }
+
+    public DateHelper minusMonths(long months) {
+        this.localDateTime = localDateTime.minusMonths(months);
+        return this;
+    }
+
     /**
      * 日期天数相减
+     *
      * @param days 要减的天数
      * @return DateHelperNew
      */
