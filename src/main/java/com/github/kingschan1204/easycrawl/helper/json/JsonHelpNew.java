@@ -46,6 +46,11 @@ public class JsonHelpNew {
         return this;
     }
 
+    public Object get(String key){
+        Assert.notNull(json, "当前主体数据为JSONArray无法使用此方法！");
+        return this.json.get(key);
+    }
+
     /**
      * 通过 属性. 的方式取 支持多层
      *
