@@ -19,7 +19,7 @@ import java.util.Map;
 @Slf4j
 @DisplayName("雪球测试")
 public class XueQiuTest {
-
+    String page = "https://xueqiu.com";
 
     @DisplayName("所有代码")
     @Test
@@ -46,11 +46,10 @@ public class XueQiuTest {
     @DisplayName("历史分红")
     @Test
     public void getBonus() throws Exception {
-        String page = "https://xueqiu.com";
         String apiUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/bonus.json?symbol=${code}&size=100&page=1&extend=true";
         String referer = "https://xueqiu.com/snowman/S/SH600887/detail";
         Map<String, Object> args = new MapUtil<String, Object>().put("code", "SH600887").getMap();
-        Map<String, String> cookies = WebAgent.defaultAgent().url(page).execute(args).getResult().getCookies();
+        Map<String, String> cookies = getXQCookies();
 
         String data = new EasyCrawl<String>()
                 .webAgent(WebAgent.defaultAgent().url(apiUrl).referer(referer).cookie(cookies))
@@ -79,10 +78,10 @@ public class XueQiuTest {
     @DisplayName("公司简介")
     @Test
     public void companyInfo() throws Exception {
-        String page = "https://xueqiu.com";
+
         String apiUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/company.json?symbol=${code}";
         String data =  new EasyCrawl<String>()
-                .webAgent(WebAgent.defaultAgent().url(apiUrl).referer(page).cookie(WebAgent.getCookies(page)))
+                .webAgent(WebAgent.defaultAgent().url(apiUrl).referer(page).cookie(getXQCookies()))
                 .analyze(WebAgent::getText)
                 .execute(new MapUtil<String, Object>().put("code", "SH600887").getMap());
         System.out.println(data);
@@ -91,9 +90,8 @@ public class XueQiuTest {
     @DisplayName("top10 股东")
     @Test
     public void top10() throws Exception {
-        String page = "https://xueqiu.com";
         Map<String, Object> map = new MapUtil<String, Object>().put("code", "SH600887").getMap();
-        Map<String, String> cookies = WebAgent.getCookies(page);
+        Map<String, String> cookies = getXQCookies();
         //获取最新的十大股东 及 所有时间列表
         String apiUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/top_holders.json?symbol=${code}&circula=0&count=200";
         String data = new EasyCrawl<String>()
@@ -115,7 +113,7 @@ public class XueQiuTest {
     public void gdrs() throws Exception {
         String page = "https://xueqiu.com/snowman/S/${code}/detail#/GDRS";
         Map<String, Object> map = new MapUtil<String, Object>().put("code", "SH600887").getMap();
-        Map<String, String> cookies = WebAgent.defaultAgent().url(page).execute(map).getResult().getCookies();
+        Map<String, String> cookies = getXQCookies();
         //获取最新的十大股东 及 所有时间列表
         String apiUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/holders.json?symbol=${code}&extend=true&page=1&size=100";
         String data = new EasyCrawl<String>()
@@ -129,14 +127,13 @@ public class XueQiuTest {
     @DisplayName("日k线")
     @Test
     public void dayOfKline() throws Exception {
-        String cookieUrl = "https://xueqiu.com";
         int pageSize = -284;
         Map<String, Object> map = new MapUtil<String, Object>()
                 .put("code", "SH600887") //股票代码
                 .put("begin", System.currentTimeMillis()) //开始时间
                 .put("count", pageSize) //查过去多少天的数据
                 .getMap();
-        Map<String, String> cookies = WebAgent.getCookies(cookieUrl);
+        Map<String, String> cookies = getXQCookies();
 
         //获取最新的十大股东 及 所有时间列表
         String referer = "https://xueqiu.com/S/${code}";
@@ -186,8 +183,7 @@ public class XueQiuTest {
     @DisplayName("个股详情")
     @Test
     public void proxyTest() throws Exception {
-        String cookieUrl = "https://xueqiu.com";
-        Map<String, String> cookies = WebAgent.getCookies(cookieUrl);
+        Map<String, String> cookies = getXQCookies();
         String apiUrl = "https://stock.xueqiu.com/v5/stock/quote.json?symbol=SH600887&extend=detail";
         String referer = "https://xueqiu.com/S/SH600887";
         String result = new EasyCrawl<String>()
@@ -199,15 +195,17 @@ public class XueQiuTest {
     @DisplayName("主要指标")
     @Test
     public void mainIndex() throws Exception {
-        String cookieUrl = "https://xueqiu.com/about/contact-us";
-        Map<String, String> cookies = WebAgent.getCookies(cookieUrl);
         String apiUrl = "https://stock.xueqiu.com/v5/stock/finance/cn/indicator.json?symbol=SZ002304&type=Q4&is_detail=true&count=5&timestamp=";
         String referer = "https://xueqiu.com/snowman/S/SZ002304/detail";
         JsonHelper result = new EasyCrawl<JsonHelper>()
-                .webAgent(WebAgent.defaultAgent().referer(referer).cookie(cookies).url(apiUrl))
+                .webAgent(WebAgent.defaultAgent().referer(referer).cookie(getXQCookies()).url(apiUrl))
                 .analyze(WebAgent::getJson)
                 .execute();
-        System.out.println(cookies);
         System.out.println(result);
+    }
+
+    Map<String, String> getXQCookies(){
+        String cookieUrl = "https://xueqiu.com/about/contact-us";
+        return WebAgent.getCookies(cookieUrl);
     }
 }

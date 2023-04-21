@@ -121,6 +121,7 @@ public class GenericHttp1Agent implements WebAgent {
         log.debug("ContentType : {}", result.getContentType());
         log.debug("Headers : {}", result.getHeaders());
         log.debug("Cookies : {}", result.getCookies());
+        log.debug("耗时 {} 毫秒",result.getTimeMillis());
         ResponseAssertHelper.of(result).infer();
         return this;
     }
