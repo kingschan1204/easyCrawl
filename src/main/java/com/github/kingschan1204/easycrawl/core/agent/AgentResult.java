@@ -1,12 +1,13 @@
 package com.github.kingschan1204.easycrawl.core.agent;
 
 import org.jsoup.Connection;
+
 import java.io.Serializable;
 import java.util.Map;
 
 /**
  * @author kings.chan
- * @create 2019-03-07 9:33
+ * 2019-03-07 9:33
  **/
 
 public class AgentResult implements Serializable {
@@ -63,5 +64,19 @@ public class AgentResult implements Serializable {
 
     public Map<String, String> getHeaders() {
         return this.response.headers();
+    }
+
+    /**
+     * 获取文本内容
+     * @param charset 将byte数组按传入编码转码
+     * @return getContent
+     */
+    public String getContent(String charset) {
+        try {
+            return new String(getBodyAsByes(), charset);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
