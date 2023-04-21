@@ -1,7 +1,6 @@
 package com.github.kingschan1204.easycrawl.core.agent;
 
 
-import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
 
 import java.io.File;
@@ -13,7 +12,7 @@ import java.util.Map;
  * 2023-04-21
  **/
 
-public interface WebAgentNew {
+public interface WebAgent {
 
 //    enum ResponseType {
 //        FILE(File.class), HTML(String.class), JSON(JsonHelper.class), TEXT(String.class);
@@ -31,7 +30,7 @@ public interface WebAgentNew {
      *
      * @return GenericHttp1Agent
      */
-    static WebAgentNew defaultAgent() {
+    static WebAgent defaultAgent() {
         return new GenericHttp1Agent();
     }
 
@@ -41,29 +40,29 @@ public interface WebAgentNew {
 
     HttpRequestConfig getConfig();
 
-    WebAgentNew url(String url);
+    WebAgent url(String url);
 
-    WebAgentNew referer(String referer);
+    WebAgent referer(String referer);
 
-    WebAgentNew method(HttpRequestConfig.Method method);
+    WebAgent method(HttpRequestConfig.Method method);
 
-    WebAgentNew head(Map<String, String> head);
+    WebAgent head(Map<String, String> head);
 
-    WebAgentNew useAgent(String useAgent);
+    WebAgent useAgent(String useAgent);
 
-    WebAgentNew cookie(Map<String, String> cookie);
+    WebAgent cookie(Map<String, String> cookie);
 
-    WebAgentNew timeOut(Integer timeOut);
+    WebAgent timeOut(Integer timeOut);
 
-    WebAgentNew proxy(Proxy proxy);
+    WebAgent proxy(Proxy proxy);
 
-    WebAgentNew body(String body);
+    WebAgent body(String body);
 
-    WebAgentNew folder(String folder);
+    WebAgent folder(String folder);
 
-    WebAgentNew fileName(String fileName);
+    WebAgent fileName(String fileName);
 
-    WebAgentNew execute(Map<String, Object> data);
+    WebAgent execute(Map<String, Object> data);
 
     AgentResult getResult();
 

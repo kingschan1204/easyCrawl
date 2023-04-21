@@ -1,6 +1,6 @@
 package com.github.kingschan1204.easycrawl;
 
-import com.github.kingschan1204.easycrawl.core.agent.WebAgentNew;
+import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +23,7 @@ public class ProxyTest {
     @Test
     public void proxyTest() throws Exception {
         String result = new EasyCrawl<String>()
-                .webAgent(WebAgentNew.defaultAgent().referer(apiUrl).useAgent(useAgent).url(apiUrl).proxy(proxy))
+                .webAgent(WebAgent.defaultAgent().referer(apiUrl).useAgent(useAgent).url(apiUrl).proxy(proxy))
                 .analyze(r -> r.getResult().getBody()).execute();
         System.out.println(result);
     }

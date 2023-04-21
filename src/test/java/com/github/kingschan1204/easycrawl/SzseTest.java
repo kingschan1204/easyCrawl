@@ -3,7 +3,7 @@ package com.github.kingschan1204.easycrawl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.github.kingschan1204.easycrawl.core.agent.WebAgentNew;
+import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.helper.http.UrlHelper;
 import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +28,8 @@ public class SzseTest {
         try {
             String url = new UrlHelper(apiUrl).set("month", month).getUrl();
            String data = new EasyCrawl<String>()
-                    .webAgent(WebAgentNew.defaultAgent().referer(referer).url(url))
-                    .analyze(WebAgentNew::getText)
+                    .webAgent(WebAgent.defaultAgent().referer(referer).url(url))
+                    .analyze(WebAgent::getText)
                     .execute();
             return parserData(data);
         } catch (Exception e) {
@@ -79,7 +79,7 @@ public class SzseTest {
         String month = "2023-03";
         String url = new UrlHelper(apiUrl).set("month", month).getUrl();
         TreeMap<String, Boolean> result = new EasyCrawl< TreeMap<String, Boolean>>()
-                .webAgent(WebAgentNew.defaultAgent().referer(url).useAgent(useAgent).url(apiUrl))
+                .webAgent(WebAgent.defaultAgent().referer(url).useAgent(useAgent).url(apiUrl))
                 .analyze(r -> parserData(r.getResult().getBody()))
                 .execute();
         System.out.println(result);

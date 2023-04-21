@@ -1,6 +1,6 @@
 package com.github.kingschan1204.easycrawl;
 
-import com.github.kingschan1204.easycrawl.core.agent.WebAgentNew;
+import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -16,8 +16,8 @@ public class ExChangeTest {
         String referer = "http://finance.sina.com.cn";
         String apiUrl = "http://hq.sinajs.cn/list=sz399001,sh000001,sz399006,sh000300";
         String data =  new EasyCrawl<String>()
-                .webAgent(WebAgentNew.defaultAgent().referer(referer).url(apiUrl))
-                .analyze(WebAgentNew::getText)
+                .webAgent(WebAgent.defaultAgent().referer(referer).url(apiUrl))
+                .analyze(WebAgent::getText)
                 .execute();
         System.out.println(data);
     }

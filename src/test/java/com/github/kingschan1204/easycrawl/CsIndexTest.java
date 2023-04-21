@@ -1,7 +1,7 @@
 package com.github.kingschan1204.easycrawl;
 
 import com.github.kingschan1204.easycrawl.core.agent.HttpRequestConfig;
-import com.github.kingschan1204.easycrawl.core.agent.WebAgentNew;
+import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.helper.collections.MapUtil;
 import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import lombok.extern.slf4j.Slf4j;
@@ -20,17 +20,17 @@ public class CsIndexTest {
         String cookieUrl = "https://www.csindex.com.cn/en/indices/index-detail/000300#/dataService/industryClassification";
         String reqUrl = "https://www.csindex.com.cn/csindex-home/exportExcel/security-industry-search-excel/CH";
         String referer = "https://www.csindex.com.cn/en/indices/index-detail/000300";
-        Map<String, String> cookies = WebAgentNew.defaultAgent().referer("https://www.csindex.com.cn").url(cookieUrl).execute(null).getResult().getCookies();
+        Map<String, String> cookies = WebAgent.defaultAgent().referer("https://www.csindex.com.cn").url(cookieUrl).execute(null).getResult().getCookies();
 
         File file = new EasyCrawl<File>()
-                .webAgent(WebAgentNew.defaultAgent().folder("C:\\temp\\")
+                .webAgent(WebAgent.defaultAgent().folder("C:\\temp\\")
                         .url(reqUrl)
                         .head(new MapUtil<String, String>().put("Content-Type", "application/json; charset=utf-8").getMap())
                         .referer(referer)
                         .cookie(cookies)
                         .method(HttpRequestConfig.Method.POST)
                         .body("{\"searchInput\":\"\",\"pageNum\":1,\"pageSize\":10,\"sortField\":null,\"sortOrder\":null}"))
-                .analyze(WebAgentNew::getFile)
+                .analyze(WebAgent::getFile)
                 .execute();
         System.out.println(String.format("文件上名：%s 文件大小：%s kb", file.getName(), file.length() / 1024));
     }

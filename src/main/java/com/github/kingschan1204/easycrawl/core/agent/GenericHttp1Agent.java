@@ -1,6 +1,5 @@
 package com.github.kingschan1204.easycrawl.core.agent;
 
-import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.core.agent.utils.JsoupHelper;
 import com.github.kingschan1204.easycrawl.core.variable.ScanVariable;
 import com.github.kingschan1204.easycrawl.helper.http.ResponseHeadHelper;
@@ -15,7 +14,7 @@ import java.net.Proxy;
 import java.util.Map;
 
 @Slf4j
-public class GenericHttp1Agent implements WebAgentNew {
+public class GenericHttp1Agent implements WebAgent {
     private HttpRequestConfig config;
     private AgentResult result;
 
@@ -27,7 +26,7 @@ public class GenericHttp1Agent implements WebAgentNew {
         this.config = new HttpRequestConfig();
     }
 
-    public static WebAgentNew of(HttpRequestConfig config) {
+    public static WebAgent of(HttpRequestConfig config) {
         return new GenericHttp1Agent(config);
     }
 
@@ -44,73 +43,73 @@ public class GenericHttp1Agent implements WebAgentNew {
     }
 
     @Override
-    public WebAgentNew url(String url) {
+    public WebAgent url(String url) {
         this.config.setUrl(url);
         return this;
     }
 
     @Override
-    public WebAgentNew referer(String referer) {
+    public WebAgent referer(String referer) {
         this.config.setReferer(referer);
         return this;
     }
 
     @Override
-    public WebAgentNew method(HttpRequestConfig.Method method) {
+    public WebAgent method(HttpRequestConfig.Method method) {
         this.config.setMethod(method);
         return this;
     }
 
     @Override
-    public WebAgentNew head(Map<String, String> head) {
+    public WebAgent head(Map<String, String> head) {
         this.config.setHead(head);
         return this;
     }
 
     @Override
-    public WebAgentNew useAgent(String useAgent) {
+    public WebAgent useAgent(String useAgent) {
         this.config.setUseAgent(useAgent);
         return this;
     }
 
     @Override
-    public WebAgentNew cookie(Map<String, String> cookie) {
+    public WebAgent cookie(Map<String, String> cookie) {
         this.config.setCookie(cookie);
         return this;
     }
 
     @Override
-    public WebAgentNew timeOut(Integer timeOut) {
+    public WebAgent timeOut(Integer timeOut) {
         this.config.setTimeOut(timeOut);
         return this;
     }
 
     @Override
-    public WebAgentNew proxy(Proxy proxy) {
+    public WebAgent proxy(Proxy proxy) {
         this.config.setProxy(proxy);
         return this;
     }
 
     @Override
-    public WebAgentNew body(String body) {
+    public WebAgent body(String body) {
         this.config.setBody(body);
         return this;
     }
 
     @Override
-    public WebAgentNew folder(String folder) {
+    public WebAgent folder(String folder) {
         this.config.setFolder(folder);
         return this;
     }
 
     @Override
-    public WebAgentNew fileName(String fileName) {
+    public WebAgent fileName(String fileName) {
         this.config.setFileName(fileName);
         return this;
     }
 
     @Override
-    public WebAgentNew execute(Map<String, Object> data) {
+    public WebAgent execute(Map<String, Object> data) {
         String httpUrl = ScanVariable.parser(this.config.getUrl(), data).trim();
         String referer = null != this.config.getReferer() ? ScanVariable.parser(this.config.getReferer(), data).trim() : null;
         this.result = JsoupHelper.request(

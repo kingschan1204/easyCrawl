@@ -1,6 +1,6 @@
 package com.github.kingschan1204.easycrawl;
 
-import com.github.kingschan1204.easycrawl.core.agent.WebAgentNew;
+import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -19,10 +19,10 @@ public class ThsTest {
     @Test
     public void getYearReport() throws Exception {
         File file = new EasyCrawl<File>()
-                .webAgent(WebAgentNew.defaultAgent().folder("C:\\temp\\")
+                .webAgent(WebAgent.defaultAgent().folder("C:\\temp\\")
                         .referer(referer)
                         .url(url))
-                .analyze(WebAgentNew::getFile)
+                .analyze(WebAgent::getFile)
                 .execute();
         System.out.println(String.format("文件上名：%s 文件大小：%s kb", file.getName(), file.length() / 1024));
     }

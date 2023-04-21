@@ -1,4 +1,4 @@
-package com.github.kingschan1204.easycrawl.core.agent.utils;
+package com.github.kingschan1204.easycrawl.core.agent;
 
 import org.jsoup.Connection;
 import java.io.Serializable;

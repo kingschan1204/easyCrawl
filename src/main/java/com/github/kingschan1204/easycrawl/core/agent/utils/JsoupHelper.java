@@ -1,5 +1,6 @@
 package com.github.kingschan1204.easycrawl.core.agent.utils;
 
+import com.github.kingschan1204.easycrawl.core.agent.AgentResult;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;

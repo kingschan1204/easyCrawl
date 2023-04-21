@@ -1,6 +1,6 @@
 package com.github.kingschan1204.easycrawl.task;
 
-import com.github.kingschan1204.easycrawl.core.agent.WebAgentNew;
+import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.helper.http.UrlHelper;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
@@ -12,10 +12,10 @@ import java.util.function.Function;
 @Slf4j
 public class EasyCrawl<R> {
 
-    private WebAgentNew webAgent;
-    private Function<WebAgentNew, R> parserFunction;
+    private WebAgent webAgent;
+    private Function<WebAgent, R> parserFunction;
 
-    public EasyCrawl<R> webAgent(WebAgentNew webAgent) {
+    public EasyCrawl<R> webAgent(WebAgent webAgent) {
         this.webAgent = webAgent;
         return this;
     }
@@ -24,7 +24,7 @@ public class EasyCrawl<R> {
 //        return new EasyCrawlNew(webAgent);
 //    }
 
-    public EasyCrawl<R> analyze(Function<WebAgentNew, R> parserFunction) {
+    public EasyCrawl<R> analyze(Function<WebAgent, R> parserFunction) {
         this.parserFunction = parserFunction;
         return this;
     }
@@ -63,7 +63,7 @@ public class EasyCrawl<R> {
      */
     public List<R> executePage(Map<String, Object> map,String pageIndexKey , String totalKey , Integer pageSize ){
         List<R> list = Collections.synchronizedList(new ArrayList<>());
-        WebAgentNew data = webAgent.execute(map);
+        WebAgent data = webAgent.execute(map);
         JsonHelper json =  data.getJson();
         int totalRows = json.get(totalKey, Integer.class);
         int totalPage = (totalRows + pageSize - 1) / pageSize;
