@@ -28,8 +28,8 @@ public class JsonApiPaginationTask<T, R> {
     public List<T> execute(Function<String, R> parserFunction) throws Exception {
         List<T> list = Collections.synchronizedList(new ArrayList<>());
         String data = agent.execute(null).getBody();
-        JsonHelper json = new JsonHelper(data);
-        int totalRows = json.getObject(totalKey, Integer.class);
+        JsonHelper json = JsonHelper.of(data);
+        int totalRows = json.get(totalKey, Integer.class);
         int totalPage = (totalRows + pageSize - 1) / pageSize;
         log.debug("共{}记录,每页展示{}条,共{}页", totalRows, pageSize, totalPage);
 

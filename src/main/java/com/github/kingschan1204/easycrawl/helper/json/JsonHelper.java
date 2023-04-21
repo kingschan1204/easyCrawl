@@ -4,44 +4,51 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.Feature;
-import lombok.extern.slf4j.Slf4j;
+import com.github.kingschan1204.easycrawl.helper.validation.Assert;
 
-/**
- * json 操作统一标准工具类
- *
- * @author kings.chan
- * @create 2020-02-18 14:23
- **/
-@Slf4j
+import java.util.Collections;
+
 public class JsonHelper {
 
     private JSONObject json;
+    private JSONArray jsonArray;
 
-    public JsonHelper() {
-        this.json = new JSONObject(true);
+    public JsonHelper(JSONObject json) {
+        this.json = json;
     }
 
-    public JsonHelper(Object object) {
-        this.json = new JSONObject(true);
-        json = JSON.parseObject(JSON.toJSONString(object));
+    public JsonHelper(JSONArray jsonArray) {
+        this.jsonArray = jsonArray;
     }
 
-    /**
-     * 统过一个字符串实例化对象
-     *
-     * @param jsonStr
-     */
-    public JsonHelper(String jsonStr) {
-        this.json = JSON.parseObject(jsonStr, Feature.OrderedField);
+    public static JsonHelper of(String text) {
+        if (text.startsWith("[")) {
+            return new JsonHelper(JSON.parseArray(text));
+        }
+        return new JsonHelper(JSON.parseObject(text, Feature.OrderedField));
     }
 
-    /**
-     * 根据键得到对象
-     *
-     * @param key
-     * @return
-     */
+    public static JsonHelper of(Object object) {
+        if (object instanceof Collections) {
+            return new JsonHelper(JSONArray.parseArray(JSON.toJSONString(object)));
+        }
+        return new JsonHelper(JSON.parseObject(JSON.toJSONString(object), Feature.OrderedField));
+    }
+
+    public JsonHelper put(String key, Object value) {
+        Assert.notNull(json, "当前主体数据为JSONArray无法使用此方法！");
+        this.json.put(key, value);
+        return this;
+    }
+
+    public JsonHelper add(JSONObject jsonObject) {
+        Assert.notNull(jsonArray, "当前主体数据为JSONObject无法使用此方法！");
+        this.jsonArray.add(jsonObject);
+        return this;
+    }
+
     public Object get(String key) {
+        Assert.notNull(json, "当前主体数据为JSONArray无法使用此方法！");
         return this.json.get(key);
     }
 
@@ -50,14 +57,16 @@ public class JsonHelper {
      *
      * @param expression 表达式  属性.属性
      * @param clazz      返回类型
-     * @return
+     * @return 表达式的值
      */
-    public <T> T getObject(String expression, Class<T> clazz) {
+    public <T> T get(String expression, Class<T> clazz) {
         String[] depth = expression.split("\\.");
-        if (!this.json.containsKey(depth[0])) {
-            return null;
+        Object object = null;
+        if (null != json) {
+            object = getValByExpression(this.json, depth[0]);
+        } else {
+            object = getValByExpression(this.jsonArray, depth[0]);
         }
-        Object object = this.json.get(depth[0]);
         for (int i = 1; i < depth.length; i++) {
             object = getValByExpression(object, depth[i]);
         }
@@ -68,7 +77,16 @@ public class JsonHelper {
         if (object instanceof JSONObject) {
             return ((JSONObject) object).get(expression);
         } else if (object instanceof JSONArray) {
-            return ((JSONArray) object).get(Integer.parseInt(expression));
+            //jsonArray模式
+            //如果是数字直接取下标，保留关键字：$first第一条 $last最后一条
+            JSONArray js = (JSONArray) object;
+            if (expression.matches("\\d+")) {
+                return js.get(Integer.parseInt(expression));
+            } else if (expression.matches("\\$first")) {
+                return js.get(0);
+            } else if (expression.matches("\\$last")) {
+                return js.get(js.size() - 1);
+            }
         }
         return null;
     }
@@ -77,72 +95,17 @@ public class JsonHelper {
      * 是否存在key
      *
      * @param expression 表达式
-     * @return
+     * @return 是否包括key
      */
     public boolean hasKey(String expression) {
-        String[] depth = expression.split("\\.");
-        Object object = this.json.get(depth[0]);
-        for (int i = 1; i < depth.length; i++) {
-            object = getValByExpression(object, depth[i]);
-        }
-        return null != object;
+        return null != get(expression, Object.class);
     }
-
-    /**
-     * 赋值
-     *
-     * @param key
-     * @param value
-     * @return
-     */
-    public JsonHelper put(String key, Object value) {
-        this.json.put(key, value);
-        return this;
-    }
-
-    /**
-     * 格式化赋值 主要处理  整型和浮点型
-     *
-     * @param key
-     * @param value
-     * @return
-     */
-    public JsonHelper putFormat(String key, String value, Class clazz) {
-        if (clazz.equals(Double.class)) {
-            this.json.put(key, Double.parseDouble(value.replaceAll("[^0-9|.|-]", "")));
-        } else if (clazz.equals(Integer.class)) {
-            this.json.put(key, Integer.parseInt(value.replaceAll("[^0-9|-]", "")));
-        } else {
-            this.json.put(key, value);
-        }
-        return this;
-    }
-
-    /**
-     * 简单移除key
-     *
-     * @param keys
-     */
-    public void removeKey(String... keys) {
-        for (String key : keys) {
-            this.json.remove(key);
-        }
-    }
-
-    public JSONObject toJson() {
-        return this.json;
-    }
-
 
     public static void main(String[] args) {
-        String json = "{name:'kingschan',website:{name:'webname',test:{a:'b'},tag:[0,1,2,3],arrays:[{age:12},{age:13},{age:14}]}}";
-        JsonHelper jsonOperation = new JsonHelper(json);
-        System.out.println(jsonOperation.getObject("website.test", JSONObject.class));
-        System.out.println(jsonOperation.getObject("website.tag", JSONArray.class));
-        System.out.println(jsonOperation.getObject("website.tag.1", Integer.class));
-        System.out.println(jsonOperation.getObject("website.test.a", String.class));
-        System.out.println(jsonOperation.getObject("website.arrays.1.age", Integer.class));
-        System.out.println(jsonOperation.hasKey("website.arrays.1.age"));
+//        String data = "[0,1,2,3,4]";
+//        String data = "[{'name':'a'},{'name':'b','array':[1,2,3,4,5]}]";
+        String data = "{'name':'b','array':[1,2,3,4,5]}";
+        JsonHelper helper = JsonHelper.of(data);
+        System.out.println(helper.get("array.$last", Object.class));
     }
-
 }

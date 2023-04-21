@@ -6,8 +6,8 @@ import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.helper.datetime.DateHelper;
-import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
 import com.github.kingschan1204.easycrawl.helper.collections.MapUtil;
+import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
 import com.github.kingschan1204.easycrawl.helper.sql.SqlHelper;
 import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import com.github.kingschan1204.easycrawl.task.JsonApiPaginationTask;
@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @DisplayName("雪球测试")
@@ -33,7 +34,7 @@ public class XueQiuTest {
         List<JSONObject> list = new JsonApiPaginationTask<JSONObject, List<JSONObject>>(engine, "page", "data.count", 200)
                 .execute(r -> {
                     List<JSONObject> jsonObjects = new ArrayList<>();
-                    JSONArray jsonArray = new JsonHelper(r).getObject("data.list", JSONArray.class);
+                    JSONArray jsonArray =  JsonHelper.of(r).get("data.list", JSONArray.class);
                     for (int j = 0; j < jsonArray.size(); j++) {
                         jsonObjects.add(jsonArray.getJSONObject(j));
                     }
@@ -55,8 +56,7 @@ public class XueQiuTest {
         Map<String, String> cookies = new HtmlAgent().url(page).execute(args).getCookies();
         String data = new HtmlAgent().url(apiUrl).referer(referer).cookie(cookies).execute(args).getBody();
         System.out.println(data);
-        JsonHelper jsonHelper = new JsonHelper(data);
-        JSONArray rows = jsonHelper.getObject("data.items", JSONArray.class);
+        JSONArray rows = JsonHelper.of(data).get("data.items", JSONArray.class);
         StringBuffer sqls = new StringBuffer();
         for (int i = 0; i < rows.size(); i++) {
             JSONObject row = rows.getJSONObject(i);
@@ -157,9 +157,9 @@ public class XueQiuTest {
                     .execute(map)
                     .getBody();
             System.out.println(data);
-            JsonHelper jsonHelper = new JsonHelper(data);
-            JSONArray columns = jsonHelper.getObject("data.column", JSONArray.class);
-            JSONArray rows = jsonHelper.getObject("data.item", JSONArray.class);
+            JsonHelper jsonHelper =  JsonHelper.of(data);
+            JSONArray columns = jsonHelper.get("data.column", JSONArray.class);
+            JSONArray rows = jsonHelper.get("data.item", JSONArray.class);
             StringBuffer sqls = new StringBuffer();
             for (int i = 0; i < rows.size(); i++) {
                 JSONArray array = rows.getJSONArray(i);

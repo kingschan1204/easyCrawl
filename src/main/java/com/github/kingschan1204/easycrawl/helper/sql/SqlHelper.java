@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SqlHelper {
 
-    private static final Map<String, String> fieldType;
+    public static final Map<String, String> fieldType;
 
     static {
         fieldType = new HashMap<>();

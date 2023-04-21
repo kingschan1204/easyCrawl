@@ -43,8 +43,8 @@ public class JsonUrlPageEasyCrawl<AgentResult, R extends List<?>> implements Cra
         Integer pageSize = 100;
         List<Object> list = Collections.synchronizedList(new ArrayList<>());
         AgentResult data = (AgentResult) ((HtmlAgent) agent).execute(map);
-        JsonHelper json = new JsonHelper(data);
-        int totalRows = json.getObject(totalKey, Integer.class);
+        JsonHelper json =  JsonHelper.of(data);
+        int totalRows = json.get(totalKey, Integer.class);
         int totalPage = (totalRows + pageSize - 1) / pageSize;
         log.debug("共{}记录,每页展示{}条,共{}页", totalRows, pageSize, totalPage);
 
