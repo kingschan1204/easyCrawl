@@ -22,7 +22,7 @@ public class ThsTest {
 
     @DisplayName("年报下载")
     @Test
-    public void getYearReport() throws Exception {
+    public void getYearReport() {
         File file = new EasyCrawl<File>()
                 .webAgent(WebAgent.defaultAgent().folder("C:\\temp\\")
                         .referer(referer)
@@ -34,21 +34,19 @@ public class ThsTest {
 
     @DisplayName("公司资料")
     @Test
-    public void company() throws Exception {
+    public void company() {
         Map<String, String> map = new EasyCrawl<Map<String, String>>()
                 .webAgent(WebAgent.defaultAgent().referer("http://basic.10jqka.com.cn").url("https://basic.10jqka.com.cn/600519/company.html"))
                 .analyze(r -> {
                     Map<String, String> m = new HashMap<>();
-                    String content = r.getResult().getContent("gbk");
+                    String content = r.getText();
                     Document doc = Jsoup.parse(content);
                     Elements elements = doc.select("#detail > div.bd > table > tbody > tr.video-btn-box-tr > td:nth-child(2) > span");
-
                     m.put("name", elements.text());
                     m.put("control", doc.select("#detail > div.bd > div > table > tbody > tr:nth-child(4) > td > div > span").text());
                     m.put("url", doc.select("#detail > div.bd > table > tbody > tr:nth-child(3) > td:nth-child(2) > span").text());
                     return m;
-                })
-                .execute();
+                }).execute();
         System.out.println(map);
     }
 

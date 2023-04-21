@@ -12,15 +12,17 @@ public class RegexHelper {
     public static final String REGEX_EXPRESSION = "\\$\\{(\\w|\\s|\\=)+\\}";
     //科学计算
     public static final String REGEX_SCIENTIFIC_NOTATION = "\\d+\\.\\d+E(\\+)?\\d+";
+    //html meta标签charset属性提取
+    public static final String REGEX_HTML_CHARSET = "<(?i)meta(\\s+|.*)(?i)charSet(\\s+)?=.*/>";
 
     /**
      * 提取文本中匹配正则的字符串
      *
      * @param text
-     * @param regx      正则
+     * @param regx 正则
      * @return 结果
      */
-    public static List<String>  find(String text, String regx) {
+    public static List<String> find(String text, String regx) {
         List<String> list = new ArrayList<>();
         try {
             Pattern pattern = Pattern.compile(regx);
@@ -31,8 +33,17 @@ public class RegexHelper {
             return list;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return list;
         }
 
+    }
+
+    public static String findFirst(String text, String regx) {
+        Pattern pattern = Pattern.compile(regx);
+        Matcher matcher = pattern.matcher(text);
+        if (matcher.find()) {
+            return matcher.group();
+        }
+        return "";
     }
 }
