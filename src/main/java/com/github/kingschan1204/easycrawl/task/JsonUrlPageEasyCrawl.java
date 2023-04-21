@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
+@Deprecated
 @Slf4j
 public class JsonUrlPageEasyCrawl<AgentResult, R extends List<?>> implements CrawlTask<AgentResult, R> {
 

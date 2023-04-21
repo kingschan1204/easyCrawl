@@ -39,6 +39,11 @@ public class GenericHttp1Agent implements WebAgentNew {
 //    }
 
     @Override
+    public HttpRequestConfig getConfig() {
+        return this.config;
+    }
+
+    @Override
     public WebAgentNew url(String url) {
         this.config.setUrl(url);
         return this;
@@ -107,7 +112,7 @@ public class GenericHttp1Agent implements WebAgentNew {
     @Override
     public WebAgentNew execute(Map<String, Object> data) {
         String httpUrl = ScanVariable.parser(this.config.getUrl(), data).trim();
-        String referer = ScanVariable.parser(this.config.getReferer(), data).trim();
+        String referer = null != this.config.getReferer() ? ScanVariable.parser(this.config.getReferer(), data).trim() : null;
         this.result = JsoupHelper.request(
                 httpUrl, this.config.method(),
                 this.config.getTimeOut(), this.config.getUseAgent(), referer, this.config.getHead(),

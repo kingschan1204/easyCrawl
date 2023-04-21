@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
+@Deprecated
 @Slf4j
 @AllArgsConstructor
 public class JsonApiPaginationTask<T, R> {

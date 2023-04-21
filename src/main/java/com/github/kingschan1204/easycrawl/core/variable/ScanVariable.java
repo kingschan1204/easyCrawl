@@ -19,13 +19,17 @@ public class ScanVariable {
 
     /**
      * 扫描并解析变量
+     *
      * @param text 要扫描的文本
-     * @param map 传入的参数
+     * @param map  传入的参数
      * @return
      */
     public static String parser(String text, Map<String, Object> map) {
+        if (null == text) {
+            return null;
+        }
         List<String> exps = RegexHelper.find(text, "\\$\\{(\\w|\\s|\\=)+\\}");
-        if(null!= exps&& exps.size()>0){
+        if (null != exps && exps.size() > 0) {
             for (String el : exps) {
                 String[] els = el.replaceAll("[${}]", "").split("\\s+");
                 String tag = els[0];
@@ -40,7 +44,7 @@ public class ScanVariable {
                 if (elMap.containsKey(tag)) {
                     text = text.replace(el, elMap.get(tag).execute(argsMap));
                 }
-                if (null!= map && map.containsKey(tag)) {
+                if (null != map && map.containsKey(tag)) {
                     text = text.replace(el, String.valueOf(map.get(tag)));
                 }
             }
@@ -51,9 +55,9 @@ public class ScanVariable {
     public static void main(String[] args) {
         String text = "https://xueqiu.com/service/screener/screen?category=CN&exchange=sh_sz&areacode=&indcode=&order_by=symbol&order=desc&page=${page}&size=${pageSize}&only_count=0&current=&pct=&mc=&volume=&_=${timestamp}";
         System.out.println(ScanVariable.parser(text,
-                new MapUtil<String,Object>()
-                        .put("page","1")
-                        .put("pageSize","300")
+                new MapUtil<String, Object>()
+                        .put("page", "1")
+                        .put("pageSize", "300")
                         .getMap()));
     }
 

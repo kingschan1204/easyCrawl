@@ -8,7 +8,7 @@ import java.util.Map;
  * @author kings.chan
  * 2020-02-10 15:03
  **/
-
+@Deprecated
 public interface WebAgent<T> {
 
     WebAgent<T> url(String url);

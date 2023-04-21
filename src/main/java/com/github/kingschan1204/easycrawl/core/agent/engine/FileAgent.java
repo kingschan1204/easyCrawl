@@ -18,7 +18,7 @@ import java.net.Proxy;
 import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.Map;
-
+@Deprecated
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
 public class FileAgent extends HttpRequestConfig implements WebAgent<File> {

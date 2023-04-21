@@ -28,11 +28,18 @@ public interface WebAgentNew {
 
     /**
      * 默认agent
+     *
      * @return GenericHttp1Agent
      */
     static WebAgentNew defaultAgent() {
         return new GenericHttp1Agent();
     }
+
+    static Map<String, String> getCookies(String url) {
+        return defaultAgent().url(url).execute(null).getResult().getCookies();
+    }
+
+    HttpRequestConfig getConfig();
 
     WebAgentNew url(String url);
 

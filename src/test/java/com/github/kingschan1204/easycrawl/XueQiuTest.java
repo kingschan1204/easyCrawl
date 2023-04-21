@@ -2,16 +2,13 @@ package com.github.kingschan1204.easycrawl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgentNew;
 import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
-import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
-import com.github.kingschan1204.easycrawl.helper.datetime.DateHelper;
 import com.github.kingschan1204.easycrawl.helper.collections.MapUtil;
+import com.github.kingschan1204.easycrawl.helper.datetime.DateHelper;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
 import com.github.kingschan1204.easycrawl.helper.sql.SqlHelper;
 import com.github.kingschan1204.easycrawl.task.EasyCrawl;
-import com.github.kingschan1204.easycrawl.task.JsonApiPaginationTask;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,16 +27,17 @@ public class XueQiuTest {
     public void getAllCode() throws Exception {
         String referer = "https://xueqiu.com/hq/screener";
         String apiurl = "https://xueqiu.com/service/screener/screen?category=CN&exchange=sh_sz&areacode=&indcode=&order_by=symbol&order=desc&page=1&size=200&only_count=0&current=&pct=&mc=&volume=&_=${timestamp}";
-        WebAgent<AgentResult> engine = new HtmlAgent().url(apiurl).referer(referer);
-        List<JSONObject> list = new JsonApiPaginationTask<JSONObject, List<JSONObject>>(engine, "page", "data.count", 200)
-                .execute(r -> {
+        List list = new EasyCrawl<List<JSONObject>>()
+                .webAgent(WebAgentNew.defaultAgent().url(apiurl).referer(referer))
+                .analyze(r -> {
                     List<JSONObject> jsonObjects = new ArrayList<>();
-                    JSONArray jsonArray = JsonHelper.of(r).get("data.list", JSONArray.class);
+                    JSONArray jsonArray = r.getJson().get("data.list", JSONArray.class);
                     for (int j = 0; j < jsonArray.size(); j++) {
                         jsonObjects.add(jsonArray.getJSONObject(j));
                     }
                     return jsonObjects;
-                });
+                }).executePage(null, "page", "data.count", 200);
+
         log.info("共{}支股票", list.size());
         list.forEach(System.out::println);
 
@@ -143,21 +141,18 @@ public class XueQiuTest {
                 .put("begin", System.currentTimeMillis()) //开始时间
                 .put("count", pageSize) //查过去多少天的数据
                 .getMap();
-        Map<String, String> cookies = new HtmlAgent().url(cookieUrl).execute(map).getCookies();
+        Map<String, String> cookies = WebAgentNew.getCookies(cookieUrl);
+
         //获取最新的十大股东 及 所有时间列表
         String referer = "https://xueqiu.com/S/${code}";
         String dataUrl = "https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=${code}&begin=${begin}&period=day&type=before&count=${count}&indicator=kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance";
         List<String> list = new ArrayList<>();
         boolean hasNext = true;
         while (hasNext) {
-            String data = new HtmlAgent()
-                    .url(dataUrl)
-                    .referer(referer)
-                    .cookie(cookies)
-                    .execute(map)
-                    .getBody();
-            System.out.println(data);
-            JsonHelper jsonHelper = JsonHelper.of(data);
+            JsonHelper jsonHelper = new EasyCrawl<JsonHelper>()
+                    .webAgent(WebAgentNew.defaultAgent().url(dataUrl).referer(referer).cookie(cookies))
+                    .analyze(WebAgentNew::getJson).execute(map);
+
             JSONArray columns = jsonHelper.get("data.column", JSONArray.class);
             JSONArray rows = jsonHelper.get("data.item", JSONArray.class);
             StringBuffer sqls = new StringBuffer();

@@ -7,7 +7,7 @@ import com.github.kingschan1204.easycrawl.core.agent.utils.JsoupHelper;
 import com.github.kingschan1204.easycrawl.core.variable.ScanVariable;
 import java.net.Proxy;
 import java.util.Map;
-
+@Deprecated
 public final class HtmlAgent extends HttpRequestConfig implements WebAgent<AgentResult> {
 
 
