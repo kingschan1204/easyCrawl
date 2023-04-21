@@ -4,8 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgentNew;
-import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
-import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.helper.http.UrlHelper;
 import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import lombok.extern.slf4j.Slf4j;

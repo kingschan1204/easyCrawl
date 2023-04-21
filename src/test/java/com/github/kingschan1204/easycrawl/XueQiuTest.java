@@ -3,7 +3,6 @@ package com.github.kingschan1204.easycrawl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgentNew;
-import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
 import com.github.kingschan1204.easycrawl.helper.collections.MapUtil;
 import com.github.kingschan1204.easycrawl.helper.datetime.DateHelper;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
@@ -51,8 +50,12 @@ public class XueQiuTest {
         String apiUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/bonus.json?symbol=${code}&size=100&page=1&extend=true";
         String referer = "https://xueqiu.com/snowman/S/SH600887/detail";
         Map<String, Object> args = new MapUtil<String, Object>().put("code", "SH600887").getMap();
-        Map<String, String> cookies = new HtmlAgent().url(page).execute(args).getCookies();
-        String data = new HtmlAgent().url(apiUrl).referer(referer).cookie(cookies).execute(args).getBody();
+        Map<String, String> cookies = WebAgentNew.defaultAgent().url(page).execute(args).getResult().getCookies();
+
+        String data = new EasyCrawl<String>()
+                .webAgent(WebAgentNew.defaultAgent().url(apiUrl).referer(referer).cookie(cookies))
+                .analyze(WebAgentNew::getText)
+                .execute(args);
         System.out.println(data);
         JSONArray rows = JsonHelper.of(data).get("data.items", JSONArray.class);
         StringBuffer sqls = new StringBuffer();
@@ -78,12 +81,10 @@ public class XueQiuTest {
     public void companyInfo() throws Exception {
         String page = "https://xueqiu.com";
         String apiUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/company.json?symbol=${code}";
-        String data = new HtmlAgent()
-                .url(apiUrl)
-                .referer(page)
-                .cookie(new HtmlAgent().url(page).execute(null).getCookies())
-                .execute(new MapUtil<String, Object>().put("code", "SH600887").getMap())
-                .getBody();
+        String data =  new EasyCrawl<String>()
+                .webAgent(WebAgentNew.defaultAgent().url(apiUrl).referer(page).cookie(WebAgentNew.getCookies(page)))
+                .analyze(WebAgentNew::getText)
+                .execute(new MapUtil<String, Object>().put("code", "SH600887").getMap());
         System.out.println(data);
     }
 
@@ -92,24 +93,20 @@ public class XueQiuTest {
     public void top10() throws Exception {
         String page = "https://xueqiu.com";
         Map<String, Object> map = new MapUtil<String, Object>().put("code", "SH600887").getMap();
-        Map<String, String> cookies = new HtmlAgent().url(page).execute(null).getCookies();
+        Map<String, String> cookies = WebAgentNew.getCookies(page);
         //获取最新的十大股东 及 所有时间列表
         String apiUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/top_holders.json?symbol=${code}&circula=0&count=200";
-        String data = new HtmlAgent()
-                .url(apiUrl)
-                .referer(page)
-                .cookie(cookies)
-                .execute(map)
-                .getBody();
+        String data = new EasyCrawl<String>()
+                .webAgent(WebAgentNew.defaultAgent().url(apiUrl).referer(page).cookie(WebAgentNew.getCookies(page)))
+                .analyze(WebAgentNew::getText)
+                .execute(map);
         System.out.println(data);
         //指定具体时间获取top10
         String reportUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/top_holders.json?symbol=${code}&locate=1669824000000&start=1669824000000&circula=0";
-        data = new HtmlAgent()
-                .url(reportUrl)
-                .referer(page)
-                .cookie(cookies)
-                .execute(map)
-                .getBody();
+        data = new EasyCrawl<String>()
+                .webAgent(WebAgentNew.defaultAgent().url(reportUrl).referer(page).cookie(cookies))
+                .analyze(WebAgentNew::getText)
+                .execute(map);
         System.out.println(data);
     }
 
@@ -118,15 +115,13 @@ public class XueQiuTest {
     public void gdrs() throws Exception {
         String page = "https://xueqiu.com/snowman/S/${code}/detail#/GDRS";
         Map<String, Object> map = new MapUtil<String, Object>().put("code", "SH600887").getMap();
-        Map<String, String> cookies = new HtmlAgent().url(page).execute(map).getCookies();
+        Map<String, String> cookies = WebAgentNew.defaultAgent().url(page).execute(map).getResult().getCookies();
         //获取最新的十大股东 及 所有时间列表
         String apiUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/holders.json?symbol=${code}&extend=true&page=1&size=100";
-        String data = new HtmlAgent()
-                .url(apiUrl)
-                .referer(page)
-                .cookie(cookies)
-                .execute(map)
-                .getBody();
+        String data = new EasyCrawl<String>()
+                .webAgent(WebAgentNew.defaultAgent().url(apiUrl).referer(page).cookie(cookies))
+                .analyze(WebAgentNew::getText)
+                .execute(map);
         System.out.println(data);
     }
 
@@ -192,7 +187,7 @@ public class XueQiuTest {
     @Test
     public void proxyTest() throws Exception {
         String cookieUrl = "https://xueqiu.com";
-        Map<String, String> cookies = new HtmlAgent().url(cookieUrl).execute(null).getCookies();
+        Map<String, String> cookies = WebAgentNew.getCookies(cookieUrl);
         String apiUrl = "https://stock.xueqiu.com/v5/stock/quote.json?symbol=SH600887&extend=detail";
         String referer = "https://xueqiu.com/S/SH600887";
         String result = new EasyCrawl<String>()
@@ -205,7 +200,7 @@ public class XueQiuTest {
     @Test
     public void mainIndex() throws Exception {
         String cookieUrl = "https://xueqiu.com/about/contact-us";
-        Map<String, String> cookies = new HtmlAgent().url(cookieUrl).execute(null).getCookies();
+        Map<String, String> cookies =WebAgentNew.getCookies(cookieUrl);
         String apiUrl = "https://stock.xueqiu.com/v5/stock/finance/cn/indicator.json?symbol=SZ002304&type=Q4&is_detail=true&count=5&timestamp=";
         String referer = "https://xueqiu.com/snowman/S/SZ002304/detail";
         JsonHelper result = new EasyCrawl<JsonHelper>()
