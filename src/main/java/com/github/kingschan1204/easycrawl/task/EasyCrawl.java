@@ -5,10 +5,12 @@ import com.github.kingschan1204.easycrawl.helper.http.UrlHelper;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
 import lombok.extern.slf4j.Slf4j;
+
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
 @Slf4j
 public class EasyCrawl<R> {
 
@@ -54,17 +56,17 @@ public class EasyCrawl<R> {
     }
 
     /**
-     *
-     * @param map 运行参数
+     * restApi json格式自动获取所有分页
+     * @param map          运行参数
      * @param pageIndexKey 页码key
-     * @param totalKey 总记录条数key
+     * @param totalKey     总记录条数key
      * @param pageSize
      * @return
      */
-    public List<R> executePage(Map<String, Object> map,String pageIndexKey , String totalKey , Integer pageSize ){
+    public List<R> executePage(Map<String, Object> map, String pageIndexKey, String totalKey, Integer pageSize) {
         List<R> list = Collections.synchronizedList(new ArrayList<>());
         WebAgent data = webAgent.execute(map);
-        JsonHelper json =  data.getJson();
+        JsonHelper json = data.getJson();
         int totalRows = json.get(totalKey, Integer.class);
         int totalPage = (totalRows + pageSize - 1) / pageSize;
         log.debug("共{}记录,每页展示{}条,共{}页", totalRows, pageSize, totalPage);

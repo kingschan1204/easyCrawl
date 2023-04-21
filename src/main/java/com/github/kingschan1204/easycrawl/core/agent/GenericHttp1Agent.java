@@ -2,6 +2,7 @@ package com.github.kingschan1204.easycrawl.core.agent;
 
 import com.github.kingschan1204.easycrawl.core.agent.utils.JsoupHelper;
 import com.github.kingschan1204.easycrawl.core.variable.ScanVariable;
+import com.github.kingschan1204.easycrawl.helper.http.ResponseAssertHelper;
 import com.github.kingschan1204.easycrawl.helper.http.ResponseHeadHelper;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
 import com.github.kingschan1204.easycrawl.helper.regex.RegexHelper;
@@ -120,6 +121,7 @@ public class GenericHttp1Agent implements WebAgent {
         log.debug("ContentType : {}", result.getContentType());
         log.debug("Headers : {}", result.getHeaders());
         log.debug("Cookies : {}", result.getCookies());
+        ResponseAssertHelper.of(result).infer();
         return this;
     }
 
