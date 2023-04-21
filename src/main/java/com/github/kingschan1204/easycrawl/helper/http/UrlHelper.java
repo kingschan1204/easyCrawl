@@ -1,4 +1,4 @@
-package com.github.kingschan1204.easycrawl.helper.url;
+package com.github.kingschan1204.easycrawl.helper.http;
 
 import lombok.AllArgsConstructor;
 

@@ -44,11 +44,7 @@ public class HttpRequestConfig {
      * 写入磁盘时的文件名，不传值的时候自动识别，传值的时候用手动指定的文件名
      */
     private String fileName;
-    /**
-     * HTTP响应中发送的数据如何被显示或保存。它通常用于控制浏览器如何处理HTTP响应的附件，以及在下载文件时提示用户文件的名称和类型等信息。
-     * Content-disposition: <type>; filename="<filename>"
-     */
-    public final String CONTENT_DISPOSITION ="Content-disposition";
+
 
 
 

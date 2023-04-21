@@ -4,6 +4,7 @@ import com.github.kingschan1204.easycrawl.core.agent.HttpRequestConfig;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.core.agent.utils.JsoupHelper;
+import com.github.kingschan1204.easycrawl.helper.http.ResponseHeadHelper;
 import com.github.kingschan1204.easycrawl.helper.regex.RegexHelper;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
 import com.github.kingschan1204.easycrawl.plugs.freemarker.FreemarkParser;
@@ -110,9 +111,9 @@ public class FileAgent extends HttpRequestConfig implements WebAgent<File> {
             defaultFileName = Arrays.stream(list)
                     .filter(s -> s.startsWith("name")).findFirst().get().replaceAll("name=|\"", "");
         }
-        if (result.getHeaders().containsKey(CONTENT_DISPOSITION)) {
+        if (result.getHeaders().containsKey(ResponseHeadHelper.CONTENT_DISPOSITION)) {
             //attachment;filename=%E8%A1%8C%E4%B8%9A%E5%88%86%E7%B1%BB.xlsx
-            String s = result.getHeaders().get(CONTENT_DISPOSITION);
+            String s = result.getHeaders().get(ResponseHeadHelper.CONTENT_DISPOSITION);
             String decode = URLDecoder.decode(s, "UTF-8");
             defaultFileName = decode.replaceAll(".*=", "");
         }

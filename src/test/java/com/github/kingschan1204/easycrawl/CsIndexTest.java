@@ -1,7 +1,7 @@
 package com.github.kingschan1204.easycrawl;
 
+import com.github.kingschan1204.easycrawl.core.agent.GenericHttp1Agent;
 import com.github.kingschan1204.easycrawl.core.agent.HttpRequestConfig;
-import com.github.kingschan1204.easycrawl.core.agent.engine.FileAgent;
 import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
 import com.github.kingschan1204.easycrawl.helper.collections.MapUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class CsIndexTest {
         String referer = "https://www.csindex.com.cn/en/indices/index-detail/000300";
         Map<String, String> cookies = new HtmlAgent().referer("https://www.csindex.com.cn").url(cookieUrl).execute(null).getCookies();
 
-        File file = new FileAgent()
+        File file = new GenericHttp1Agent()
                 .folder("C:\\temp\\")
                 .url(reqUrl)
                 .head(new MapUtil<String, String>().put("Content-Type", "application/json; charset=utf-8").getMap())
@@ -31,7 +31,7 @@ public class CsIndexTest {
                 .cookie(cookies)
                 .method(HttpRequestConfig.Method.POST)
                 .body("{\"searchInput\":\"\",\"pageNum\":1,\"pageSize\":10,\"sortField\":null,\"sortOrder\":null}")
-                .execute(null);
-        System.out.println(String.format("文件上名：%s 文件大小：%s kb",file.getName(),file.length()/1024));
+                .execute(null).getFile();
+        System.out.println(String.format("文件上名：%s 文件大小：%s kb", file.getName(), file.length() / 1024));
     }
 }

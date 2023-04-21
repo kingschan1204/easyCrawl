@@ -4,7 +4,7 @@ import com.github.kingschan1204.easycrawl.core.agent.HttpRequestConfig;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
-import com.github.kingschan1204.easycrawl.helper.url.UrlHelper;
+import com.github.kingschan1204.easycrawl.helper.http.UrlHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
-import com.github.kingschan1204.easycrawl.helper.url.UrlHelper;
+import com.github.kingschan1204.easycrawl.helper.http.UrlHelper;
 import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
