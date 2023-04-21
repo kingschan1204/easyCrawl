@@ -21,7 +21,7 @@ public class ProxyTest {
 
     @DisplayName("代理ip测试")
     @Test
-    public void proxyTest() throws Exception {
+    public void proxyTest() {
         String result = new EasyCrawl<String>()
                 .webAgent(WebAgent.defaultAgent().referer(apiUrl).useAgent(useAgent).url(apiUrl).proxy(proxy))
                 .analyze(r -> r.getResult().getBody()).execute();

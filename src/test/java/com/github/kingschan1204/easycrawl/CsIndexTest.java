@@ -16,7 +16,7 @@ public class CsIndexTest {
 
     @DisplayName("行业分类表下载")
     @Test
-    public void industry() throws Exception {
+    public void industry() {
         String cookieUrl = "https://www.csindex.com.cn/en/indices/index-detail/000300#/dataService/industryClassification";
         String reqUrl = "https://www.csindex.com.cn/csindex-home/exportExcel/security-industry-search-excel/CH";
         String referer = "https://www.csindex.com.cn/en/indices/index-detail/000300";

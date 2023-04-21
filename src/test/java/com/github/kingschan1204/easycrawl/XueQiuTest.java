@@ -23,7 +23,7 @@ public class XueQiuTest {
 
     @DisplayName("所有代码")
     @Test
-    public void getAllCode() throws Exception {
+    public void getAllCode() {
         String referer = "https://xueqiu.com/hq/screener";
         String apiurl = "https://xueqiu.com/service/screener/screen?category=CN&exchange=sh_sz&areacode=&indcode=&order_by=symbol&order=desc&page=1&size=200&only_count=0&current=&pct=&mc=&volume=&_=${timestamp}";
         List list = new EasyCrawl<List<JSONObject>>()
@@ -45,7 +45,7 @@ public class XueQiuTest {
 
     @DisplayName("历史分红")
     @Test
-    public void getBonus() throws Exception {
+    public void getBonus() {
         String apiUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/bonus.json?symbol=${code}&size=100&page=1&extend=true";
         String referer = "https://xueqiu.com/snowman/S/SH600887/detail";
         Map<String, Object> args = new MapUtil<String, Object>().put("code", "SH600887").getMap();
@@ -77,7 +77,7 @@ public class XueQiuTest {
 
     @DisplayName("公司简介")
     @Test
-    public void companyInfo() throws Exception {
+    public void companyInfo() {
 
         String apiUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/company.json?symbol=${code}";
         String data =  new EasyCrawl<String>()
@@ -89,7 +89,7 @@ public class XueQiuTest {
 
     @DisplayName("top10 股东")
     @Test
-    public void top10() throws Exception {
+    public void top10() {
         Map<String, Object> map = new MapUtil<String, Object>().put("code", "SH600887").getMap();
         Map<String, String> cookies = getXQCookies();
         //获取最新的十大股东 及 所有时间列表
@@ -110,7 +110,7 @@ public class XueQiuTest {
 
     @DisplayName("股东人数")
     @Test
-    public void gdrs() throws Exception {
+    public void gdrs() {
         String page = "https://xueqiu.com/snowman/S/${code}/detail#/GDRS";
         Map<String, Object> map = new MapUtil<String, Object>().put("code", "SH600887").getMap();
         Map<String, String> cookies = getXQCookies();
@@ -126,7 +126,7 @@ public class XueQiuTest {
 
     @DisplayName("日k线")
     @Test
-    public void dayOfKline() throws Exception {
+    public void dayOfKline() {
         int pageSize = -284;
         Map<String, Object> map = new MapUtil<String, Object>()
                 .put("code", "SH600887") //股票代码
@@ -182,7 +182,7 @@ public class XueQiuTest {
 
     @DisplayName("个股详情")
     @Test
-    public void proxyTest() throws Exception {
+    public void proxyTest() {
         Map<String, String> cookies = getXQCookies();
         String apiUrl = "https://stock.xueqiu.com/v5/stock/quote.json?symbol=SH600887&extend=detail";
         String referer = "https://xueqiu.com/S/SH600887";

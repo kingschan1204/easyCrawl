@@ -12,7 +12,7 @@ public class ExChangeTest {
 
     @DisplayName("新浪")
     @Test
-    public void sina() throws Exception {
+    public void sina() {
         String referer = "http://finance.sina.com.cn";
         String apiUrl = "http://hq.sinajs.cn/list=sz399001,sh000001,sz399006,sh000300";
         String data =  new EasyCrawl<String>()
