@@ -1,6 +1,6 @@
 package com.github.kingschan1204.easycrawl.task;
 
-import com.github.kingschan1204.easycrawl.core.agent.HttpEngine;
+import com.github.kingschan1204.easycrawl.core.agent.HttpRequestConfig;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
@@ -54,7 +54,7 @@ public class JsonUrlPageEasyCrawl<AgentResult, R extends List<?>> implements Cra
         cfList.get(0).thenAccept(consumer);
 
         for (int i = 2; i <= totalPage; i++) {
-            String url = new UrlHelper(((HttpEngine) agent).getUrl()).set(pageIndexKey, String.valueOf(i)).getUrl();
+            String url = new UrlHelper(((HttpRequestConfig) agent).getUrl()).set(pageIndexKey, String.valueOf(i)).getUrl();
             CompletableFuture<R> cf = CompletableFuture.supplyAsync(() -> {
                 try {
                     return (AgentResult) ((HtmlAgent) agent.url(url)).execute(map);

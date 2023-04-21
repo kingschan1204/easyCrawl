@@ -1,15 +1,14 @@
 package com.github.kingschan1204.easycrawl.core.agent.engine;
 
-import com.github.kingschan1204.easycrawl.core.agent.HttpEngine;
+import com.github.kingschan1204.easycrawl.core.agent.HttpRequestConfig;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.core.agent.utils.JsoupHelper;
 import com.github.kingschan1204.easycrawl.core.variable.ScanVariable;
-
 import java.net.Proxy;
 import java.util.Map;
 
-public final class HtmlAgent extends HttpEngine implements WebAgent<AgentResult> {
+public final class HtmlAgent extends HttpRequestConfig implements WebAgent<AgentResult> {
 
 
     @Override
@@ -25,7 +24,7 @@ public final class HtmlAgent extends HttpEngine implements WebAgent<AgentResult>
     }
 
     @Override
-    public WebAgent<AgentResult> method(HttpEngine.Method method) {
+    public WebAgent<AgentResult> method(HttpRequestConfig.Method method) {
         this.setMethod(method);
         return this;
     }
@@ -63,6 +62,18 @@ public final class HtmlAgent extends HttpEngine implements WebAgent<AgentResult>
     @Override
     public WebAgent<AgentResult> body(String body) {
         this.setBody(body);
+        return this;
+    }
+
+    @Override
+    public WebAgent<AgentResult> folder(String folder) {
+        this.setFolder(folder);
+        return this;
+    }
+
+    @Override
+    public WebAgent<AgentResult> fileName(String fileName) {
+        this.setFileName(fileName);
         return this;
     }
 

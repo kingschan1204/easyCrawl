@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * @author kings.chan
- * @create 2020-02-10 15:03
+ * 2020-02-10 15:03
  **/
 
 public interface WebAgent<T> {
@@ -15,7 +15,7 @@ public interface WebAgent<T> {
 
     WebAgent<T> referer(String referer);
 
-    WebAgent<T> method(HttpEngine.Method method);
+    WebAgent<T> method(HttpRequestConfig.Method method);
 
     WebAgent<T> head(Map<String, String> head);
 
@@ -28,6 +28,10 @@ public interface WebAgent<T> {
     WebAgent<T> proxy(Proxy proxy);
 
     WebAgent<T> body(String body);
+
+    WebAgent<T> folder(String folder);
+
+    WebAgent<T> fileName(String fileName);
 
     /***
      * 每次运行时都指定数据

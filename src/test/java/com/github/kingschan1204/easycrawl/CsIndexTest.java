@@ -1,6 +1,6 @@
 package com.github.kingschan1204.easycrawl;
 
-import com.github.kingschan1204.easycrawl.core.agent.HttpEngine;
+import com.github.kingschan1204.easycrawl.core.agent.HttpRequestConfig;
 import com.github.kingschan1204.easycrawl.core.agent.engine.FileAgent;
 import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
 import com.github.kingschan1204.easycrawl.helper.collections.MapUtil;
@@ -29,7 +29,7 @@ public class CsIndexTest {
                 .head(new MapUtil<String, String>().put("Content-Type", "application/json; charset=utf-8").getMap())
                 .referer(referer)
                 .cookie(cookies)
-                .method(HttpEngine.Method.POST)
+                .method(HttpRequestConfig.Method.POST)
                 .body("{\"searchInput\":\"\",\"pageNum\":1,\"pageSize\":10,\"sortField\":null,\"sortOrder\":null}")
                 .execute(null);
         System.out.println(String.format("文件上名：%s 文件大小：%s kb",file.getName(),file.length()/1024));

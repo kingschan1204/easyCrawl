@@ -51,7 +51,7 @@ public class XueQiuTest {
         String page = "https://xueqiu.com";
         String apiUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/bonus.json?symbol=${code}&size=100&page=1&extend=true";
         String referer = "https://xueqiu.com/snowman/S/SH600887/detail";
-        Map<String,Object> args = new MapUtil<String, Object>().put("code", "SH600887").getMap();
+        Map<String, Object> args = new MapUtil<String, Object>().put("code", "SH600887").getMap();
         Map<String, String> cookies = new HtmlAgent().url(page).execute(args).getCookies();
         String data = new HtmlAgent().url(apiUrl).referer(referer).cookie(cookies).execute(args).getBody();
         System.out.println(data);
@@ -61,8 +61,8 @@ public class XueQiuTest {
         for (int i = 0; i < rows.size(); i++) {
             JSONObject row = rows.getJSONObject(i);
             //把时间戳转为可读日期
-            for(String key:row.keySet()){
-                if(row.get(key) instanceof Long){
+            for (String key : row.keySet()) {
+                if (row.get(key) instanceof Long) {
                     row.put(key, DateHelper.of(row.getLong(key)).date());
 
                 }
@@ -198,8 +198,8 @@ public class XueQiuTest {
     public void proxyTest() throws Exception {
         String cookieUrl = "https://xueqiu.com";
         Map<String, String> cookies = new HtmlAgent().url(cookieUrl).execute(null).getCookies();
-        String apiUrl ="https://stock.xueqiu.com/v5/stock/quote.json?symbol=SH600887&extend=detail";
-        String referer ="https://xueqiu.com/S/SH600887";
+        String apiUrl = "https://stock.xueqiu.com/v5/stock/quote.json?symbol=SH600887&extend=detail";
+        String referer = "https://xueqiu.com/S/SH600887";
         String result = new EasyCrawl<AgentResult, String>().webAgent(
                 new HtmlAgent().referer(referer)
                         .cookie(cookies)
@@ -211,15 +211,17 @@ public class XueQiuTest {
     @DisplayName("主要指标")
     @Test
     public void mainIndex() throws Exception {
-        String cookieUrl = "https://xueqiu.com";
+        String cookieUrl = "https://xueqiu.com/about/contact-us";
         Map<String, String> cookies = new HtmlAgent().url(cookieUrl).execute(null).getCookies();
-        String apiUrl ="https://stock.xueqiu.com/v5/stock/finance/cn/indicator.json?symbol=SZ002304&type=Q4&is_detail=true&count=5&timestamp=";
-        String referer ="https://xueqiu.com/snowman/S/SZ002304/detail";
-        String result = new EasyCrawl<AgentResult, String>().webAgent(
+        String apiUrl = "https://stock.xueqiu.com/v5/stock/finance/cn/indicator.json?symbol=SZ002304&type=Q4&is_detail=true&count=5&timestamp=";
+        String referer = "https://xueqiu.com/snowman/S/SZ002304/detail";
+        AgentResult result = new EasyCrawl<AgentResult, AgentResult>().webAgent(
                 new HtmlAgent().referer(referer)
                         .cookie(cookies)
                         .url(apiUrl)
-        ).analyze(AgentResult::getBody).run();
-        System.out.println(result);
+        ).analyze(r -> r).run();
+        System.out.println(cookies);
+        System.out.println(result.getBody());
+        System.out.println(result.getHeaders());
     }
 }

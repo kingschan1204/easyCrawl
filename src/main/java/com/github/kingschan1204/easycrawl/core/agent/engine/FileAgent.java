@@ -1,7 +1,6 @@
 package com.github.kingschan1204.easycrawl.core.agent.engine;
 
-import com.github.kingschan1204.easycrawl.core.agent.FileEngine;
-import com.github.kingschan1204.easycrawl.core.agent.HttpEngine;
+import com.github.kingschan1204.easycrawl.core.agent.HttpRequestConfig;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.core.agent.utils.JsoupHelper;
@@ -21,19 +20,8 @@ import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
-public class FileAgent extends FileEngine implements WebAgent<File> {
+public class FileAgent extends HttpRequestConfig implements WebAgent<File> {
 
-
-
-    public WebAgent<File> folder(String folder) {
-        this.setFolder(folder);
-        return this;
-    }
-
-    public WebAgent<File> fileName(String fileName) {
-        this.setFileName(fileName);
-        return this;
-    }
 
     @Override
     public WebAgent<File> url(String url) {
@@ -48,7 +36,7 @@ public class FileAgent extends FileEngine implements WebAgent<File> {
     }
 
     @Override
-    public WebAgent<File> method(HttpEngine.Method method) {
+    public WebAgent<File> method(HttpRequestConfig.Method method) {
         this.setMethod(method);
         return this;
     }
@@ -86,6 +74,16 @@ public class FileAgent extends FileEngine implements WebAgent<File> {
     @Override
     public WebAgent<File> body(String body) {
         this.setBody(body);
+        return this;
+    }
+
+    public WebAgent<File> folder(String folder) {
+        this.setFolder(folder);
+        return this;
+    }
+
+    public WebAgent<File> fileName(String fileName) {
+        this.setFileName(fileName);
         return this;
     }
 

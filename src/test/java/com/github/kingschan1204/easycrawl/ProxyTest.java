@@ -1,6 +1,6 @@
 package com.github.kingschan1204.easycrawl;
 
-import com.github.kingschan1204.easycrawl.core.agent.HttpEngine;
+import com.github.kingschan1204.easycrawl.core.agent.HttpRequestConfig;
 import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.task.EasyCrawl;
@@ -30,7 +30,7 @@ public class ProxyTest {
                 .useAgent(useAgent)
                 .url(apiUrl)
                 .proxy(proxy)
-                .method(HttpEngine.Method.GET)
+                .method(HttpRequestConfig.Method.GET)
                 .execute(null);
         System.out.println(data.getBody());
     }
