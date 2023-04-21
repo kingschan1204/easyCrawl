@@ -116,12 +116,12 @@ public class JsoupHelper {
             agentResult = new AgentResult(start, response);
             return agentResult;
         } catch (SocketTimeoutException ex) {
-            log.error("【网络超时】 {} 超时时间：{}", pageUrl, System.currentTimeMillis() - start);
-            return new AgentResult(start, null);
+            log.error("【网络超时】 {} 执行时间：{} 毫秒", pageUrl, System.currentTimeMillis() - start);
+            throw  new RuntimeException(ex.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             log.error("crawlPage {} {}", pageUrl, e);
-            return new AgentResult( start, null);
+            throw  new RuntimeException(e.getMessage());
         }
     }
 
