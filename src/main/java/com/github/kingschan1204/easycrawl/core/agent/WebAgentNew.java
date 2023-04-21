@@ -15,16 +15,24 @@ import java.util.Map;
 
 public interface WebAgentNew {
 
-    enum ResponseType {
-        FILE(File.class), HTML(String.class), JSON(JsonHelper.class), TEXT(String.class);
-        public Class<?> type;
-
-        ResponseType(Class<?> clazz) {
-            type = clazz;
-        }
-    }
+//    enum ResponseType {
+//        FILE(File.class), HTML(String.class), JSON(JsonHelper.class), TEXT(String.class);
+//        public Class<?> type;
+//
+//        ResponseType(Class<?> clazz) {
+//            type = clazz;
+//        }
+//    }
 
 //    WebAgentNew of(HttpRequestConfig config);
+
+    /**
+     * 默认agent
+     * @return GenericHttp1Agent
+     */
+    static WebAgentNew defaultAgent() {
+        return new GenericHttp1Agent();
+    }
 
     WebAgentNew url(String url);
 
@@ -53,6 +61,8 @@ public interface WebAgentNew {
     AgentResult getResult();
 
     JsonHelper getJson();
+
+    String getText();
 
     File getFile();
 

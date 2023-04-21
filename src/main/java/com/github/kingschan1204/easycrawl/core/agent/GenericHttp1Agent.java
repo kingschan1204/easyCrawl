@@ -130,6 +130,11 @@ public class GenericHttp1Agent implements WebAgentNew {
     }
 
     @Override
+    public String getText() {
+        return getResult().getBody();
+    }
+
+    @Override
     public File getFile() {
         Assert.notNull(this.result, "返回对象为空！或者程序还未执行execute方法！");
         ResponseHeadHelper headHelper = ResponseHeadHelper.of(result.getHeaders());

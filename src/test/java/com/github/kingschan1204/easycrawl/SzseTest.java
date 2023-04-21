@@ -3,6 +3,7 @@ package com.github.kingschan1204.easycrawl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.kingschan1204.easycrawl.core.agent.WebAgentNew;
 import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.helper.http.UrlHelper;
@@ -28,8 +29,11 @@ public class SzseTest {
     TreeMap<String, Boolean> getDay(String month) {
         try {
             String url = new UrlHelper(apiUrl).set("month", month).getUrl();
-            AgentResult webPage = new HtmlAgent().url(url).useAgent(useAgent).referer(referer).timeOut(6000).execute(null);
-            return parserData(webPage.getBody());
+           String data = new EasyCrawl<String>()
+                    .webAgent(WebAgentNew.defaultAgent().referer(referer).url(url))
+                    .analyze(WebAgentNew::getText)
+                    .execute();
+            return parserData(data);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -76,10 +80,10 @@ public class SzseTest {
     public void proxyTest() throws Exception {
         String month = "2023-03";
         String url = new UrlHelper(apiUrl).set("month", month).getUrl();
-        TreeMap<String, Boolean> result = new EasyCrawl<AgentResult, TreeMap<String, Boolean>>()
-                .webAgent(new HtmlAgent().referer(url).useAgent(useAgent).url(apiUrl))
-                .analyze(r -> parserData(r.getBody()))
-                .run();
+        TreeMap<String, Boolean> result = new EasyCrawl< TreeMap<String, Boolean>>()
+                .webAgent(WebAgentNew.defaultAgent().referer(url).useAgent(useAgent).url(apiUrl))
+                .analyze(r -> parserData(r.getResult().getBody()))
+                .execute();
         System.out.println(result);
     }
 

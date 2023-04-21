@@ -2,11 +2,13 @@ package com.github.kingschan1204.easycrawl.core.agent;
 
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.jsoup.Connection;
 
 import java.net.Proxy;
 import java.util.Map;
 
+@NoArgsConstructor
 @Data
 public class HttpRequestConfig {
 
@@ -46,8 +48,6 @@ public class HttpRequestConfig {
     private String fileName;
 
 
-
-
     public static enum Method {
         GET,
         POST
@@ -60,7 +60,8 @@ public class HttpRequestConfig {
         ;
 
     }
-    public Connection.Method method(){
+
+    public Connection.Method method() {
         Connection.Method m;
         switch (this.method) {
             case GET:

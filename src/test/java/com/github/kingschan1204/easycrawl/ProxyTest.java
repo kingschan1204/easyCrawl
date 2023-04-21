@@ -1,8 +1,6 @@
 package com.github.kingschan1204.easycrawl;
 
-import com.github.kingschan1204.easycrawl.core.agent.HttpRequestConfig;
-import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
-import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
+import com.github.kingschan1204.easycrawl.core.agent.WebAgentNew;
 import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -23,27 +21,10 @@ public class ProxyTest {
 
     @DisplayName("代理ip测试")
     @Test
-    public void restTest() throws Exception {
-
-        AgentResult data = new HtmlAgent().referer(apiUrl)
-                .timeOut(9000)
-                .useAgent(useAgent)
-                .url(apiUrl)
-                .proxy(proxy)
-                .method(HttpRequestConfig.Method.GET)
-                .execute(null);
-        System.out.println(data.getBody());
-    }
-
-    @DisplayName("代理ip测试")
-    @Test
     public void proxyTest() throws Exception {
-        String result = new EasyCrawl<AgentResult, String>().webAgent(
-                new HtmlAgent().referer(apiUrl)
-                        .useAgent(useAgent)
-                        .url(apiUrl)
-                        .proxy(proxy)
-        ).analyze(AgentResult::getBody).run();
+        String result = new EasyCrawl<String>()
+                .webAgent(WebAgentNew.defaultAgent().referer(apiUrl).useAgent(useAgent).url(apiUrl).proxy(proxy))
+                .analyze(r -> r.getResult().getBody()).execute();
         System.out.println(result);
     }
 }

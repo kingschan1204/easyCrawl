@@ -101,6 +101,11 @@ public class JsonHelper {
         return null != get(expression, Object.class);
     }
 
+    @Override
+    public String toString() {
+        return null == json ? jsonArray.toJSONString() : json.toJSONString();
+    }
+
     public static void main(String[] args) {
 //        String data = "[0,1,2,3,4]";
 //        String data = "[{'name':'a'},{'name':'b','array':[1,2,3,4,5]}]";

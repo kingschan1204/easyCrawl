@@ -1,46 +1,52 @@
 package com.github.kingschan1204.easycrawl.task;
 
-import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
+import com.github.kingschan1204.easycrawl.core.agent.WebAgentNew;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
-@Slf4j
-public class EasyCrawl<T, R> implements CrawlTask<T, R> {
-    private WebAgent<T> agent;
-    private Function<T, R> parserFunction;
 
-    @Override
-    public CrawlTask<T, R> webAgent(WebAgent<T> agent) {
-        this.agent = agent;
+public class EasyCrawl<R> {
+
+    private WebAgentNew webAgent;
+    private Function<WebAgentNew, R> parserFunction;
+
+    public EasyCrawl<R> webAgent(WebAgentNew webAgent) {
+        this.webAgent = webAgent;
         return this;
     }
 
-    @Override
-    public CrawlTask<T, R> analyze(Function<T, R> parserFunction) {
+//    public static EasyCrawlNew of(WebAgentNew webAgent){
+//        return new EasyCrawlNew(webAgent);
+//    }
+
+    public EasyCrawl<R> analyze(Function<WebAgentNew, R> parserFunction) {
         this.parserFunction = parserFunction;
         return this;
     }
 
-    @Override
-    public R run() throws Exception {
-        return run(null);
+    public R execute() {
+        return execute(null);
     }
 
-    @Override
-    public R run(Map<String, Object> map) throws Exception {
-        Assert.notNull(agent, "agent对象不能为空！");
+    public R execute(Map<String, Object> map) {
+        Assert.notNull(webAgent, "agent对象不能为空！");
         Assert.notNull(parserFunction, "解析函数不能为空！");
+        R result;
         CompletableFuture<R> cf = CompletableFuture.supplyAsync(() -> {
             try {
-                return agent.execute(map);
+                return webAgent.execute(map);
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
         }).thenApply(parserFunction);
-        return cf.get();
+        try {
+            result = cf.get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return result;
     }
 }

@@ -3,6 +3,7 @@ package com.github.kingschan1204.easycrawl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
+import com.github.kingschan1204.easycrawl.core.agent.WebAgentNew;
 import com.github.kingschan1204.easycrawl.core.agent.engine.HtmlAgent;
 import com.github.kingschan1204.easycrawl.core.agent.utils.AgentResult;
 import com.github.kingschan1204.easycrawl.helper.datetime.DateHelper;
@@ -18,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Slf4j
 @DisplayName("雪球测试")
@@ -34,7 +34,7 @@ public class XueQiuTest {
         List<JSONObject> list = new JsonApiPaginationTask<JSONObject, List<JSONObject>>(engine, "page", "data.count", 200)
                 .execute(r -> {
                     List<JSONObject> jsonObjects = new ArrayList<>();
-                    JSONArray jsonArray =  JsonHelper.of(r).get("data.list", JSONArray.class);
+                    JSONArray jsonArray = JsonHelper.of(r).get("data.list", JSONArray.class);
                     for (int j = 0; j < jsonArray.size(); j++) {
                         jsonObjects.add(jsonArray.getJSONObject(j));
                     }
@@ -157,7 +157,7 @@ public class XueQiuTest {
                     .execute(map)
                     .getBody();
             System.out.println(data);
-            JsonHelper jsonHelper =  JsonHelper.of(data);
+            JsonHelper jsonHelper = JsonHelper.of(data);
             JSONArray columns = jsonHelper.get("data.column", JSONArray.class);
             JSONArray rows = jsonHelper.get("data.item", JSONArray.class);
             StringBuffer sqls = new StringBuffer();
@@ -200,11 +200,9 @@ public class XueQiuTest {
         Map<String, String> cookies = new HtmlAgent().url(cookieUrl).execute(null).getCookies();
         String apiUrl = "https://stock.xueqiu.com/v5/stock/quote.json?symbol=SH600887&extend=detail";
         String referer = "https://xueqiu.com/S/SH600887";
-        String result = new EasyCrawl<AgentResult, String>().webAgent(
-                new HtmlAgent().referer(referer)
-                        .cookie(cookies)
-                        .url(apiUrl)
-        ).analyze(AgentResult::getBody).run();
+        String result = new EasyCrawl<String>()
+                .webAgent(WebAgentNew.defaultAgent().referer(referer).cookie(cookies).url(apiUrl))
+                .analyze(r -> r.getResult().getBody()).execute();
         System.out.println(result);
     }
 
@@ -215,13 +213,11 @@ public class XueQiuTest {
         Map<String, String> cookies = new HtmlAgent().url(cookieUrl).execute(null).getCookies();
         String apiUrl = "https://stock.xueqiu.com/v5/stock/finance/cn/indicator.json?symbol=SZ002304&type=Q4&is_detail=true&count=5&timestamp=";
         String referer = "https://xueqiu.com/snowman/S/SZ002304/detail";
-        AgentResult result = new EasyCrawl<AgentResult, AgentResult>().webAgent(
-                new HtmlAgent().referer(referer)
-                        .cookie(cookies)
-                        .url(apiUrl)
-        ).analyze(r -> r).run();
+        JsonHelper result = new EasyCrawl<JsonHelper>()
+                .webAgent(WebAgentNew.defaultAgent().referer(referer).cookie(cookies).url(apiUrl))
+                .analyze(WebAgentNew::getJson)
+                .execute();
         System.out.println(cookies);
-        System.out.println(result.getBody());
-        System.out.println(result.getHeaders());
+        System.out.println(result);
     }
 }
