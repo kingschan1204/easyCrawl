@@ -158,7 +158,7 @@ public class XueQiuTest {
                 }
                 //把时间戳转为可读日期
                 array.set(0, DateHelper.of(array.getLong(0)).date());
-                String insert = SqlHelper.insert(columns.toArray(new String[]{}), array.toArray(new Object[]{}), "kline_600887");
+                String insert = SqlHelper.insert(columns.toArray(), array.toArray(new Object[]{}), "kline_600887");
                 sqls.append(insert);
 
             }

@@ -8,6 +8,9 @@ import org.jsoup.Connection;
 import java.net.Proxy;
 import java.util.Map;
 
+/**
+ * @author kingschan
+ */
 @NoArgsConstructor
 @Data
 public class HttpRequestConfig {
@@ -29,7 +32,6 @@ public class HttpRequestConfig {
     /**
      * 代理
      */
-    //Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(ip, port));
     public Proxy proxy;
     /**
      * http 请求方式
@@ -57,7 +59,6 @@ public class HttpRequestConfig {
 //        HEAD,
 //        OPTIONS,
 //        TRACE
-        ;
 
     }
 

@@ -8,6 +8,7 @@ import java.util.Map;
 /**
  * 时间戳定义
  * ${timestamp len=10}
+ * @author kingschan
  */
 public class TimeStampExpression implements Expression {
 
@@ -16,7 +17,7 @@ public class TimeStampExpression implements Expression {
         //默认输出13位
         String type = args.containsKey("len") ? String.valueOf(args.get("len")) : "13";
         Assert.isTrue(type.matches("10|13"), "时间戳只支持10位或者13位！");
-        long timeStamp = type.equals("13") ? System.currentTimeMillis() : System.currentTimeMillis() / 1000;
+        long timeStamp = "13".equals(type) ? System.currentTimeMillis() : System.currentTimeMillis() / 1000;
         return String.valueOf(timeStamp);
     }
 }

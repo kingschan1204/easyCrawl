@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author kingschan
+ */
 public class ScanVariable {
 
     private static final Map<String, Expression> elMap;
@@ -22,7 +25,7 @@ public class ScanVariable {
      *
      * @param text 要扫描的文本
      * @param map  传入的参数
-     * @return
+     * @return String
      */
     public static String parser(String text, Map<String, Object> map) {
         if (null == text) {
@@ -33,14 +36,13 @@ public class ScanVariable {
             for (String el : exps) {
                 String[] els = el.replaceAll("[${}]", "").split("\\s+");
                 String tag = els[0];
-                Map<String, String> argsMap = new HashMap<>();
+                Map<String, String> argsMap = new HashMap<>(10);
                 if (els.length > 1) {
                     for (int i = 1; i < els.length; i++) {
                         String[] token = els[i].split("=");
                         argsMap.put(token[0], token[1]);
                     }
                 }
-//            System.out.println(String.format("tag:%s 参数:%s", tag, argsMap));
                 if (elMap.containsKey(tag)) {
                     text = text.replace(el, elMap.get(tag).execute(argsMap));
                 }
