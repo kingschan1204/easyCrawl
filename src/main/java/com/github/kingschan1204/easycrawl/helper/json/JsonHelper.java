@@ -7,6 +7,9 @@ import com.alibaba.fastjson.parser.Feature;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class JsonHelper {
 
@@ -99,6 +102,27 @@ public class JsonHelper {
      */
     public boolean hasKey(String expression) {
         return null != get(expression, Object.class);
+    }
+
+    public Set<String> getKeys() {
+        return getAllKeys(this.json);
+    }
+
+    Set<String> getAllKeys(JSONObject jsonObject) {
+        Set<String> keys = new LinkedHashSet<>();
+
+        for (String key : jsonObject.keySet()) {
+            Object value = jsonObject.get(key);
+            if (value instanceof JSONObject) {
+                Set<String> subKeys = getAllKeys((JSONObject) value);
+                for (String subKey : subKeys) {
+                    keys.add(key + "." + subKey);
+                }
+            } else {
+                keys.add(key);
+            }
+        }
+        return keys;
     }
 
     @Override
