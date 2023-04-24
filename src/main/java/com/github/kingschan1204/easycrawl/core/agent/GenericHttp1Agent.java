@@ -16,6 +16,7 @@ import java.util.Map;
 
 @Slf4j
 public class GenericHttp1Agent implements WebAgent {
+
     private HttpRequestConfig config;
     private AgentResult result;
 
@@ -118,11 +119,6 @@ public class GenericHttp1Agent implements WebAgent {
                 this.config.getTimeOut(), this.config.getUseAgent(), referer, this.config.getHead(),
                 this.config.getCookie(), this.config.getProxy(),
                 true, true, this.config.getBody());
-        log.debug("ContentType : {}", result.getContentType());
-        log.debug("编码 {} ",result.getCharset());
-        log.debug("Headers : {}", result.getHeaders());
-        log.debug("Cookies : {}", result.getCookies());
-        log.debug("耗时 {} 毫秒",result.getTimeMillis());
         ResponseAssertHelper.of(result).infer();
         return this;
     }
