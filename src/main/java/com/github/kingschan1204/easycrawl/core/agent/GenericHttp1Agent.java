@@ -2,7 +2,6 @@ package com.github.kingschan1204.easycrawl.core.agent;
 
 import com.github.kingschan1204.easycrawl.core.agent.utils.JsoupHelper;
 import com.github.kingschan1204.easycrawl.core.variable.ScanVariable;
-import com.github.kingschan1204.easycrawl.helper.http.ResponseAssertHelper;
 import com.github.kingschan1204.easycrawl.helper.http.ResponseHeadHelper;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
 import com.github.kingschan1204.easycrawl.helper.regex.RegexHelper;
@@ -14,6 +13,10 @@ import java.io.FileOutputStream;
 import java.net.Proxy;
 import java.util.Map;
 
+/**
+ * @author kingschan
+ * 2023-4-24
+ */
 @Slf4j
 public class GenericHttp1Agent implements WebAgent {
 
@@ -119,7 +122,6 @@ public class GenericHttp1Agent implements WebAgent {
                 this.config.getTimeOut(), this.config.getUseAgent(), referer, this.config.getHead(),
                 this.config.getCookie(), this.config.getProxy(),
                 true, true, this.config.getBody());
-        ResponseAssertHelper.of(result).infer();
         return this;
     }
 

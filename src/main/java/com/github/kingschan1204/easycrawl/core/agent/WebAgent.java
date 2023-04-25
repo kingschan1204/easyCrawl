@@ -1,6 +1,7 @@
 package com.github.kingschan1204.easycrawl.core.agent;
 
 
+import com.github.kingschan1204.easycrawl.core.agent.interceptor.impl.StatusPrintInterceptorImpl;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
 
 import java.io.File;
@@ -31,7 +32,9 @@ public interface WebAgent {
      * @return GenericHttp1Agent
      */
     static WebAgent defaultAgent() {
-        return new GenericHttp1Agent();
+        GenericHttp1Agent agent = new GenericHttp1Agent();
+        GenericHttp1AgentProxy proxy = new GenericHttp1AgentProxy(agent, new StatusPrintInterceptorImpl());
+        return proxy;
     }
 
     static Map<String, String> getCookies(String url) {

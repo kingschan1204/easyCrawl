@@ -3,6 +3,9 @@ package com.github.kingschan1204.easycrawl.helper.http;
 import com.github.kingschan1204.easycrawl.core.agent.AgentResult;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author kingschan
+ */
 @Slf4j
 public class ResponseAssertHelper {
 
@@ -17,11 +20,6 @@ public class ResponseAssertHelper {
     }
 
     public void infer() {
-        log.debug("ContentType : {}", result.getContentType());
-        log.debug("编码 {} ",result.getCharset());
-        log.debug("Headers : {}", result.getHeaders());
-        log.debug("Cookies : {}", result.getCookies());
-        log.debug("耗时 {} 毫秒",result.getTimeMillis());
         statusCode();
         contentType();
     }
