@@ -4,12 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.Feature;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 public class JsonHelper {
 
@@ -24,19 +22,26 @@ public class JsonHelper {
         this.jsonArray = jsonArray;
     }
 
-    public static JsonHelper of(String text) {
-        if (text.startsWith("[")) {
-            return new JsonHelper(JSON.parseArray(text));
-        }
-        return new JsonHelper(JSON.parseObject(text, Feature.OrderedField));
-    }
 
-    public static JsonHelper of(Object object) {
-        if (object instanceof Collections) {
+    public static JsonHelper of(Object object, Feature... feature) {
+        assert null != object;
+        List<Feature> featureList = new ArrayList<>();
+        featureList.add(Feature.OrderedField);
+        if (null != feature) {
+            featureList.addAll(Arrays.asList(feature));
+        }
+        if (object instanceof String) {
+            String text = object.toString();
+            if (text.startsWith("[")) {
+                return new JsonHelper(JSON.parseArray(text));
+            }
+            return new JsonHelper(JSON.parseObject(text, featureList.toArray(new Feature[]{})));
+        } else if (object instanceof Collections) {
             return new JsonHelper(JSONArray.parseArray(JSON.toJSONString(object)));
         }
         return new JsonHelper(JSON.parseObject(JSON.toJSONString(object), Feature.OrderedField));
     }
+
 
     public JsonHelper put(String key, Object value) {
         Assert.notNull(json, "当前主体数据为JSONArray无法使用此方法！");
@@ -110,7 +115,6 @@ public class JsonHelper {
 
     Set<String> getAllKeys(JSONObject jsonObject) {
         Set<String> keys = new LinkedHashSet<>();
-
         for (String key : jsonObject.keySet()) {
             Object value = jsonObject.get(key);
             if (value instanceof JSONObject) {
@@ -127,7 +131,7 @@ public class JsonHelper {
 
     @Override
     public String toString() {
-        return null == json ? jsonArray.toJSONString() : json.toJSONString();
+        return JSON.toJSONString(null == json ? jsonArray : json, SerializerFeature.SortField);
     }
 
     public static void main(String[] args) {
