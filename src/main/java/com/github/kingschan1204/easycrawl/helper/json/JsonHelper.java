@@ -149,7 +149,8 @@ public class JsonHelper {
 
     @Override
     public String toString() {
-        return JSON.toJSONString(null == json ? jsonArray : json, SerializerFeature.SortField);
+        //按顺序输出，默认不输出为null的字段，设置为null也输出
+        return JSON.toJSONString(null == json ? jsonArray : json, SerializerFeature.SortField,SerializerFeature.WriteMapNullValue);
     }
 
     public static void main(String[] args) {
