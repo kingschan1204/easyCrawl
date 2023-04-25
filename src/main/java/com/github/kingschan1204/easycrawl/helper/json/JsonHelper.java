@@ -39,7 +39,7 @@ public class JsonHelper {
         } else if (object instanceof Collections) {
             return new JsonHelper(JSONArray.parseArray(JSON.toJSONString(object)));
         }
-        return new JsonHelper(JSON.parseObject(JSON.toJSONString(object), Feature.OrderedField));
+        return new JsonHelper(JSON.parseObject(JSON.toJSONString(object), featureList.toArray(new Feature[]{})));
     }
 
 
