@@ -61,8 +61,12 @@ public class JsonHelper {
     }
 
     /**
-     * 通过 属性. 的方式取 支持多层
-     *
+     * 通过
+     *  <p>属性. 的方式取 支持多层<p/>
+     *  <p>$first 返回jsonArray的第一个对象<p/>
+     *  <p>$last 返回jsonArray的最后一个对象<p/>
+     *  <p>* 返回jsonArray的所有对象<p/>
+     *  <p>,逗号分隔可获取jsonArray的多个字段组成新对象返回<p/>
      * @param expression 表达式  属性.属性
      * @param clazz      返回类型
      * @return 表达式的值
@@ -94,6 +98,20 @@ public class JsonHelper {
                 return js.get(0);
             } else if (expression.matches("\\$last")) {
                 return js.get(js.size() - 1);
+            } else if (expression.equals("*")) {
+                return js;
+            } else {
+                //从集合里抽 支持多字段以,逗号分隔
+                String[] fields = expression.split(",");
+                JSONArray result = new JSONArray();
+                for (int i = 0; i < js.size(); i++) {
+                    JSONObject json = new JSONObject(true);
+                    for (String key : fields) {
+                        json.put(key, js.getJSONObject(i).get(key));
+                    }
+                    result.add(json);
+                }
+                return result;
             }
         }
         return null;
