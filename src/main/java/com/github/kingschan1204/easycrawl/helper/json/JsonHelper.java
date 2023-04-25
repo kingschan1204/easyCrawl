@@ -8,8 +8,12 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
 
 import java.util.*;
-
-public class JsonHelper {
+/**
+ * @author kingschan
+ * 2023-4-25
+ * json操作兼容 jsonObject、jsonArray
+ */
+public class JsonHelper implements JsonOp{
 
     private JSONObject json;
     private JSONArray jsonArray;
@@ -42,13 +46,14 @@ public class JsonHelper {
         return new JsonHelper(JSON.parseObject(JSON.toJSONString(object), featureList.toArray(new Feature[]{})));
     }
 
-
+    @Override
     public JsonHelper put(String key, Object value) {
         Assert.notNull(json, "当前主体数据为JSONArray无法使用此方法！");
         this.json.put(key, value);
         return this;
     }
 
+    @Override
     public JsonHelper add(JSONObject jsonObject) {
         Assert.notNull(jsonArray, "当前主体数据为JSONObject无法使用此方法！");
         this.jsonArray.add(jsonObject);
@@ -71,6 +76,7 @@ public class JsonHelper {
      * @param clazz      返回类型
      * @return 表达式的值
      */
+    @Override
     public <T> T get(String expression, Class<T> clazz) {
         String[] depth = expression.split("\\.");
         Object object = null;
@@ -123,10 +129,12 @@ public class JsonHelper {
      * @param expression 表达式
      * @return 是否包括key
      */
+    @Override
     public boolean hasKey(String expression) {
         return null != get(expression, Object.class);
     }
 
+    @Override
     public Set<String> getKeys() {
         return getAllKeys(this.json);
     }
