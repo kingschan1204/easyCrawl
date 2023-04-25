@@ -2,6 +2,7 @@ package com.github.kingschan1204.easycrawl.core.agent;
 
 
 import com.github.kingschan1204.easycrawl.core.agent.interceptor.impl.StatusPrintInterceptorImpl;
+import com.github.kingschan1204.easycrawl.core.agent.interceptor.impl.TranscodingInterceptorImpl;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
 
 import java.io.File;
@@ -32,8 +33,11 @@ public interface WebAgent {
      * @return GenericHttp1Agent
      */
     static WebAgent defaultAgent() {
-        GenericHttp1Agent agent = new GenericHttp1Agent();
-        GenericHttp1AgentProxy proxy = new GenericHttp1AgentProxy(agent, new StatusPrintInterceptorImpl());
+        GenericHttp1AgentProxy proxy = new GenericHttp1AgentProxy(
+                new GenericHttp1Agent(),
+                new StatusPrintInterceptorImpl(),
+                new TranscodingInterceptorImpl()
+        );
         return proxy;
     }
 
