@@ -132,7 +132,7 @@ public class DateHelper {
      * @return yyyy年
      */
     public String year() {
-        return DateTimeFormatter.ofPattern("yyyy").format(localDateTime);
+        return format("yyyy");
     }
 
     /**
@@ -141,7 +141,7 @@ public class DateHelper {
      * @return MM月
      */
     public String month() {
-        return DateTimeFormatter.ofPattern("MM").format(localDateTime);
+        return format("MM");
     }
 
     /**
@@ -150,7 +150,7 @@ public class DateHelper {
      * @return dd日
      */
     public String day() {
-        return DateTimeFormatter.ofPattern("dd").format(localDateTime);
+        return format("dd");
     }
 
     /**
@@ -159,7 +159,7 @@ public class DateHelper {
      * @return yyyy-MM-dd
      */
     public String date() {
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd").format(localDateTime);
+        return format("yyyy-MM-dd");
     }
 
     /**
@@ -168,7 +168,7 @@ public class DateHelper {
      * @return yyyy-MM-dd HH:mm:ss
      */
     public String dateTime() {
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(localDateTime);
+        return format("yyyy-MM-dd HH:mm:ss");
     }
 
     /**
@@ -177,9 +177,18 @@ public class DateHelper {
      * @return HH:mm:ss
      */
     public String time() {
-        return DateTimeFormatter.ofPattern("HH:mm:ss").format(localDateTime);
+        return format("HH:mm:ss");
     }
 
+    /**
+     * 按传入的格式 格式化日期
+     *
+     * @param format
+     * @return
+     */
+    public String format(String format) {
+        return DateTimeFormatter.ofPattern(format).format(localDateTime);
+    }
 
     public static void main(String[] args) {
         String[] dates = {"2022-2-1", "2022-12-1", "2022-2-12", "2022-2-1 12:55:00", "2022-2-1T12:55:00", "2022-02-01 00:00:00", "20220201"};
