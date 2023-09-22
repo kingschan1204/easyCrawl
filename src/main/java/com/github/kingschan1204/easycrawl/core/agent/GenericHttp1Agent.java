@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.Proxy;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -72,6 +73,15 @@ public class GenericHttp1Agent implements WebAgent {
     }
 
     @Override
+    public WebAgent head(String key, String value) {
+        if(null == this.config.getHead()){
+            this.config.head = new HashMap<>();
+        }
+        this.config.getHead().put(key,value);
+        return this;
+    }
+
+    @Override
     public WebAgent useAgent(String useAgent) {
         this.config.setUseAgent(useAgent);
         return this;
@@ -80,6 +90,15 @@ public class GenericHttp1Agent implements WebAgent {
     @Override
     public WebAgent cookie(Map<String, String> cookie) {
         this.config.setCookie(cookie);
+        return this;
+    }
+
+    @Override
+    public WebAgent cookie(String key, String value) {
+        if(null == this.config.getCookie()){
+            this.config.cookie = new HashMap<>();
+        }
+        this.config.getCookie().put(key,value);
         return this;
     }
 

@@ -35,7 +35,7 @@ public class GenericHttp1AgentProxy implements WebAgent {
 
     @Override
     public WebAgent url(String url) {
-         this.webAgent.url(url);
+        this.webAgent.url(url);
         return this;
     }
 
@@ -47,55 +47,67 @@ public class GenericHttp1AgentProxy implements WebAgent {
 
     @Override
     public WebAgent method(HttpRequestConfig.Method method) {
-         this.webAgent.method(method);
+        this.webAgent.method(method);
         return this;
     }
 
     @Override
     public WebAgent head(Map<String, String> head) {
-         this.webAgent.head(head);
+        this.webAgent.head(head);
+        return this;
+    }
+
+    @Override
+    public WebAgent head(String key, String value) {
+        this.webAgent.head(key, value);
         return this;
     }
 
     @Override
     public WebAgent useAgent(String useAgent) {
-         this.webAgent.useAgent(useAgent);
+        this.webAgent.useAgent(useAgent);
         return this;
     }
 
     @Override
     public WebAgent cookie(Map<String, String> cookie) {
-         this.webAgent.cookie(cookie);
+        this.webAgent.cookie(cookie);
+        return this;
+    }
+
+    @Override
+    public WebAgent cookie(String key, String value) {
+        this.webAgent.cookie(key,value);
         return this;
     }
 
     @Override
     public WebAgent timeOut(Integer timeOut) {
-         this.webAgent.timeOut(timeOut);
+        this.webAgent.timeOut(timeOut);
         return this;
     }
 
     @Override
     public WebAgent proxy(Proxy proxy) {
-         this.webAgent.proxy(proxy);
+        this.webAgent.proxy(proxy);
         return this;
     }
 
     @Override
     public WebAgent body(String body) {
-         this.webAgent.body(body);
+        this.webAgent.body(body);
         return this;
     }
 
     @Override
     public WebAgent folder(String folder) {
-         this.webAgent.folder(folder);
+        this.webAgent.folder(folder);
         return this;
     }
 
     @Override
     public WebAgent fileName(String fileName) {
-         this.webAgent.fileName(fileName);
+        this.webAgent.fileName(fileName);
         return this;
     }
 

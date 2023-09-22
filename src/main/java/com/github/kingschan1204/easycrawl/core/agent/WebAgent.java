@@ -55,9 +55,13 @@ public interface WebAgent {
 
     WebAgent head(Map<String, String> head);
 
+    WebAgent head(String key,String value);
+
     WebAgent useAgent(String useAgent);
 
     WebAgent cookie(Map<String, String> cookie);
+
+    WebAgent cookie(String key, String value);
 
     WebAgent timeOut(Integer timeOut);
 
