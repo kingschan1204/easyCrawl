@@ -1,0 +1,97 @@
+{
+  "data": {
+    "market": {
+      "status_id": 7,
+      "region": "CN",
+      "status": "已收盘",
+      "time_zone": "Asia/Shanghai",
+      "time_zone_desc": null,
+      "delay_tag": 0
+    },
+    "quote": {
+      "current_ext": null,
+      "symbol": "SZ002304",
+      "volume_ext": null,
+      "high52w": 150.0,
+      "delayed": 0,
+      "type": 11,
+      "tick_size": 0.01,
+      "float_shares": 1502155838,
+      "limit_down": 85.59,
+      "no_profit": "N",
+      "high": 95.05,
+      "float_market_capital": 1.41442993706E11,
+      "timestamp_ext": null,
+      "lot_size": 100,
+      "lock_set": null,
+      "weighted_voting_rights": "N",
+      "chg": -0.94,
+      "eps": 6.84,
+      "last_close": 95.1,
+      "profit_four": 1.030511258967E10,
+      "volume": 5242421,
+      "volume_ratio": 0.86,
+      "profit_forecast": 2.4220922128E10,
+      "turnover_rate": 0.35,
+      "low52w": 88.3,
+      "name": "洋河股份",
+      "exchange": "SZ",
+      "pe_forecast": 5.856,
+      "total_shares": 1506445074,
+      "status": 1,
+      "is_vie_desc": "否",
+      "security_status": null,
+      "code": "002304",
+      "goodwill_in_net_assets": 0.4759468450093231,
+      "avg_price": 94.41,
+      "percent": -0.99,
+      "weighted_voting_rights_desc": "无差异",
+      "amplitude": 0.99,
+      "current": 94.16,
+      "is_vie": "N",
+      "current_year_percent": -14.32,
+      "issue_date": 1257436800000,
+      "sub_type": "1",
+      "low": 94.11,
+      "is_registration_desc": "否",
+      "no_profit_desc": "已盈利",
+      "market_capital": 1.41846868168E11,
+      "dividend": 3.741,
+      "dividend_yield": 3.973,
+      "currency": "CNY",
+      "navps": 38.49,
+      "profit": 1.001593004027E10,
+      "timestamp": 1716879882000,
+      "pe_lyr": 14.162,
+      "amount": 4.94960364E8,
+      "pledge_ratio": null,
+      "traded_amount_ext": null,
+      "is_registration": "N",
+      "pb": 2.446,
+      "limit_up": 104.61,
+      "pe_ttm": 13.765,
+      "time": 1716879882000,
+      "open": 95.0
+    },
+    "others": {
+      "pankou_ratio": 53.81,
+      "cyb_switch": true
+    },
+    "tags": [
+      {
+        "description": "深股通",
+        "value": 3
+      },
+      {
+        "description": "融",
+        "value": 6
+      },
+      {
+        "description": "空",
+        "value": 7
+      }
+    ]
+  },
+  "error_code": 0,
+  "error_description": ""
+}
