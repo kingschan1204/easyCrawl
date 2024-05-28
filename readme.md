@@ -46,7 +46,6 @@
 - freemarker
 - junit
 - commons-io
-- okhttp
 
 ## 运行
 > 下面是单元测试类,本工程所有测试用例全在这里

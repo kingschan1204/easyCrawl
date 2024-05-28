@@ -1,10 +1,7 @@
 package com.github.kingschan1204.easycrawl.helper.json;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.parser.Feature;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+
+import com.alibaba.fastjson2.*;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
 
 import java.util.*;
@@ -27,10 +24,10 @@ public class JsonHelper implements JsonOp{
     }
 
 
-    public static JsonHelper of(Object object, Feature... feature) {
+    public static JsonHelper of(Object object, JSONReader.Feature... feature) {
         assert null != object;
-        List<Feature> featureList = new ArrayList<>();
-        featureList.add(Feature.OrderedField);
+        List<JSONReader.Feature> featureList = new ArrayList<>();
+//        featureList.add(JSONReader.Feature.);
         if (null != feature) {
             featureList.addAll(Arrays.asList(feature));
         }
@@ -39,11 +36,11 @@ public class JsonHelper implements JsonOp{
             if (text.startsWith("[")) {
                 return new JsonHelper(JSON.parseArray(text));
             }
-            return new JsonHelper(JSON.parseObject(text, featureList.toArray(new Feature[]{})));
+            return new JsonHelper(JSON.parseObject(text, featureList.toArray(new JSONReader.Feature[]{})));
         } else if (object instanceof Collections) {
             return new JsonHelper(JSONArray.parseArray(JSON.toJSONString(object)));
         }
-        return new JsonHelper(JSON.parseObject(JSON.toJSONString(object), featureList.toArray(new Feature[]{})));
+        return new JsonHelper(JSON.parseObject(JSON.toJSONString(object), featureList.toArray(new JSONReader.Feature[]{})));
     }
 
     @Override
@@ -54,11 +51,13 @@ public class JsonHelper implements JsonOp{
     }
 
     @Override
-    public JsonHelper add(JSONObject jsonObject) {
+    public JsonHelper add(com.alibaba.fastjson.JSONObject jsonObject) {
         Assert.notNull(jsonArray, "当前主体数据为JSONObject无法使用此方法！");
         this.jsonArray.add(jsonObject);
         return this;
     }
+
+
 
     public Object get(String key) {
         Assert.notNull(json, "当前主体数据为JSONArray无法使用此方法！");
@@ -72,6 +71,7 @@ public class JsonHelper implements JsonOp{
      *  <p>$last 返回jsonArray的最后一个对象<p/>
      *  <p>* 返回jsonArray的所有对象<p/>
      *  <p>,逗号分隔可获取jsonArray的多个字段组成新对象返回<p/>
+     *  <p>->arrayList抽取单个字段转成 arrayList类似 [1,2,3,4]<p/>
      * @param expression 表达式  属性.属性
      * @param clazz      返回类型
      * @return 表达式的值
@@ -106,12 +106,21 @@ public class JsonHelper implements JsonOp{
                 return js.get(js.size() - 1);
             } else if (expression.equals("*")) {
                 return js;
-            } else {
+            }
+            // 抽取单个字段转成 arrayList类似 [1,2,3,4]
+            else if(expression.matches("\\w+(->)arrayList$")){
+                String key = expression.replace("->arrayList","");
+                JSONArray list = new JSONArray(js.size());
+                for (int i = 0; i < js.size(); i++) {
+                    list.add(js.getJSONObject(i).get(key));
+                }
+                return list;
+            }else {
                 //从集合里抽 支持多字段以,逗号分隔
                 String[] fields = expression.split(",");
                 JSONArray result = new JSONArray();
                 for (int i = 0; i < js.size(); i++) {
-                    JSONObject json = new JSONObject(true);
+                    JSONObject json = new JSONObject();
                     for (String key : fields) {
                         json.put(key, js.getJSONObject(i).get(key));
                     }
@@ -158,14 +167,14 @@ public class JsonHelper implements JsonOp{
     @Override
     public String toString() {
         //按顺序输出，默认不输出为null的字段，设置为null也输出
-        return JSON.toJSONString(null == json ? jsonArray : json, SerializerFeature.SortField,SerializerFeature.WriteMapNullValue);
+        return JSON.toJSONString(null == json ? jsonArray : json, JSONWriter.Feature.MapSortField,JSONWriter.Feature.WriteNulls);
     }
 
     public static void main(String[] args) {
 //        String data = "[0,1,2,3,4]";
 //        String data = "[{'name':'a'},{'name':'b','array':[1,2,3,4,5]}]";
-        String data = "{'name':'b','array':[1,2,3,4,5]}";
+        String data = "{'name':'b','array':[1,2,3,4,5],'roles':[{'id':1,name:'a1'},{'id':2,name:'a2'}]}";
         JsonHelper helper = JsonHelper.of(data);
-        System.out.println(helper.get("array.$last", Object.class));
+        System.out.println(helper.get("roles.id->arrayList", Object.class));
     }
 }
