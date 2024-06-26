@@ -1,10 +1,8 @@
 package com.github.kingschan1204.easycrawl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.helper.http.UrlHelper;
+import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
 import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -39,16 +37,21 @@ public class SzseTest {
     }
 
     TreeMap<String, Boolean> parserData(String text) {
-        JSONObject json = new JSONObject(true);
-        json = JSON.parseObject(text);
-        JSONArray jsonArray = json.getJSONArray("data");
         TreeMap<String, Boolean> data = new TreeMap<>();
+        JsonHelper jsonHelper = JsonHelper.of(text);
+        jsonHelper.op("data").forEach(node ->{
+            data.put(
+                    node.get("jyrq").asText(),
+                    node.get("jybz").asInt() == 1
+            );
+        });
+        /*JSONArray jsonArray = json.getJSONArray("data");
         for (int i = 0; i < jsonArray.size(); i++) {
             data.put(
                     jsonArray.getJSONObject(i).getString("jyrq"),
                     jsonArray.getJSONObject(i).getInteger("jybz") == 1
             );
-        }
+        }*/
         return data;
     }
 

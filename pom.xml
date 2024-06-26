@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.kingschan1204</groupId>
-    <artifactId>easycrawl</artifactId>
+    <artifactId>easyCrawl</artifactId>
     <version>0.1</version>
     <packaging>jar</packaging>
     <properties>
@@ -18,15 +18,38 @@
 
         <lombok.version>1.18.26</lombok.version>
         <slf4j.version>2.0.6</slf4j.version>
-        <logback.version>1.4.7</logback.version>
-        <jsoup.version>1.15.4</jsoup.version>
-        <fastjson.version>2.0.32</fastjson.version>
+        <logback.version>1.5.0</logback.version>
+        <jsoup.version>1.17.2</jsoup.version>
+        <jackson-core.version>2.17.1</jackson-core.version>
         <commons-io.version>2.11.0</commons-io.version>
-        <poi.version>5.2.2</poi.version>
+        <poi.version>5.2.5</poi.version>
         <junit-jupiter-engine.version>5.9.2</junit-jupiter-engine.version>
         <easyexcel.version>3.0.5</easyexcel.version>
     </properties>
     <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup-->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson-core.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-core.version}</version>
+        </dependency>
+
+
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -48,17 +71,8 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>${jsoup.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-        </dependency>
+
+
         <!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <dependency>
             <groupId>org.freemarker</groupId>

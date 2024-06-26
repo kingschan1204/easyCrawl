@@ -1,6 +1,6 @@
 package com.github.kingschan1204.easycrawl.plugs.freemarker.tag;
 
-import com.alibaba.fastjson.JSON;
+import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
 import freemarker.core.Environment;
 import freemarker.template.*;
@@ -15,7 +15,7 @@ public class UnixTimeStampTag implements TemplateDirectiveModel {
     @Override
     public void execute(Environment environment, Map map, TemplateModel[] templateModels, TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
         DefaultObjectWrapperBuilder builder = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_32);
-        log.debug("Freemarker 自定义标签传入参数：{}", JSON.toJSONString(map));
+        log.debug("Freemarker 自定义标签传入参数：{}", JsonHelper.of(map));
         //默认输出13位
         String type = map.containsKey("len") ? String.valueOf(map.get("len")) : "13";
         Assert.isTrue(type.matches("10|13"), "时间戳只支持10位或者13位！");

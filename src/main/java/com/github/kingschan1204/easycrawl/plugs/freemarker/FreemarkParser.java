@@ -1,6 +1,6 @@
 package com.github.kingschan1204.easycrawl.plugs.freemarker;
 
-import com.alibaba.fastjson.JSON;
+import com.github.kingschan1204.easycrawl.helper.json.EasyJson;
 import com.github.kingschan1204.easycrawl.plugs.freemarker.tag.UnixTimeStampTag;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -40,7 +40,7 @@ public class FreemarkParser {
         try {
             template.process(valMap, writer);
         } catch (Exception e) {
-            System.out.println(JSON.toJSONString(valMap));
+            System.out.println(EasyJson.of(valMap));
             System.out.println(text);
             throw e;
         }
