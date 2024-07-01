@@ -1,12 +1,9 @@
 package com.github.kingschan1204.easycrawl.helper.json;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * @author kings.chan
@@ -44,12 +41,22 @@ public interface JsonHelper {
 
     /**
      * 根据表达式获取值
+     *
      * @param expression 表达式
-     * @param clazz 类型
-     * @return
+     * @param clazz      类型
      * @param <T>
+     * @return
      */
+    @Deprecated
     <T> T get(String expression, Class<T> clazz);
+
+
+    /**
+     * 根据表达式获取值
+     * @param expression 表达式
+     * @return
+     */
+    JsonNode get(String expression);
 
     /**
      * 在表达式指定位置设置值

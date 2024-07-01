@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
 import lombok.SneakyThrows;
@@ -13,10 +14,16 @@ import lombok.SneakyThrows;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
+/**
+ * @author kings.chan
+ * 2024-6-27
+ */
 public class EasyJson implements JsonHelper{
 
     private static final ObjectMapper objectMapper;
@@ -28,11 +35,8 @@ public class EasyJson implements JsonHelper{
         objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         //支持解析单引号
         objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-//        objectMapper.configure(JsonParser.Feature.IGNORE_UNDEFINED, true);
-//        objectMapper.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
         //遇到不存在的属性不报错
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
         //所有的日期格式统一样式： yyyy-MM-dd HH:mm:ss
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
     }
@@ -127,6 +131,16 @@ public class EasyJson implements JsonHelper{
         return (T) object;
     }
 
+    @Override
+    public JsonNode get(String expression) {
+        String[] depth = expression.split("\\.");
+        Object object = getValByExpression(root, depth[0]);
+        for (int i = 1; i < depth.length; i++) {
+            object = getValByExpression(object, depth[i]);
+        }
+        return (JsonNode) object;
+    }
+
     private Object getValByExpression(Object object, String expression) {
         // jsonObject
         if (object instanceof ObjectNode) {
@@ -202,10 +216,6 @@ public class EasyJson implements JsonHelper{
 
     @Override
     public void forEach(Consumer<? super JsonNode> consumer) {
-       /* for (JsonNode node : root) {
-            System.out.println(node.get("name").asText() + " is " + node.get("age").asText() + " years old");
-            parserFunction.
-        }*/
         root.forEach(consumer);
     }
 

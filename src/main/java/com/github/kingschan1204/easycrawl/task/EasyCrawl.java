@@ -1,5 +1,6 @@
 package com.github.kingschan1204.easycrawl.task;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.helper.http.UrlHelper;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
@@ -11,6 +12,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+/**
+ * @author kingschan
+ */
 @Slf4j
 public class EasyCrawl<R> {
 
@@ -22,9 +26,6 @@ public class EasyCrawl<R> {
         return this;
     }
 
-//    public static EasyCrawlNew of(WebAgentNew webAgent){
-//        return new EasyCrawlNew(webAgent);
-//    }
 
     public EasyCrawl<R> analyze(Function<WebAgent, R> parserFunction) {
         this.parserFunction = parserFunction;
@@ -67,8 +68,8 @@ public class EasyCrawl<R> {
         List<R> list = Collections.synchronizedList(new ArrayList<>());
         WebAgent data = webAgent.execute(map);
         JsonHelper json = data.getJson();
-        int totalRows = json.get(totalKey, Integer.class);
-        int totalPage = (totalRows + pageSize - 1) / pageSize;
+        Integer totalRows = json.get(totalKey).intValue();
+        Integer totalPage = (totalRows + pageSize - 1) / pageSize;
         log.debug("共{}记录,每页展示{}条,共{}页", totalRows, pageSize, totalPage);
 
         List<CompletableFuture<R>> cfList = new ArrayList<>();

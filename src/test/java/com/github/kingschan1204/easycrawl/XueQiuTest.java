@@ -8,14 +8,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @DisplayName("雪球测试")
 public class XueQiuTest {
     String page = "https://xueqiu.com";
-
-
 
 
     @DisplayName("历史分红")
@@ -40,7 +40,7 @@ public class XueQiuTest {
     public void companyInfo() {
 
         String apiUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/company.json?symbol=${code}";
-        String data =  new EasyCrawl<String>()
+        String data = new EasyCrawl<String>()
                 .webAgent(WebAgent.defaultAgent().url(apiUrl).referer(page).cookie(getXQCookies()))
                 .analyze(WebAgent::getText)
                 .execute(new MapUtil<String, Object>().put("code", "SH600887").getMap());
@@ -84,8 +84,6 @@ public class XueQiuTest {
     }
 
 
-
-
     @DisplayName("个股详情")
     @Test
     public void proxyTest() {
@@ -110,7 +108,34 @@ public class XueQiuTest {
         System.out.println(result);
     }
 
-    Map<String, String> getXQCookies(){
+
+    @DisplayName("所有代码")
+    @Test
+    public void getAllCode() {
+        String referer = "https://xueqiu.com/hq/screener";
+        String apiurl = "https://xueqiu.com/service/screener/screen?category=CN&exchange=sh_sz&areacode=&indcode=&order_by=symbol&order=desc&page=1&size=200&only_count=0&current=&pct=&mc=&volume=&_=${timestamp}";
+        List list = new EasyCrawl<List<Map<String, Object>>>()
+                .webAgent(WebAgent.defaultAgent().url(apiurl).referer(referer))
+                .analyze(r -> {
+                    List<Map<String, Object>> result = new ArrayList<>();
+                    r.getJson().op("data.list").forEach(row -> {
+                        result.add(
+                                new MapUtil<String, Object>()
+                                        .put(
+                                                row.get("name").asText(),
+                                                row.get("symbol").asText()
+                                        ).getMap()
+                        );
+                    });
+                    return result;
+                }).executePage(null, "page", "data.count", 200);
+
+        log.info("共{}支股票", list.size());
+        list.forEach(System.out::println);
+
+    }
+
+    Map<String, String> getXQCookies() {
         String cookieUrl = "https://xueqiu.com/about/contact-us";
         return WebAgent.getCookies(cookieUrl);
     }
