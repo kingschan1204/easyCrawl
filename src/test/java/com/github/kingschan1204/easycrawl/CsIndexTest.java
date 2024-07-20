@@ -25,13 +25,16 @@ public class CsIndexTest {
         File file = new EasyCrawl<File>()
                 .webAgent(WebAgent.defaultAgent().folder("C:\\temp\\")
                         .url(reqUrl)
-                        .head(new MapUtil<String, String>().put("Content-Type", "application/json; charset=utf-8").getMap())
+                        .head("Content-Type", "application/json; charset=utf-8")
                         .referer(referer)
                         .cookie(cookies)
                         .method(HttpRequestConfig.Method.POST)
-                        .body("{\"searchInput\":\"\",\"pageNum\":1,\"pageSize\":10,\"sortField\":null,\"sortOrder\":null}"))
+                        .body("""
+                                {"searchInput":"","pageNum":1,"pageSize":10,"sortField":null,"sortOrder":null}
+                                """)
+                )
                 .analyze(WebAgent::getFile)
                 .execute();
-        System.out.println(String.format("文件上名：%s 文件大小：%s kb", file.getName(), file.length() / 1024));
+        log.info("文件上名：{} 文件大小：{} kb", file.getName(), file.length() / 1024);
     }
 }
