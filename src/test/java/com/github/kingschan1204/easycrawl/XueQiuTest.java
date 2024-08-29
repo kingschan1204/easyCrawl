@@ -3,6 +3,7 @@ package com.github.kingschan1204.easycrawl;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.helper.collections.MapUtil;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
+import com.github.kingschan1204.easycrawl.helper.math.MathHelper;
 import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -106,6 +107,33 @@ public class XueQiuTest {
                 .analyze(WebAgent::getJson)
                 .execute();
         System.out.println(result);
+    }
+
+    @DisplayName("资产负债表")
+    @Test
+    public void balanceSheet() throws Exception {
+        //type=Q4 年报
+        //type=all 全部
+        //type=Q2 中报
+        //type=Q3 三季报
+        //type=Q1 一季报
+        String apiUrl = "https://stock.xueqiu.com/v5/stock/finance/cn/balance.json?symbol=SZ002304&type=all&is_detail=true&count=50&timestamp=";
+        String referer = "https://xueqiu.com/snowman/S/SZ002304/detail";
+        JsonHelper result = new EasyCrawl<JsonHelper>()
+                .webAgent(WebAgent.defaultAgent().referer(referer).cookie(getXQCookies()).url(apiUrl))
+                .analyze(WebAgent::getJson)
+                .execute();
+        // inventory 存货
+        // contract_liabilities 合同负债
+//        System.out.println(result);
+        result.op("data.list").forEach(r ->{
+            String rowText = String.format("%s 存货:%s 合同负债:%s",
+                    r.get("report_name").asText(),
+                    MathHelper.of(r.get("inventory").get(0).decimalValue()).pretty(),
+                    MathHelper.of(r.get("contract_liabilities").get(0).decimalValue()).pretty()
+            );
+            System.out.println(rowText);
+        });
     }
 
 
