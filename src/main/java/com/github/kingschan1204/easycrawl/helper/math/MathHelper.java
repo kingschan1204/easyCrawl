@@ -20,6 +20,9 @@ public class MathHelper {
     public static MathHelper of(String text) {
         return new MathHelper(toBigDecimal(text));
     }
+    public static MathHelper of(BigDecimal value) {
+        return new MathHelper(value);
+    }
 
     static BigDecimal toBigDecimal(String text) {
         assert null != text;
@@ -77,14 +80,22 @@ public class MathHelper {
      * @param v            小数位
      * @param roundingMode 浮动模式
      * @return this
-     * CEILING: 向正无穷方向舍入。
-     * FLOOR: 向负无穷方向舍入。
-     * UP: 远离零方向舍入（正数舍入为正无穷，负数舍入为负无穷）。
-     * DOWN: 向零方向舍入（直接舍弃小数部分）。
-     * HALF_UP: 最近数字舍入（五舍六入，四舍五入）。
-     * HALF_DOWN: 最近数字舍入（五舍六入，五舍六入）。
-     * HALF_EVEN: 最近数字舍入（银行家算法：四舍六入五考虑，若舍弃部分左边的数字为偶数，则舍入后的结果加上1）。
-     * UNNECESSARY: 断言请求的操作具有精确的结果，因此不需要舍入。如果对获得此结果的精确度的任何疑问，则会抛出一个 ArithmeticException 异常。
+     * UP: 任何非零的小数部分都会向上舍入 ( 2.3 -> 3 )。
+     * DOWN: 丢弃小数部分，去掉小数而不进行进位,不管小数部分是多少 ( 2.9 -> 2 )
+     * CEILING : 对于正数，行为与 UP 类似；对于负数，行为与 DOWN 类似。即正数向上舍入，负数向下舍入（向零方向）。2.3 -> 3   -2.3 -> -2
+     * FLOOR : 对于正数，行为与 DOWN 类似；对于负数，行为与 UP 类似。即正数向下舍入，负数向上舍入。 2.9 -> 2   -2.9 -> -3
+     * HALF_UP : 四舍五入的常见方式 如果小数部分大于或等于0.5，则向上舍入；否则向下舍入 2.5 -> 3   2.49 -> 2   -2.5 -> -3
+     * HALF_DOWN : 如果小数部分大于0.5，则向上舍入；如果等于或小于0.5，则向下舍入。2.5 -> 2  2.51 -> 3 -2.5 -> -2
+     * HALF_EVEN : 银行家舍入规则，四舍六入五留双 当小数部分为0.5时，判断前一位数字的奇偶性。奇数向上舍入，偶数向下舍入；其他情况与 HALF_UP 类似。
+     * 1.5 -> 2（1是奇数，向上舍入）
+     * 2.5 -> 2（2是偶数，向下舍入）
+     * 2.51 -> 3
+     * UNNECESSARY : 不进行舍入，如果结果无法精确表示，将抛出异常。只适用于精确计算的情况，要求结果必须是精确的。
+     * 总结
+     * 向上舍入：UP, CEILING, HALF_UP
+     * 向下舍入：DOWN, FLOOR, HALF_DOWN
+     * 四舍五入变体：HALF_UP, HALF_DOWN, HALF_EVEN
+     * 严格要求精确：UNNECESSARY
      */
     public MathHelper scale(int v, RoundingMode roundingMode) {
         this.value = this.value.setScale(v, roundingMode);
@@ -92,7 +103,7 @@ public class MathHelper {
     }
 
     public MathHelper scale(int v) {
-        this.value = this.value.setScale(v,RoundingMode.DOWN);
+        this.value = this.value.setScale(v, RoundingMode.DOWN);
         return this;
     }
 
@@ -102,6 +113,23 @@ public class MathHelper {
 
     public String stringValue() {
         return this.value.toPlainString();
+    }
+
+    public String pretty() {
+        final BigDecimal YI = new BigDecimal("100000000");
+        if (this.value.compareTo(YI) >= 0) {
+            // 如果大于1亿，除以1亿，并保留两位小数
+            BigDecimal result = value.divide(YI, 2, RoundingMode.HALF_UP);
+            return result + "亿";
+        }
+        final BigDecimal WAN = new BigDecimal("10000");
+        if (this.value.compareTo(WAN) >= 0) {
+            // 如果大于1万，除以1万，并保留两位小数
+            BigDecimal result = value.divide(WAN, 2, RoundingMode.HALF_UP);
+            return result + "万";
+        }
+        return scale(2,RoundingMode.HALF_UP).stringValue();
+
     }
 
     public static void main(String[] args) {
