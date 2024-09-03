@@ -94,6 +94,12 @@ public class GenericHttp1AgentProxy implements WebAgent {
     }
 
     @Override
+    public WebAgent proxy(Proxy.Type type, String host, int port) {
+        this.webAgent.proxy(type,host,port);
+        return this;
+    }
+
+    @Override
     public WebAgent body(String body) {
         this.webAgent.body(body);
         return this;

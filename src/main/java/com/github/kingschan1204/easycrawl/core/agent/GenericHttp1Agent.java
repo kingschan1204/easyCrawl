@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.HashMap;
 import java.util.Map;
@@ -111,6 +112,12 @@ public class GenericHttp1Agent implements WebAgent {
     @Override
     public WebAgent proxy(Proxy proxy) {
         this.config.setProxy(proxy);
+        return this;
+    }
+
+    @Override
+    public WebAgent proxy(Proxy.Type type, String host, int port) {
+        this.config.setProxy(new Proxy(type, new InetSocketAddress(host, port)));
         return this;
     }
 

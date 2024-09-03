@@ -7,6 +7,7 @@ import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
 
 import java.io.File;
 import java.net.Proxy;
+import java.net.SocketAddress;
 import java.util.Map;
 
 /**
@@ -66,6 +67,8 @@ public interface WebAgent {
     WebAgent timeOut(Integer timeOut);
 
     WebAgent proxy(Proxy proxy);
+
+    WebAgent proxy(Proxy.Type type, String host,int port);
 
     WebAgent body(String body);
 
