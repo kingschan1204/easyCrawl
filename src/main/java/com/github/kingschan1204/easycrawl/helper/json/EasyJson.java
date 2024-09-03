@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
 import lombok.SneakyThrows;
@@ -24,7 +23,7 @@ import java.util.function.Consumer;
  * @author kings.chan
  * 2024-6-27
  */
-public class EasyJson implements JsonHelper{
+public class EasyJson implements JsonHelper {
 
     private static final ObjectMapper objectMapper;
     JsonNode root;
@@ -55,6 +54,8 @@ public class EasyJson implements JsonHelper{
 
         } else if (obj instanceof JsonNode) {
             root = (JsonNode) obj;
+        } else {
+            root = objectMapper.valueToTree(obj);
         }
     }
 
@@ -217,6 +218,11 @@ public class EasyJson implements JsonHelper{
     @Override
     public void forEach(Consumer<? super JsonNode> consumer) {
         root.forEach(consumer);
+    }
+
+    @Override
+    public String pretty() {
+        return root.toPrettyString();
     }
 
 

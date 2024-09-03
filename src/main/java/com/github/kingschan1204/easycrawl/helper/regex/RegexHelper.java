@@ -49,12 +49,15 @@ public class RegexHelper {
 
     }
 
-    public static String findFirst(String text, String regx) {
+    public static String findFirst(String text, String regx,int index) {
         Pattern pattern = Pattern.compile(regx);
         Matcher matcher = pattern.matcher(text);
         if (matcher.find()) {
-            return matcher.group();
+            return matcher.group(index);
         }
         return "";
+    }
+    public static String findFirst(String text, String regx) {
+       return findFirst(text,regx,0);
     }
 }

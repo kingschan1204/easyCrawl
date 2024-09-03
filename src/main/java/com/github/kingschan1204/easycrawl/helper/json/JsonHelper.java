@@ -80,4 +80,6 @@ public interface JsonHelper {
      * @param consumer
      */
     void forEach(Consumer<? super JsonNode> consumer);
+
+    String pretty();
 }

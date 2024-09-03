@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.jsoup.Connection;
 
 import java.net.Proxy;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -52,14 +53,38 @@ public class HttpRequestConfig {
 
     public static enum Method {
         GET,
-        POST
-//        PUT,
+        POST,
+        PUT,
 //        DELETE,
 //        PATCH,
 //        HEAD,
 //        OPTIONS,
 //        TRACE
 
+    }
+
+    /**
+     * 添加请求头
+     * @param key
+     * @param value
+     */
+    public void addHead(String key, String value) {
+        if(null == this.head){
+            this.head = new HashMap<>();
+        }
+        this.head.put(key,value);
+    }
+
+    /**
+     * 添加cookie
+     * @param key
+     * @param value
+     */
+    public void addCookie(String key, String value) {
+        if(null == this.cookie){
+            this.cookie = new HashMap<>();
+        }
+        this.cookie.put(key,value);
     }
 
     public Connection.Method method() {
@@ -71,8 +96,11 @@ public class HttpRequestConfig {
             case POST:
                 m = Connection.Method.POST;
                 break;
+            case PUT:
+                m = Connection.Method.PUT;
+                break;
             default:
-                throw new RuntimeException("目前只支持：get , post 方法！");
+                throw new RuntimeException("目前只支持：get,post,put 方法！");
         }
         return m;
     }

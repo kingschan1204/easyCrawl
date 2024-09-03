@@ -34,6 +34,14 @@ public class GenericHttp1AgentProxy implements WebAgent {
     }
 
     @Override
+    public WebAgent config(HttpRequestConfig config) {
+        if (null != config) {
+            this.webAgent.config(config);
+        }
+        return this;
+    }
+
+    @Override
     public WebAgent url(String url) {
         this.webAgent.url(url);
         return this;
@@ -77,7 +85,7 @@ public class GenericHttp1AgentProxy implements WebAgent {
 
     @Override
     public WebAgent cookie(String key, String value) {
-        this.webAgent.cookie(key,value);
+        this.webAgent.cookie(key, value);
         return this;
     }
 
@@ -95,7 +103,7 @@ public class GenericHttp1AgentProxy implements WebAgent {
 
     @Override
     public WebAgent proxy(Proxy.Type type, String host, int port) {
-        this.webAgent.proxy(type,host,port);
+        this.webAgent.proxy(type, host, port);
         return this;
     }
 

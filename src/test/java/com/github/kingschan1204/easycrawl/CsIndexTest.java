@@ -2,11 +2,11 @@ package com.github.kingschan1204.easycrawl;
 
 import com.github.kingschan1204.easycrawl.core.agent.HttpRequestConfig;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
-import com.github.kingschan1204.easycrawl.helper.collections.MapUtil;
 import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.util.Map;
 

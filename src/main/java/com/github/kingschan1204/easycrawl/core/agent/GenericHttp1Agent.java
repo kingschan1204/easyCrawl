@@ -50,6 +50,12 @@ public class GenericHttp1Agent implements WebAgent {
     }
 
     @Override
+    public WebAgent config(HttpRequestConfig config) {
+        this.config = config;
+        return this;
+    }
+
+    @Override
     public WebAgent url(String url) {
         this.config.setUrl(url);
         return this;

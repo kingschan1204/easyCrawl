@@ -7,7 +7,6 @@ import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
 
 import java.io.File;
 import java.net.Proxy;
-import java.net.SocketAddress;
 import java.util.Map;
 
 /**
@@ -34,11 +33,16 @@ public interface WebAgent {
      * @return GenericHttp1Agent
      */
     static WebAgent defaultAgent() {
+        return defaultAgent(null);
+    }
+
+    static WebAgent defaultAgent(HttpRequestConfig config) {
         GenericHttp1AgentProxy proxy = new GenericHttp1AgentProxy(
                 new GenericHttp1Agent(),
                 new StatusPrintInterceptorImpl(),
                 new TranscodingInterceptorImpl()
         );
+        proxy.config(config);
         return proxy;
     }
 
@@ -48,6 +52,8 @@ public interface WebAgent {
 
     HttpRequestConfig getConfig();
 
+    WebAgent config(HttpRequestConfig config);
+
     WebAgent url(String url);
 
     WebAgent referer(String referer);
@@ -56,7 +62,7 @@ public interface WebAgent {
 
     WebAgent head(Map<String, String> head);
 
-    WebAgent head(String key,String value);
+    WebAgent head(String key, String value);
 
     WebAgent useAgent(String useAgent);
 
@@ -68,7 +74,7 @@ public interface WebAgent {
 
     WebAgent proxy(Proxy proxy);
 
-    WebAgent proxy(Proxy.Type type, String host,int port);
+    WebAgent proxy(Proxy.Type type, String host, int port);
 
     WebAgent body(String body);
 
