@@ -20,9 +20,14 @@ public class ResponseTypeTest {
                 .put("png", "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png")
                 .put("pdf", "http://notice.10jqka.com.cn/api/pdf/6cb73f7b9c9925c3.pdf")
                 .put("text", "https://myip.ipip.net/")
+                .put("json", "https://open.xueqiu.com/mpaas/config/content?appkey=37c480a66a8aa8450910b5464ce96e26&keys=taichi_run_flag&uid=9920891343")
                 .getMap();
-        for (String type : map.keySet()) {
-            new EasyCrawl<String>().webAgent(WebAgent.defaultAgent().url(map.get(type))).analyze(WebAgent::getText).execute();
-        }
+        map.forEach((k,v)->{
+            String result = new EasyCrawl<String>().webAgent(WebAgent.defaultAgent().url(v).timeOut(8000)).analyze(WebAgent::getText).execute();
+            if(k.matches("text")){
+                System.out.println(result);
+            }
+        });
+
     }
 }
