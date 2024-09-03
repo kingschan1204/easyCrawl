@@ -24,13 +24,13 @@ public class XueQiuTest {
     public void getBonus() {
         String apiUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/bonus.json?symbol=${code}&size=100&page=1&extend=true";
         String referer = "https://xueqiu.com/snowman/S/SH600887/detail";
-        Map<String, Object> args = new MapUtil<String, Object>().put("code", "SH600887").getMap();
         Map<String, String> cookies = getXQCookies();
 
         String data = new EasyCrawl<String>()
                 .webAgent(WebAgent.defaultAgent().url(apiUrl).referer(referer).cookie(cookies))
                 .analyze(WebAgent::getText)
-                .execute(args);
+                .args("code", "SH600887")
+                .execute();
         System.out.println(data);
 
 
@@ -44,7 +44,8 @@ public class XueQiuTest {
         String data = new EasyCrawl<String>()
                 .webAgent(WebAgent.defaultAgent().url(apiUrl).referer(page).cookie(getXQCookies()))
                 .analyze(WebAgent::getText)
-                .execute(new MapUtil<String, Object>().put("code", "SH600887").getMap());
+                .args("code", "SH600887")
+                .execute();
         System.out.println(data);
     }
 
@@ -58,14 +59,16 @@ public class XueQiuTest {
         String data = new EasyCrawl<String>()
                 .webAgent(WebAgent.defaultAgent().url(apiUrl).referer(page).cookie(WebAgent.getCookies(page)))
                 .analyze(WebAgent::getText)
-                .execute(map);
+                .args(map)
+                .execute();
         System.out.println(data);
         //指定具体时间获取top10
         String reportUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/top_holders.json?symbol=${code}&locate=1669824000000&start=1669824000000&circula=0";
         data = new EasyCrawl<String>()
                 .webAgent(WebAgent.defaultAgent().url(reportUrl).referer(page).cookie(cookies))
                 .analyze(WebAgent::getText)
-                .execute(map);
+                .args(map)
+                .execute();
         System.out.println(data);
     }
 
@@ -73,14 +76,14 @@ public class XueQiuTest {
     @Test
     public void gdrs() {
         String page = "https://xueqiu.com/snowman/S/${code}/detail#/GDRS";
-        Map<String, Object> map = new MapUtil<String, Object>().put("code", "SH600887").getMap();
         Map<String, String> cookies = getXQCookies();
         //获取最新的十大股东 及 所有时间列表
         String apiUrl = "https://stock.xueqiu.com/v5/stock/f10/cn/holders.json?symbol=${code}&extend=true&page=1&size=100";
         String data = new EasyCrawl<String>()
                 .webAgent(WebAgent.defaultAgent().url(apiUrl).referer(page).cookie(cookies))
                 .analyze(WebAgent::getText)
-                .execute(map);
+                .args("code", "SH600887")
+                .execute();
         System.out.println(data);
     }
 

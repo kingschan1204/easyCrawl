@@ -75,5 +75,9 @@ public interface JsonHelper {
      */
     JsonHelper put(String key, Object value);
 
+    /**
+     *  循环
+     * @param consumer
+     */
     void forEach(Consumer<? super JsonNode> consumer);
 }

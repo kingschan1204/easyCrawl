@@ -1,6 +1,5 @@
 package com.github.kingschan1204.easycrawl.task;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.helper.http.UrlHelper;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
@@ -13,6 +12,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
+ * 2023-4-11
  * @author kingschan
  */
 @Slf4j
@@ -20,6 +20,7 @@ public class EasyCrawl<R> {
 
     private WebAgent webAgent;
     private Function<WebAgent, R> parserFunction;
+    private Map<String,Object> argsMap;
 
     public EasyCrawl<R> webAgent(WebAgent webAgent) {
         this.webAgent = webAgent;
@@ -32,17 +33,29 @@ public class EasyCrawl<R> {
         return this;
     }
 
-    public R execute() {
-        return execute(null);
+    public EasyCrawl<R> args(String key,Object value){
+        if(null == argsMap){
+            argsMap = new HashMap<>();
+        }
+        argsMap.put(key,value);
+        return this;
     }
 
-    public R execute(Map<String, Object> map) {
+    public EasyCrawl<R> args(Map<String, Object> map){
+        if(null == argsMap){
+            argsMap = map;
+        }
+        this.argsMap.putAll(map);
+        return this;
+    }
+
+    public R execute() {
         Assert.notNull(webAgent, "agent对象不能为空！");
         Assert.notNull(parserFunction, "解析函数不能为空！");
         R result;
         CompletableFuture<R> cf = CompletableFuture.supplyAsync(() -> {
             try {
-                return webAgent.execute(map);
+                return webAgent.execute(this.argsMap);
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -55,6 +68,8 @@ public class EasyCrawl<R> {
         }
         return result;
     }
+
+
 
     /**
      * restApi json格式自动获取所有分页
