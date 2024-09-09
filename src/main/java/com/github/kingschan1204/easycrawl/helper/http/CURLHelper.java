@@ -3,6 +3,8 @@ package com.github.kingschan1204.easycrawl.helper.http;
 import com.github.kingschan1204.easycrawl.core.agent.HttpRequestConfig;
 import com.github.kingschan1204.easycrawl.helper.regex.RegexHelper;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,6 +73,14 @@ public class CURLHelper {
             if (text.startsWith("--data-raw")) {
                 String body = RegexHelper.findFirst(text, "'(.*?)'", 1);
                 this.config.setBody(body);
+            }
+            if(text.matches("^(--proxy|-x).*")){
+                String body = RegexHelper.findFirst(text, "'(.*?)'", 1);
+                if(body.startsWith("http")){
+                    body = body.replace("http://","");
+                    String[] array = body.split(":");
+                    this.config.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(array[0], Integer.parseInt(array[1]))));
+                }
             }
 
         }
