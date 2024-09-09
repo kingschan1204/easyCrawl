@@ -31,22 +31,27 @@ public class CURLHelper {
         methodMap.put("PUT", HttpRequestConfig.Method.PUT);
     }
 
+    /**
+     * 提取单引号内容
+     */
+    final String QUOTATION_MARKS = "'(.*?)'";
+
     public HttpRequestConfig getConfig() {
         String[] list = curlText.split("\n");
         for (String cmd : list) {
             String text = cmd.replaceAll("(^\\s+)|\\s+\\\\$", "");
             if (text.matches("^(?i)curl\\s+'http(s)?://.*'")) {
-                this.config.setUrl(RegexHelper.findFirst(text, "'(.*?)'", 1));
+                this.config.setUrl(RegexHelper.findFirst(text, QUOTATION_MARKS, 1));
                 continue;
             }
             if (text.startsWith("-X")) {
-                String method = RegexHelper.findFirst(text, "'(.*?)'", 1);
+                String method = RegexHelper.findFirst(text, QUOTATION_MARKS, 1);
                 this.config.setMethod(methodMap.get(method));
                 continue;
             }
 
             if (text.startsWith("-H")) {
-                String head = RegexHelper.findFirst(text, "'(.*?)'", 1);
+                String head = RegexHelper.findFirst(text, QUOTATION_MARKS, 1);
                 String[] headKv = head.split(":");
                 String key = headKv[0];
                 String value = headKv[1].replaceAll("^\\s+", "");
@@ -71,11 +76,11 @@ public class CURLHelper {
                 continue;
             }
             if (text.startsWith("--data-raw")) {
-                String body = RegexHelper.findFirst(text, "'(.*?)'", 1);
+                String body = RegexHelper.findFirst(text, QUOTATION_MARKS, 1);
                 this.config.setBody(body);
             }
             if(text.matches("^(--proxy|-x).*")){
-                String body = RegexHelper.findFirst(text, "'(.*?)'", 1);
+                String body = RegexHelper.findFirst(text, QUOTATION_MARKS, 1);
                 if(body.startsWith("http")){
                     body = body.replace("http://","");
                     String[] array = body.split(":");
