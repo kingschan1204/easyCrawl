@@ -270,21 +270,5 @@ public class EasyJson implements JsonHelper {
         return root.toString();
     }
 
-    public static void main(String[] args) throws Exception {
 
-      /*  ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode root = objectMapper.readTree(text);
-        ArrayNode tags = (ArrayNode) root.get("data").get("tags");
-
-        tags.remove(1);
-
-        System.out.println(tags.getNodeType());
-        System.out.println(root.getNodeType());
-        System.out.println(tags);
-
-        System.out.println(root instanceof ObjectNode);
-        System.out.println(root.get("data").get("tags") instanceof ArrayNode);*/
-
-
-    }
 }

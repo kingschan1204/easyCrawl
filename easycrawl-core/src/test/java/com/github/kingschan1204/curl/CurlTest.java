@@ -52,4 +52,50 @@ public class CurlTest {
                 .execute();
         log.info("文件上名：{} 文件大小：{} kb", file.getName(), file.length() / 1024);
     }
+
+
+    @DisplayName("curl代理ip测试")
+    @Test
+    public void proxyTest() {
+        String curl = """
+                curl 'https://myip.ipip.net/'
+                -x 'http://47.74.46.81:80'
+                """;
+        HttpRequestConfig config = new CURLHelper(curl).getConfig();
+//        System.out.println(JsonHelper.of(config).pretty());
+        String result = new EasyCrawl<String>()
+                .webAgent(WebAgent.defaultAgent(config))
+                .analyze(r -> r.getResult().getBody()).execute();
+        System.out.println(result);
+    }
+
+    @DisplayName("curl代理ip测试")
+    @Test
+    public void curlGetTest() {
+        String curl = """
+                curl 'https://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1803_after&TABKEY=tab1&txtQueryDate=2024-09-03&random=0.9810874356934038' \\
+                  -H 'Accept: application/json, text/javascript, */*; q=0.01' \\
+                  -H 'Accept-Language: zh-CN,zh;q=0.9' \\
+                  -H 'Connection: keep-alive' \\
+                  -H 'Content-Type: application/json' \\
+                  -H 'DNT: 1' \\
+                  -H 'Referer: https://www.szse.cn/market/stock/indicator/index.html' \\
+                  -H 'Sec-Fetch-Dest: empty' \\
+                  -H 'Sec-Fetch-Mode: cors' \\
+                  -H 'Sec-Fetch-Site: same-origin' \\
+                  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36' \\
+                  -H 'X-Request-Type: ajax' \\
+                  -H 'X-Requested-With: XMLHttpRequest' \\
+                  -H 'sec-ch-ua: "Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome";v="128"' \\
+                  -H 'sec-ch-ua-mobile: ?0' \\
+                  -H 'sec-ch-ua-platform: "Windows"' 
+                """;
+        HttpRequestConfig config = new CURLHelper(curl).getConfig();
+        System.out.println(JsonHelper.of(config).pretty());
+        JsonHelper result = new EasyCrawl<JsonHelper>()
+                .webAgent(WebAgent.defaultAgent(config))
+                .analyze(WebAgent::getJson)
+                .execute();
+        System.out.println(result);
+    }
 }
