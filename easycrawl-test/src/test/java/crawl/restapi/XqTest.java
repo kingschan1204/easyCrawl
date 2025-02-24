@@ -188,5 +188,56 @@ public class XqTest {
         System.out.println(text);
     }
 
+    @DisplayName("topHolders")
+    @ParameterizedTest
+    @ValueSource(strings = {"SH600887"})
+    public void topHolders(String symbol) {
+        // 十大流通数据
+        String curlMain = """
+            curl 'https://stock.xueqiu.com/v5/stock/f10/cn/top_holders.json?symbol=${symbol}&circula=1&count=200' \\
+              -H 'accept: application/json, text/plain, */*' \\
+              -H 'accept-language: zh-CN,zh;q=0.9' \\
+              -H 'dnt: 1' \\
+              -H 'origin: https://xueqiu.com' \\
+              -H 'priority: u=1, i' \\
+              -H 'referer: https://xueqiu.com/snowman/S/${symbol}/detail' \\
+              -H 'sec-ch-ua: "Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"' \\
+              -H 'sec-ch-ua-mobile: ?0' \\
+              -H 'sec-ch-ua-platform: "Windows"' \\
+              -H 'sec-fetch-dest: empty' \\
+              -H 'sec-fetch-mode: cors' \\
+              -H 'sec-fetch-site: same-site' \\
+              -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
+            """;
+
+        String curlDetials = """
+            curl 'https://stock.xueqiu.com/v5/stock/f10/cn/top_holders.json?symbol=${symbol}&locate=${start}&start=${start}&circula=1' \\
+              -H 'accept: application/json, text/plain, */*' \\
+              -H 'accept-language: zh-CN,zh;q=0.9' \\
+              -H 'dnt: 1' \\
+              -H 'origin: https://xueqiu.com' \\
+              -H 'priority: u=1, i' \\
+              -H 'referer: https://xueqiu.com/snowman/S/${symbol}/detail' \\
+              -H 'sec-ch-ua: "Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"' \\
+              -H 'sec-ch-ua-mobile: ?0' \\
+              -H 'sec-ch-ua-platform: "Windows"' \\
+              -H 'sec-fetch-dest: empty' \\
+              -H 'sec-fetch-mode: cors' \\
+              -H 'sec-fetch-site: same-site' \\
+              -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
+            """;
+        JsonHelper data =
+                new ThinEasyCrawl(curlMain).args("symbol", symbol).cookies(cookies).execute().getJson();
+        System.out.println(data.pretty());
+        String timestamp = data.op("data.times.0.value").toJavaObj(String.class);
+        System.out.println(timestamp);
+
+
+        JsonHelper detials =
+                new ThinEasyCrawl(curlDetials).args("symbol", symbol).args("start",timestamp).cookies(cookies).execute().getJson();
+        System.out.println(detials.pretty());
+
+    }
+
 
 }
