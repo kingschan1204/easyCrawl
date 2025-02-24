@@ -56,8 +56,34 @@ public class XqTest {
                         .analyze(r -> r.getResult().getJson().op("data.list").toListMap())
                         // xq这个url地址：注意pageSize最大只支持200
                         .executePage(null, "page", "data.count", 200);
-        //    System.out.println(result);
+            System.out.println(result);
         System.out.println(result.size());
+    }
+    @DisplayName("industries")
+    @Test
+    public void industries(){
+        String curl = """
+                curl 'https://xueqiu.com/service/screener/industries?category=CN&_=1740406777921&md5__1038=WqIxBWqmwxyDlxGgx%2BExAoIx9nl3DOAfeD' \\
+                            -H 'accept: application/json, text/javascript, */*; q=0.01' \\
+                            -H 'accept-language: zh-CN,zh;q=0.9' \\
+                            -H 'cache-control: no-cache' \\
+                            -H 'dnt: 1' \\
+                            -H 'priority: u=1, i' \\
+                            -H 'referer: https://xueqiu.com/stock/screener?name=%E9%80%89%E8%82%A1%E5%B7%A5%E5%85%B7&url=https://xueqiu.com/stock/screener&first_name=5&second_name=0' \\
+                            -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \\
+                            -H 'sec-ch-ua-mobile: ?0' \\
+                            -H 'sec-ch-ua-platform: "Windows"' \\
+                            -H 'sec-fetch-dest: empty' \\
+                            -H 'sec-fetch-mode: cors' \\
+                            -H 'sec-fetch-site: same-origin' \\
+                            -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36' \\
+                            -H 'x-requested-with: XMLHttpRequest'
+                """;
+        HttpResult httpResult = new ThinEasyCrawl(curl)
+                .cookies(cookies)
+                .execute();
+        JsonHelper jsonHelper = httpResult.getJson();
+        System.out.println(jsonHelper.pretty());
     }
 
     @DisplayName("company info")
