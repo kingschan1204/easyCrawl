@@ -3,7 +3,7 @@ package com.github.kingschan1204.easycrawl.core.agent.interceptor.afterimpl;
 import com.github.kingschan1204.easycrawl.core.agent.WebAgent;
 import com.github.kingschan1204.easycrawl.core.agent.interceptor.AfterInterceptor;
 import com.github.kingschan1204.easycrawl.core.agent.result.HttpResult;
-import com.github.kingschan1204.easycrawl.helper.http.ResponseAssertHelper;
+import com.github.kingschan1204.easycrawl.core.util.http.ResponseAssertHelper;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 

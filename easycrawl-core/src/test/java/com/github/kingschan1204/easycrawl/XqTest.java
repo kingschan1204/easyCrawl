@@ -23,7 +23,7 @@ public class XqTest {
 
   @DisplayName("历史分红")
   @ParameterizedTest
-  @ValueSource(strings = {"SH600887"})
+  @ValueSource(strings = {"SZ000981"})
   public void getBonus(String symbol) {
     String curl =
         """
@@ -47,5 +47,13 @@ public class XqTest {
     JsonHelper data =
         new ThinEasyCrawl(curl).args("symbol", symbol).cookies(cookies).execute().getJson();
     System.out.println(data.pretty());
+    String text =
+        data.op("data.items")
+            .toIntDate("ashare_ex_dividend_date")
+            .toIntDate("ex_dividend_date")
+            .toIntDate("equity_date")
+            .toIntDate("dividend_date")
+            .pretty();
+    System.out.println(text);
   }
 }

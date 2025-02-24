@@ -1,4 +1,4 @@
-package com.github.kingschan1204.easycrawl.helper.http;
+package com.github.kingschan1204.easycrawl.core.util.http;
 
 import com.github.kingschan1204.easycrawl.core.agent.dto.HttpRequestConfig;
 import com.github.kingschan1204.easycrawl.core.agent.dto.ProxyConfig;

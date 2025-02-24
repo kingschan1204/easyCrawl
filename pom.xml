@@ -11,6 +11,8 @@
     <modules>
         <module>easycrawl-core</module>
         <module>easycrawl-schedule</module>
+        <module>easycrawl-sql</module>
+        <module>easycrawl-helper</module>
     </modules>
     <properties>
         <java.version>17</java.version>

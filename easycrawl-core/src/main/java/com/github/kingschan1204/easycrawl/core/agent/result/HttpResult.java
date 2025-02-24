@@ -2,34 +2,33 @@ package com.github.kingschan1204.easycrawl.core.agent.result;
 
 import com.github.kingschan1204.easycrawl.core.agent.dto.HttpRequestConfig;
 import com.github.kingschan1204.easycrawl.helper.json.JsonHelper;
-
 import java.io.File;
 import java.util.Map;
 
 public interface HttpResult {
-    HttpRequestConfig getConfig();
+  HttpRequestConfig getConfig();
 
-    Long timeMillis();
+  Long timeMillis();
 
-    Integer statusCode();
+  Integer statusCode();
 
-    String charset();
+  String charset();
 
-    String contentType();
+  String contentType();
 
-    Map<String, String> cookies();
+  Map<String, String> cookies();
 
-    byte[] bodyAsByes();
+  byte[] bodyAsByes();
 
-    String body();
+  String body();
 
-    void setBody(String body);
+  void setBody(String body);
 
-    Map<String, String> headers();
+  Map<String, String> headers();
 
-    JsonHelper getJson();
+  JsonHelper getJson();
 
-    String getText();
+  String getText();
 
-    File getFile();
+  File getFile();
 }
