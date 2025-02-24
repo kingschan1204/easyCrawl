@@ -7,13 +7,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.kingschan1204.easycrawl.helper.datetime.DateHelper;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import lombok.SneakyThrows;
 
 /**
@@ -63,39 +64,31 @@ public class EasyJson implements JsonHelper {
     if (clazz.equals(String.class)) {
       return (T) root.toString();
     }
-    String text = root.toString(); // .replaceAll("^.|.$", "");
-    return objectMapper.readValue(text, clazz);
+    return objectMapper.readValue(root.traverse(), clazz);
   }
 
   @Override
   @SneakyThrows
   public <T> List<T> toListObj(Class<T> clazz) {
-    // 创建一个表示 List<T> 的 TypeReference
-    TypeReference<List<T>> typeReference =
-        new TypeReference<>() {
-          @Override
-          public Type getType() {
-            return new ParameterizedType() {
-              @Override
-              public Type[] getActualTypeArguments() {
-                return new Type[] {clazz};
-              }
+    TypeFactory typeFactory = objectMapper.getTypeFactory();
+    Type listType = typeFactory.constructCollectionType(List.class, clazz);
+    return objectMapper.readValue(root.traverse(), typeFactory.constructType(listType));
+  }
 
-              @Override
-              public Type getRawType() {
-                return List.class;
-              }
+  @SneakyThrows
+  @Override
+  public List<Map<String, Object>> toListMap() {
+    if (root.isArray()) {
+      TypeReference<List<Map<String, Object>>> typeReference = new TypeReference<>() {};
+      return objectMapper.readValue(root.traverse(), typeReference);
+    }
+    return null;
+  }
 
-              @Override
-              public Type getOwnerType() {
-                return null;
-              }
-            };
-          }
-        };
-
-    String text = root.toString(); // .replaceAll("^.|.$", "");
-    return objectMapper.readValue(text, typeReference);
+  @Override
+  public Iterator<JsonNode> iterator() {
+    ArrayNode arrayNode = (ArrayNode) root;
+    return arrayNode.iterator();
   }
 
   @Override
@@ -243,33 +236,20 @@ public class EasyJson implements JsonHelper {
 
   @Override
   public JsonHelper toTimeStamp(String key) {
-    if (root.isObject()) {
-      ObjectNode objectNode = (ObjectNode) root;
-      if (objectNode.has(key)) {
-        String val = objectNode.get(key).textValue();
-        objectNode.put(key, DateHelper.of(val).timeStamp());
-      }
-    } else if (root.isArray()) {
-      for (JsonNode node : root) {
-        ObjectNode objectNode = (ObjectNode) node;
-        if (objectNode.has(key)) {
-          String val = objectNode.get(key).asText();
-          if (String.valueOf(val).matches("\\d+")) {
-            objectNode.put(key, DateHelper.of(val).timeStamp());
-          }
-        }
-      }
-    }
-    return this;
+    return updateDateValue(key, val -> DateHelper.of(val).timeStamp());
   }
 
   @Override
   public JsonHelper toIntDate(String key) {
+    return updateDateValue(key, val -> Long.valueOf(DateHelper.of(val).dateInt()));
+  }
+
+  private JsonHelper updateDateValue(String key, Function<String, Long> dateConverter) {
     if (root.isObject()) {
       ObjectNode objectNode = (ObjectNode) root;
       if (objectNode.has(key)) {
         String val = objectNode.get(key).textValue();
-        objectNode.put(key, DateHelper.of(val).dateInt());
+        objectNode.put(key, dateConverter.apply(val));
       }
     } else if (root.isArray()) {
       for (JsonNode node : root) {
@@ -277,7 +257,7 @@ public class EasyJson implements JsonHelper {
         if (objectNode.has(key)) {
           String val = objectNode.get(key).asText();
           if (String.valueOf(val).matches("\\d+")) {
-            objectNode.put(key, DateHelper.of(val).dateInt());
+            objectNode.put(key, dateConverter.apply(val));
           }
         }
       }

@@ -1,7 +1,9 @@
 package com.github.kingschan1204.easycrawl.helper.json;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -30,6 +32,10 @@ public interface JsonHelper {
    * @param <T>
    */
   <T> List<T> toListObj(Class<T> clazz);
+
+  List<Map<String, Object>> toListMap();
+
+  Iterator<JsonNode> iterator();
 
   /**
    * 根据表达式返回一个新的对象
