@@ -62,6 +62,8 @@ public class XqTest {
     @DisplayName("industries")
     @Test
     public void industries(){
+        //申万分类 https://www.swsresearch.com/institute_sw/allIndex/downloadCenter/industryType
+        // 中证行业分类 https://www.csindex.com.cn/#/dataService/industryClassification
         String curl = """
                 curl 'https://xueqiu.com/service/screener/industries?category=CN&_=1740406777921&md5__1038=WqIxBWqmwxyDlxGgx%2BExAoIx9nl3DOAfeD' \\
                             -H 'accept: application/json, text/javascript, */*; q=0.01' \\
