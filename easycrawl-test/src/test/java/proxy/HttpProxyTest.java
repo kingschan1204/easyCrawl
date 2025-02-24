@@ -1,4 +1,4 @@
-package com.github.kingschan1204.easycrawl;
+package proxy;
 
 import com.github.kingschan1204.easycrawl.core.agent.dto.ProxyConfig;
 import com.github.kingschan1204.easycrawl.core.agent.result.HttpResult;

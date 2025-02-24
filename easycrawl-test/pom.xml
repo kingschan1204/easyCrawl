@@ -19,6 +19,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.kingschan1204</groupId>
             <artifactId>easycrawl-core</artifactId>
             <version>0.1-SNAPSHOT</version>
