@@ -13,6 +13,7 @@
         <module>easycrawl-schedule</module>
         <module>easycrawl-sql</module>
         <module>easycrawl-helper</module>
+        <module>easycrawl-test</module>
     </modules>
     <properties>
         <java.version>17</java.version>
