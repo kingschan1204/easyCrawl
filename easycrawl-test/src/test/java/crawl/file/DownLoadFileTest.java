@@ -1,4 +1,4 @@
-package file;
+package crawl.file;
 
 import com.github.kingschan1204.easycrawl.task.ThinEasyCrawl;
 import java.io.File;

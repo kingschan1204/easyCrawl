@@ -33,6 +33,16 @@ public class DateHelper {
     return new DateHelper(LocalDateTime.now());
   }
 
+
+  public static DateHelper of(Object val) {
+    if(val instanceof Long lv){
+      return DateHelper.of(lv);
+    } else if (val instanceof String sv) {
+      return DateHelper.of(sv);
+    }
+    throw new RuntimeException("只支持string,long类型！");
+  }
+
   /**
    * 初始对象
    *

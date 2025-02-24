@@ -1,4 +1,4 @@
-package html;
+package crawl.html;
 
 import com.github.kingschan1204.easycrawl.task.EasyCrawl;
 import java.io.IOException;
