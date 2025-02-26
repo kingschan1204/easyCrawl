@@ -46,6 +46,13 @@ public interface JsonHelper {
   EasyJson op(String expression);
 
   /**
+   * 增强op方法，用于基本单值类型的转换返回
+   *
+   * @return
+   */
+  <T> T value();
+
+  /**
    * 根据表达式获取值
    *
    * @param expression 表达式

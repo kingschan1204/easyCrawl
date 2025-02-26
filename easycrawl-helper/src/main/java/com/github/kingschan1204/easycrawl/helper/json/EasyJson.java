@@ -5,8 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.*;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.kingschan1204.easycrawl.helper.datetime.DateHelper;
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
@@ -95,6 +94,52 @@ public class EasyJson implements JsonHelper {
   public EasyJson op(String expression) {
     JsonNode result = get(expression, JsonNode.class);
     return of(result);
+  }
+
+  @Override
+  public <T> T value() {
+    Class type = getType();
+    if (!root.isValueNode()) {
+      throw new IllegalArgumentException("当前节点不是单值节点:" + root.getNodeType());
+    }
+    if (root instanceof TextNode) {
+      return (T) root.asText();
+    }
+    if (root instanceof IntNode) {
+      return (T) type.cast(root.asInt());
+    }
+    if (root instanceof LongNode) {
+      return (T) type.cast(root.asLong());
+    }
+    if (root instanceof DoubleNode) {
+      return (T) type.cast(root.asDouble());
+    }
+    if (root instanceof ShortNode) {
+      return (T) type.cast(root.shortValue());
+    }
+    //    if (root instanceof NumericNode) {
+    //      return root.decimalValue();
+    //    }
+    if (root instanceof BooleanNode) {
+      return (T) type.cast(root.asBoolean());
+    }
+    throw new IllegalArgumentException("不支持的类型:" + root.getNodeType());
+  }
+
+  private Class<?> getType() {
+    StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+    StackTraceElement caller = stackTrace[3];
+    String methodName = caller.getMethodName();
+    try {
+      for (java.lang.reflect.Method method : EasyJson.class.getDeclaredMethods()) {
+        if (method.getName().equals(methodName)) {
+          return method.getReturnType();
+        }
+      }
+    } catch (SecurityException e) {
+      e.printStackTrace();
+    }
+    return Object.class;
   }
 
   /**
