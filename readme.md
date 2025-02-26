@@ -1,6 +1,7 @@
 > This project is a crawler toolkit implemented based on Java. The original intention is to crawl Internet data simply
 > and efficiently.
 
+
 ## Implemented Functions
 
 - HTTP/HTTPS GET, POST, PUT
@@ -14,6 +15,17 @@
 | Jsoup                | &#x2705;   | &#x2705;      |               |
 | Jdk HttpClient       | &#x2705;   |               | &#x2705;      |
 | Apache HttpClient5   | &#x2705;   |               | &#x2705;      |
+
+
+## Project Structure
+> The jdk version must be 17 or greater
+- `easycrawl-core   `     Crawler core code
+- `easycrawl-helper   `     General tools
+- `easycrawl-schedule   `   Thread Scheduling Related
+- `easycrawl-sql  `       Automated database operation related tools, currently under development
+- `easycrawl-test  `      Integration test related code
+
+
 
 ## Configuration Files
 
