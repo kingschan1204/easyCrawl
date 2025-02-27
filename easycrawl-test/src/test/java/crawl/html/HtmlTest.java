@@ -12,7 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
-@DisplayName("cookie相关测试")
+@DisplayName("html相关测试")
 public class HtmlTest {
 
   @DisplayName("公司资料")
