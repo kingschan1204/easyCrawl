@@ -13,6 +13,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author kingschan 2025-02-25
+ */
 @Slf4j
 public class EasyCrawlScheduledPool implements TaskSchedule {
   final String taskName;

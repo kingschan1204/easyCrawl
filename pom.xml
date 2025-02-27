@@ -37,6 +37,8 @@
         <freemarker.version>2.3.32</freemarker.version>
         <httpclient5.version>5.1</httpclient5.version>
         <jsonpath.version>2.9.0</jsonpath.version>
+        <jakarta.annotation.version>3.0.0</jakarta.annotation.version>
+        <jakarta.persistence.version>3.2.0</jakarta.persistence.version>
     </properties>
 
 
@@ -161,6 +163,17 @@
                 <groupId>com.jayway.jsonpath</groupId>
                 <artifactId>json-path</artifactId>
                 <version>${jsonpath.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.annotation</groupId>
+                <artifactId>jakarta.annotation-api</artifactId>
+                <version>${jakarta.annotation.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.persistence</groupId>
+                <artifactId>jakarta.persistence-api</artifactId>
+                <version>${jakarta.persistence.version}</version>
             </dependency>
         </dependencies>
 

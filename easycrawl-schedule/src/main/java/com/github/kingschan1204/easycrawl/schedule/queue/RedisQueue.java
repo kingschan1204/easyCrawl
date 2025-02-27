@@ -2,6 +2,9 @@ package com.github.kingschan1204.easycrawl.schedule.queue;
 
 import java.util.Map;
 
+/**
+ * @author kingschan
+ */
 public interface RedisQueue {
   String redisKey();
 

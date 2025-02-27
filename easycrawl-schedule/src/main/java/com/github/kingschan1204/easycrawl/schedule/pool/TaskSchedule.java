@@ -6,6 +6,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author kingschan
+ */
 public interface TaskSchedule {
   String taskName();
 
