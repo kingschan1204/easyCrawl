@@ -9,7 +9,7 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.hedi</groupId>
+    <groupId>com.github.kingschan1204</groupId>
     <artifactId>easycrawl-sql</artifactId>
 
     <properties>
