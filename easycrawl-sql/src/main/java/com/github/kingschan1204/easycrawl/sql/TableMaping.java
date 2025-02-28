@@ -78,6 +78,7 @@ public class TableMaping<T> {
         primaryKeys.put(field.getName(), generatedValue);
       }
     }
-    this.sqlBuilder = dbType.equals(DbType.MYSQL) ? new MysqlSqlBuilder(this) : null;
+    this.sqlBuilder =
+        dbType.equals(DbType.MYSQL) ? new MysqlSqlBuilder(this) : new PostgreSqlBuilder(this);
   }
 }

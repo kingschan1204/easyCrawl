@@ -5,7 +5,7 @@ public interface SqlBuilder {
 
   String updateByPrimary();
 
-  String upsert();
+  String upsertByPrimary();
 
   String deleteByPrimary();
 

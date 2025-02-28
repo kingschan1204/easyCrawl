@@ -12,9 +12,9 @@ public class TableHelperTest {
   @Test
   @DisplayName("Sql test ")
   public void upsertSql() {
-    TableMaping tableMaping = new TableMaping(StockCode.class, DbType.MYSQL);
+    TableMaping tableMaping = new TableMaping(StockCode.class, DbType.PGSQL);
     System.out.println(tableMaping.getSqlBuilder().insert());
-    System.out.println(tableMaping.getSqlBuilder().upsert());
+    System.out.println(tableMaping.getSqlBuilder().upsertByPrimary());
     System.out.println(tableMaping.getSqlBuilder().updateByPrimary());
     System.out.println(tableMaping.getSqlBuilder().deleteByPrimary());
     System.out.println(tableMaping.getSqlBuilder().selectByPrimary());
