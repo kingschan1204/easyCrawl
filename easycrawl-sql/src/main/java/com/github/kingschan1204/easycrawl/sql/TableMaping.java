@@ -79,12 +79,37 @@ public class TableMaping<T> {
     }
   }
 
+  public String insertSql() { // mysql
+    String columns = getInsertColumns().stream().collect(Collectors.joining(","));
+    String columnValue =
+        getInsertColumns().stream()
+            .map(s -> String.format(":%s", s))
+            .collect(Collectors.joining(","));
+    return "insert into %s (%s) values (%s)".formatted(tableName, columns, columnValue);
+  }
+
+  public String deleteByPrimaryKeySql() {
+    String primaryKey =
+        primaryKeys.keySet().stream()
+            .map(s -> String.format("%s = :%s", s, s))
+            .collect(Collectors.joining("and"));
+    return "delete from %s where %s ".formatted(tableName, primaryKey);
+  }
+
+  public String selectByPrimaryKey() {
+    String primaryKey =
+        primaryKeys.keySet().stream()
+            .map(s -> String.format("%s = :%s", s, s))
+            .collect(Collectors.joining("and"));
+    return "select * from %s where %s ".formatted(tableName, primaryKey);
+  }
+
   /**
    * Generate upsert statements based on object attributes and annotations
    *
    * @return
    */
-  public String updateSql() {
+  public String upsertSql() {
     // mysql
     String columns = getInsertColumns().stream().collect(Collectors.joining(","));
     String columnValue =
