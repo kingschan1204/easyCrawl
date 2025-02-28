@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import lombok.Getter;
 
 /**
  * @author kingschan 2025-02-23
@@ -15,13 +15,14 @@ import java.util.stream.Collectors;
 public class TableMaping<T> {
   final DbType dbType;
   final Class<T> entityClass;
-  final String tableName;
+  @Getter final String tableName;
   //
   final Table table;
   // properties -> table columns
-  final LinkedHashMap<String, Column> columns;
+  @Getter final LinkedHashMap<String, Column> columns;
   // properties -> table primary keys
-  final LinkedHashMap<String, GeneratedValue> primaryKeys;
+  @Getter final LinkedHashMap<String, GeneratedValue> primaryKeys;
+  final SqlBuilder sqlBuilder;
 
   public List<String> getInsertColumns() {
     List<String> insertColumns = new ArrayList<>();
@@ -77,31 +78,23 @@ public class TableMaping<T> {
         primaryKeys.put(field.getName(), generatedValue);
       }
     }
+    this.sqlBuilder = dbType.equals(DbType.MYSQL) ? new MysqlSqlBuilder(this) : null;
   }
 
-  public String insertSql() { // mysql
-    String columns = getInsertColumns().stream().collect(Collectors.joining(","));
-    String columnValue =
-        getInsertColumns().stream()
-            .map(s -> String.format(":%s", s))
-            .collect(Collectors.joining(","));
-    return "insert into %s (%s) values (%s)".formatted(tableName, columns, columnValue);
+  public String insertSql() {
+    return sqlBuilder.insert();
   }
 
-  public String deleteByPrimaryKeySql() {
-    String primaryKey =
-        primaryKeys.keySet().stream()
-            .map(s -> String.format("%s = :%s", s, s))
-            .collect(Collectors.joining("and"));
-    return "delete from %s where %s ".formatted(tableName, primaryKey);
+  public String updateByPrimary() {
+    return sqlBuilder.updateByPrimary();
   }
 
-  public String selectByPrimaryKey() {
-    String primaryKey =
-        primaryKeys.keySet().stream()
-            .map(s -> String.format("%s = :%s", s, s))
-            .collect(Collectors.joining("and"));
-    return "select * from %s where %s ".formatted(tableName, primaryKey);
+  public String deleteByPrimary() {
+    return sqlBuilder.deleteByPrimary();
+  }
+
+  public String selectByPrimary() {
+    return sqlBuilder.selectByPrimary();
   }
 
   /**
@@ -110,17 +103,6 @@ public class TableMaping<T> {
    * @return
    */
   public String upsertSql() {
-    // mysql
-    String columns = getInsertColumns().stream().collect(Collectors.joining(","));
-    String columnValue =
-        getInsertColumns().stream()
-            .map(s -> String.format(":%s", s))
-            .collect(Collectors.joining(","));
-    String upsertColumns =
-        getUpdateColumns().stream()
-            .map(s -> String.format("%s = values(%s)", s, s))
-            .collect(Collectors.joining(","));
-    return "insert into %s (%s) values (%s) on duplicate key update %s"
-        .formatted(tableName, columns, columnValue, upsertColumns);
+    return sqlBuilder.upsert();
   }
 }
