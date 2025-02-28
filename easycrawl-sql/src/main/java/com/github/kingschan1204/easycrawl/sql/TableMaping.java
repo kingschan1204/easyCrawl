@@ -22,7 +22,7 @@ public class TableMaping<T> {
   @Getter final LinkedHashMap<String, Column> columns;
   // properties -> table primary keys
   @Getter final LinkedHashMap<String, GeneratedValue> primaryKeys;
-  final SqlBuilder sqlBuilder;
+  @Getter final SqlBuilder sqlBuilder;
 
   public List<String> getInsertColumns() {
     List<String> insertColumns = new ArrayList<>();
@@ -79,30 +79,5 @@ public class TableMaping<T> {
       }
     }
     this.sqlBuilder = dbType.equals(DbType.MYSQL) ? new MysqlSqlBuilder(this) : null;
-  }
-
-  public String insertSql() {
-    return sqlBuilder.insert();
-  }
-
-  public String updateByPrimary() {
-    return sqlBuilder.updateByPrimary();
-  }
-
-  public String deleteByPrimary() {
-    return sqlBuilder.deleteByPrimary();
-  }
-
-  public String selectByPrimary() {
-    return sqlBuilder.selectByPrimary();
-  }
-
-  /**
-   * Generate upsert statements based on object attributes and annotations
-   *
-   * @return
-   */
-  public String upsertSql() {
-    return sqlBuilder.upsert();
   }
 }
