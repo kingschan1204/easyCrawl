@@ -70,6 +70,6 @@ public class PausableScheduledThreadPool extends ScheduledThreadPoolExecutor {
   @Override
   public void shutdown() {
     super.shutdown();
-    log.info("任务：{} 关闭释放资源！", taskName);
+    log.info("任务：{} 执行完成后将关闭释放资源！", taskName);
   }
 }

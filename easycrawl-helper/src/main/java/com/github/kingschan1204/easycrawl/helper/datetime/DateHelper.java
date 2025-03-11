@@ -33,9 +33,8 @@ public class DateHelper {
     return new DateHelper(LocalDateTime.now());
   }
 
-
   public static DateHelper of(Object val) {
-    if(val instanceof Long lv){
+    if (val instanceof Long lv) {
       return DateHelper.of(lv);
     } else if (val instanceof String sv) {
       return DateHelper.of(sv);
@@ -115,6 +114,21 @@ public class DateHelper {
    */
   public DateHelper plusDays(long days) {
     this.localDateTime = localDateTime.plusDays(days);
+    return this;
+  }
+
+  public DateHelper plusHour(long hours) {
+    this.localDateTime = localDateTime.plusHours(hours);
+    return this;
+  }
+
+  public DateHelper plusMinutes(long minutes) {
+    this.localDateTime = localDateTime.plusMinutes(minutes);
+    return this;
+  }
+
+  public DateHelper plusSeconds(long seconds) {
+    this.localDateTime = localDateTime.plusSeconds(seconds);
     return this;
   }
 

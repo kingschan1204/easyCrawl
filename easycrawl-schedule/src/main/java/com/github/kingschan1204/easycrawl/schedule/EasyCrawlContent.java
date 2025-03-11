@@ -5,6 +5,7 @@ import com.github.kingschan1204.easycrawl.schedule.pool.TaskSchedule;
 import com.github.kingschan1204.easycrawl.schedule.pool.impl.EasyCrawlScheduledPool;
 import com.github.kingschan1204.easycrawl.schedule.queue.RedisQueue;
 import java.time.LocalDateTime;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ public class EasyCrawlContent {
       int runQuantity,
       LocalDateTime time,
       long delay) {
-    fetureTime(time);
+    featureTime(time);
     validateTaskName(taskName);
     long delaySeconds = DateHelper.getMillisDiff(LocalDateTime.now(), time).toSeconds();
     EasyCrawlScheduledPool pool = new EasyCrawlScheduledPool(taskName, runQuantity);
@@ -71,6 +72,22 @@ public class EasyCrawlContent {
     threadContent.put(taskName, pool);
   }
 
+  public void scheduleByQueue(
+      String taskName,
+      BlockingQueue queue,
+      Runnable command,
+      int runQuantity,
+      long initialDelay,
+      long delay,
+      TimeUnit unit) {
+    validateTaskName(taskName);
+    EasyCrawlScheduledPool pool = new EasyCrawlScheduledPool(taskName, runQuantity);
+    for (int i = 0; i < runQuantity; i++) {
+      pool.scheduleByQueue(queue, command, initialDelay, delay, unit);
+    }
+    threadContent.put(taskName, pool);
+  }
+
   /**
    * 调度一次 立马执行
    *
@@ -89,7 +106,7 @@ public class EasyCrawlContent {
    * @param time
    */
   public void schedulingOnce(String taskName, Runnable command, LocalDateTime time) {
-    fetureTime(time);
+    featureTime(time);
     validateTaskName(taskName);
     EasyCrawlScheduledPool pool = new EasyCrawlScheduledPool(taskName, 1);
     long delay = DateHelper.getMillisDiff(LocalDateTime.now(), time).toSeconds();
@@ -112,7 +129,7 @@ public class EasyCrawlContent {
     pool.shutdown();
   }
 
-  private void fetureTime(LocalDateTime time) {
+  private void featureTime(LocalDateTime time) {
     LocalDateTime now = LocalDateTime.now();
     if (now.isAfter(time)) {
       throw new RuntimeException("时间已过！");
