@@ -1,11 +1,9 @@
 package com.github.kingschan1204.easycrawl.helper.datetime;
 
 import com.github.kingschan1204.easycrawl.helper.validation.Assert;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,6 +52,23 @@ public class DateHelper {
       timeStamp = timeStamp / 1000;
     }
     LocalDateTime time = LocalDateTime.ofEpochSecond(timeStamp, 0, ZoneOffset.ofHours(8));
+    return new DateHelper(time);
+  }
+
+  /**
+   * date 转 localDateTime
+   *
+   * @param date
+   * @return
+   */
+  public static DateHelper of(Date date) {
+    Assert.notNull(date, "date对象不能为空！");
+    // 将 Date 转换为 Instant
+    Instant instant = date.toInstant();
+    // 获取系统默认时区
+    ZoneId zoneId = ZoneId.systemDefault();
+    // 将 Instant 转换为 LocalDateTime
+    LocalDateTime time = instant.atZone(zoneId).toLocalDateTime();
     return new DateHelper(time);
   }
 
