@@ -24,3 +24,7 @@ logs
 hs_err_pid*
 # idea
 .idea
+
+# vscode 
+target/
+.vscode/
