@@ -54,4 +54,15 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+         
+    <build>
+        <plugins>
+            <!-- 默认的 surefire 2.12.4 不支持 JUnit 5,会静默跳过所有测试 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>
